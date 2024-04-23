@@ -3,9 +3,13 @@
 
 #include "game.h"
 #include <QGridLayout>
+#include <QHBoxLayout>
+#include <QKeyEvent>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QPushButton>
+#include <QTimer>
 
 class MainWindow : public QMainWindow
 {
@@ -15,16 +19,24 @@ public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-private:
-    void handleStart();
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    Game*        game;
-    QGridLayout* gridLayout;
-    QLabel*      hor_lbl1;
-    QLabel*      hor_lbl2;
-    QLabel*      ver_lbl1;
-    QLabel*      ver_lbl2;
+    void handleStart();
+    void addOnGrid();
+    void changeHeartLabel();
+    void resetGame();
+
+private:
+    Game*                 m_game;
+    QGridLayout*          m_grid_layout;
+    QVector<QPushButton*> m_difficulty_buttons;
+    QPushButton*          m_start_button;
+    QPushButton*          m_reset_game;
+    QLabel*               m_heart_label;
+    QLabel*               m_time_label;
+    int                   m_seconds;
+    QTimer*               m_timer;
 };
 
 #endif // MAINWINDOW_H
