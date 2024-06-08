@@ -23,19 +23,43 @@ MainWindow::MainWindow(QWidget* parent)
         {
             QPushButton* button = new QPushButton();
             button->setFixedSize(60, 60);
-            button->setStyleSheet("QPushButton {"
-                                  "background-color: #015E77;"
-                                  "color: black;"
-                                  "border-radius: 8px;"
-                                  "font-size: 16px;"
-                                  "font-weight: bold;"
-                                  "}"
-                                  "QPushButton:hover {"
-                                  "background-color: #0094B6;"
-                                  "border: 2px solid black;"
-                                  "color: white;"
-                                  "border-radius: 10px;"
-                                  "}");
+
+            bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
+
+            if (is_dark)
+            {
+                button->setStyleSheet("QPushButton {"
+                                      "background-color: #015E77;"
+                                      "color: black;"
+                                      "border-radius: 8px;"
+                                      "font-size: 16px;"
+                                      "font-weight: bold;"
+                                      "}"
+                                      "QPushButton:hover {"
+                                      "background-color: #0094B6;"
+                                      "border: 2px solid black;"
+                                      "color: white;"
+                                      "border-radius: 10px;"
+                                      "}");
+            }
+            else
+            {
+                button->setStyleSheet("QPushButton {"
+                                      "background-color: #4FD9FF;"
+                                      "color: black;"
+                                      "border-radius: 8px;"
+                                      "font-size: 16px;"
+                                      "font-weight: bold;"
+                                      "}"
+                                      "QPushButton:hover {"
+                                      "background-color: #0094B6;"
+                                      "border: 2px solid black;"
+                                      "color: white;"
+                                      "border-radius: 10px;"
+                                      "}");
+                ;
+            }
+
             button->setEnabled(false);
 
             connect(button, &QPushButton::clicked, this,
@@ -129,9 +153,7 @@ MainWindow::MainWindow(QWidget* parent)
             });
 }
 
-MainWindow::~MainWindow()
-{
-}
+MainWindow::~MainWindow() {}
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
