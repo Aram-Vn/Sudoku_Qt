@@ -1,5 +1,5 @@
 
-#include "sudokugenerator.h"
+#include "../include/sudokugenerator.h"
 
 QVector<QVector<int>> SudokuGenerator::getGeneratedSudoku()
 {

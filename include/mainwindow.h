@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "game.h"
+#include "../include/game.h"
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QKeyEvent>
