@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include "../include/game.h"
+
+#include <QColor>
+#include <QColorDialog>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QKeyEvent>
@@ -10,9 +13,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QTimer>
-#include <qmessagebox.h>
-
-#include <QColorDialog>
 
 class MainWindow : public QMainWindow
 {
@@ -25,7 +25,7 @@ public:
     void keyPressEvent(QKeyEvent* event) override;
 
 private slots:
-    void openColorPicker(); // Add this slot declaration
+    void openColorPicker();
 
 private:
     void handleStart();

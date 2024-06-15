@@ -20,48 +20,35 @@ MainWindow::MainWindow(QWidget* parent)
     {
         for (int col = 0; col < grid_size; ++col)
         {
-            QPushButton* button = new QPushButton();
-            button->setFixedSize(60, 60);
+            QPushButton* sudokuButton = new QPushButton();
+            sudokuButton->setFixedSize(60, 60);
 
             bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
 
-            if (is_dark)
-            {
-                button->setStyleSheet("QPushButton {"
-                                      "background-color: #018AAF;"
-                                      "color: black;"
-                                      "border-radius: 8px;"
-                                      "font-size: 16px;"
-                                      "font-weight: bold;"
-                                      "}"
-                                      "QPushButton:hover {"
-                                      "background-color: #0094B6;"
-                                      "border: 2px solid black;"
-                                      "color: white;"
-                                      "border-radius: 10px;"
-                                      "}");
-            }
-            else
-            {
-                button->setStyleSheet("QPushButton {"
-                                      "background-color: #4FD9FF;"
-                                      "color: black;"
-                                      "border-radius: 8px;"
-                                      "font-size: 16px;"
-                                      "font-weight: bold;"
-                                      "}"
-                                      "QPushButton:hover {"
-                                      "background-color: #0094B6;"
-                                      "border: 2px solid black;"
-                                      "color: white;"
-                                      "border-radius: 10px;"
-                                      "}");
-                ;
-            }
+            QColor baseColor  = is_dark ? QColor("#018AAF") : QColor("#4FD9FF");
+            QColor hoverColor = baseColor.darker(150);
 
-            button->setEnabled(false);
+            QString colorStyle = QString("QPushButton {"
+                                         "background-color: %1;"
+                                         "color: black;"
+                                         "border-radius: 8px;"
+                                         "font-size: 16px;"
+                                         "font-weight: bold;"
+                                         "}"
+                                         "QPushButton:hover {"
+                                         "background-color: %2;"
+                                         "border: 2px solid black;"
+                                         "color: white;"
+                                         "border-radius: 10px;"
+                                         "}")
+                                     .arg(baseColor.name())
+                                     .arg(hoverColor.name());
 
-            connect(button, &QPushButton::clicked, this,
+            sudokuButton->setStyleSheet(colorStyle);
+
+            sudokuButton->setEnabled(false);
+
+            connect(sudokuButton, &QPushButton::clicked, this,
                     [row, col, this]()
                     {
                         int x = m_game->getX();
@@ -73,14 +60,14 @@ MainWindow::MainWindow(QWidget* parent)
                         }
                     });
 
-            m_grid_layout->addWidget(button, row, col);
+            m_grid_layout->addWidget(sudokuButton, row, col);
         }
     }
 
     m_game = new Game(this);
 
-    // Difficulty buttons
     QStringList difficulties = { "Easy", "Medium", "Hard" };
+    
     for (int i = 0; i < m_difficulty_buttons.size(); ++i)
     {
         m_difficulty_buttons[i] = new QPushButton(difficulties[i], this);
@@ -114,15 +101,15 @@ MainWindow::MainWindow(QWidget* parent)
     m_reset_game->setText("Reset");
     m_reset_game->setGeometry(400, 50, 70, 50);
     m_reset_game->setStyleSheet("background-color: dimGray;");
-
     connect(m_reset_game, &QPushButton::clicked, this,
             [this]()
             {
                 m_time_label->setText("00:00:00");
                 resetGame();
+                QMessageBox::information(nullptr, "Reset", "you give up!!!");
             });
 
-    m_heart_label->setGeometry(500, 50, 70, 50);
+    m_heart_label->setGeometry(500, 50, 85, 50);
     m_heart_label->setAlignment(Qt::AlignCenter);
     m_heart_label->setStyleSheet("background-color: dimGray;");
     m_heart_label->setText("Hearts:");
@@ -132,11 +119,9 @@ MainWindow::MainWindow(QWidget* parent)
     m_time_label->setAlignment(Qt::AlignCenter);
     m_time_label->setStyleSheet("background-color: dimGray;");
 
-    // Add the color picker button
     QPushButton* colorPickerButton = new QPushButton("Choose Color", this);
     colorPickerButton->setGeometry(70, 100, 150, 50);
     colorPickerButton->setStyleSheet("background-color: dimGray;");
-
     connect(colorPickerButton, &QPushButton::clicked, this, &MainWindow::openColorPicker);
 
     connect(m_game, &Game::board_is_ready, this, &MainWindow::handleStart);
@@ -172,7 +157,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 
 void MainWindow::handleStart()
 {
-    m_heart_label->setText("Hearts: 3");
+    m_heart_label->setText("Hearts: <span style='color:red;'>♥&nbsp;♥&nbsp;♥</span>");
     m_time_label->setText("00:00:00");
     QVector<QVector<int>> board     = m_game->getBoard();
     const int             grid_size = 9;
@@ -220,7 +205,13 @@ void MainWindow::changeHeartLabel()
 {
     QMessageBox::information(nullptr, "wrong", "No!!!");
 
-    m_heart_label->setText("Hearts: " + QString::number(m_game->getHearts()));
+    QString heartString;
+    for (int i = 0; i < m_game->getHearts(); ++i)
+    {
+        heartString.append("♥&nbsp;");
+    }
+
+    m_heart_label->setText("Hearts: <span style='color:red;'>" + heartString.trimmed() + "</span>");
     if (m_game->getHearts() == 0)
     {
         m_timer->stop();
@@ -274,9 +265,9 @@ void MainWindow::openColorPicker()
     {
         for (int col = 0; col < 9; ++col)
         {
-            QPushButton* button = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            QPushButton* sudokuButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
 
-            bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
+            bool   is_dark    = ((row / 3) % 2 == (col / 3) % 2);
             QColor hoverColor = is_dark ? colorDark.darker(150) : colorLight.darker(150);
 
             QString colorStyle;
@@ -290,7 +281,7 @@ void MainWindow::openColorPicker()
                                      "font-weight: bold;"
                                      "}"
                                      "QPushButton:hover {"
-                                     "background-color: %2;" // Hover color
+                                     "background-color: %2;"
                                      "border: 2px solid black;"
                                      "color: white;"
                                      "border-radius: 10px;"
@@ -308,7 +299,7 @@ void MainWindow::openColorPicker()
                                      "font-weight: bold;"
                                      "}"
                                      "QPushButton:hover {"
-                                     "background-color: %2;" // Hover color
+                                     "background-color: %2;"
                                      "border: 2px solid black;"
                                      "color: white;"
                                      "border-radius: 10px;"
@@ -317,7 +308,7 @@ void MainWindow::openColorPicker()
                                  .arg(hoverColor.name());
             }
 
-            button->setStyleSheet(colorStyle);
+            sudokuButton->setStyleSheet(colorStyle);
         }
     }
 }
