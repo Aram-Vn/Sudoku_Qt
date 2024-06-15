@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QTimer>
+#include <qmessagebox.h>
 
 class MainWindow : public QMainWindow
 {

@@ -1,5 +1,4 @@
 #include "../include/mainwindow.h"
-#include <qmessagebox.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -206,7 +205,7 @@ void MainWindow::addOnGrid()
     if (m_game->getEmptyCount() == 0)
     {
         m_timer->stop();
-        QMessageBox::information(nullptr, "Win", "You won!!!");
+        QMessageBox::information(nullptr, "Win", QString("You won!!!\nYour time is: %1").arg(m_time_label->text()));
     }
 }
 
