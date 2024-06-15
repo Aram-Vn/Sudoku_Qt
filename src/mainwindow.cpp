@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget* parent)
             if (is_dark)
             {
                 button->setStyleSheet("QPushButton {"
-                                      "background-color: #015E77;"
+                                      "background-color: #018AAF;"
                                       "color: black;"
                                       "border-radius: 8px;"
                                       "font-size: 16px;"
@@ -131,6 +131,13 @@ MainWindow::MainWindow(QWidget* parent)
     m_time_label->setGeometry(600, 50, 70, 50);
     m_time_label->setAlignment(Qt::AlignCenter);
     m_time_label->setStyleSheet("background-color: dimGray;");
+
+    // Add the color picker button
+    QPushButton* colorPickerButton = new QPushButton("Choose Color", this);
+    colorPickerButton->setGeometry(70, 100, 150, 50);
+    colorPickerButton->setStyleSheet("background-color: dimGray;");
+
+    connect(colorPickerButton, &QPushButton::clicked, this, &MainWindow::openColorPicker);
 
     connect(m_game, &Game::board_is_ready, this, &MainWindow::handleStart);
     connect(m_game, &Game::add_on_grid, this, &MainWindow::addOnGrid);
@@ -247,4 +254,70 @@ void MainWindow::resetGame()
     m_seconds = 0;
     m_timer->stop();
     m_heart_label->setText("Hearts:");
+}
+
+void MainWindow::openColorPicker()
+{
+    QColor colorDark = QColorDialog::getColor(Qt::white, this, "Choose Dark Button Color");
+    if (!colorDark.isValid())
+    {
+        return;
+    }
+
+    QColor colorLight = QColorDialog::getColor(Qt::white, this, "Choose Light Button Color");
+    if (!colorLight.isValid())
+    {
+        return;
+    }
+
+    for (int row = 0; row < 9; ++row)
+    {
+        for (int col = 0; col < 9; ++col)
+        {
+            QPushButton* button = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+
+            bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
+            QColor hoverColor = is_dark ? colorDark.darker(150) : colorLight.darker(150);
+
+            QString colorStyle;
+            if (is_dark)
+            {
+                colorStyle = QString("QPushButton {"
+                                     "background-color: %1;"
+                                     "color: black;"
+                                     "border-radius: 8px;"
+                                     "font-size: 16px;"
+                                     "font-weight: bold;"
+                                     "}"
+                                     "QPushButton:hover {"
+                                     "background-color: %2;" // Hover color
+                                     "border: 2px solid black;"
+                                     "color: white;"
+                                     "border-radius: 10px;"
+                                     "}")
+                                 .arg(colorDark.name())
+                                 .arg(hoverColor.name());
+            }
+            else
+            {
+                colorStyle = QString("QPushButton {"
+                                     "background-color: %1;"
+                                     "color: black;"
+                                     "border-radius: 8px;"
+                                     "font-size: 16px;"
+                                     "font-weight: bold;"
+                                     "}"
+                                     "QPushButton:hover {"
+                                     "background-color: %2;" // Hover color
+                                     "border: 2px solid black;"
+                                     "color: white;"
+                                     "border-radius: 10px;"
+                                     "}")
+                                 .arg(colorLight.name())
+                                 .arg(hoverColor.name());
+            }
+
+            button->setStyleSheet(colorStyle);
+        }
+    }
 }

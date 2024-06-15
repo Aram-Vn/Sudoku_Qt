@@ -12,6 +12,8 @@
 #include <QTimer>
 #include <qmessagebox.h>
 
+#include <QColorDialog>
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -21,6 +23,9 @@ public:
     ~MainWindow();
 
     void keyPressEvent(QKeyEvent* event) override;
+
+private slots:
+    void openColorPicker(); // Add this slot declaration
 
 private:
     void handleStart();
