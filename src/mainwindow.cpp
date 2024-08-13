@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget* parent)
     this->setGeometry(100, 100, 700, 900);
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setGeometry(0, 150, 700, 700);
+    this->setStyleSheet("background-color: #282828;");
     m_grid_layout = new QGridLayout(centralWidget);
 
     const int grid_size = 9;
@@ -109,7 +110,7 @@ MainWindow::MainWindow(QWidget* parent)
                 QMessageBox::information(nullptr, "Reset", "you give up!!!");
             });
 
-    m_heart_label->setGeometry(500, 50, 85, 50);
+    m_heart_label->setGeometry(500, 50, 90, 50);
     m_heart_label->setAlignment(Qt::AlignCenter);
     m_heart_label->setStyleSheet("background-color: dimGray;");
     m_heart_label->setText("Hearts:");
