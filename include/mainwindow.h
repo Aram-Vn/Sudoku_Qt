@@ -3,8 +3,10 @@
 
 #include "../include/game.h"
 
+#include <QCloseEvent>
 #include <QColor>
 #include <QColorDialog>
+#include <QFile>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QKeyEvent>
@@ -12,6 +14,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QTextStream>
 #include <QTimer>
 
 class MainWindow : public QMainWindow
@@ -24,6 +27,9 @@ public:
 
     void keyPressEvent(QKeyEvent* event) override;
 
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 private slots:
     void openColorPicker();
 
@@ -32,6 +38,9 @@ private:
     void addOnGrid();
     void changeHeartLabel();
     void resetGame();
+    //
+    void saveGameState();
+    void loadGameState();
 
 private:
     Game*                 m_game;

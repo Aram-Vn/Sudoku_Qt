@@ -98,9 +98,29 @@ QVector<QVector<int>> Game::getBoard() const
     return m_board;
 }
 
+void Game::setBoard(const QVector<QVector<int>>& board)
+{
+    m_board = board;
+}
+
+void Game::setFullBoard(const QVector<QVector<int>>& board)
+{
+    m_full_board = board;
+}
+
+QVector<QVector<int>> Game::getFullBoard() const
+{
+    return m_full_board;
+}
+
 void Game::setDifficulty(int diff)
 {
     m_difficulty = diff;
+}
+
+int Game::getDifficulty() const
+{
+    return m_difficulty;
 }
 
 void Game::setCoords(int i, int j)
@@ -124,6 +144,11 @@ int Game::getNumber(int i, int j) const
     return m_board[i][j];
 }
 
+void Game::setHearts(const int count)
+{
+    m_hearts = count;
+}
+
 int Game::getHearts() const
 {
     return m_hearts;
@@ -132,6 +157,11 @@ int Game::getHearts() const
 int Game::getEmptyCount() const
 {
     return m_empty_fields;
+}
+
+void Game::setEmptyCount(int count)
+{
+    m_empty_fields = count;
 }
 
 bool Game::checkPos(int i, int j) const

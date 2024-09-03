@@ -23,17 +23,29 @@ private:
     void init_block(int i, int j);
 
 public:
+    QVector<QVector<int>> getFullBoard() const;
+    void                  setFullBoard(const QVector<QVector<int>>& boar);
+
+    void                  setBoard(const QVector<QVector<int>>& board);
     QVector<QVector<int>> getBoard() const;
-    void                  setDifficulty(int diff);
-    void                  initGame();
-    void                  setCoords(int i, int j);
-    void                  numberEvent(int number);
-    int                   getX() const;
-    int                   getY() const;
-    int                   getNumber(int i, int j) const;
-    int                   getHearts() const;
-    int                   getEmptyCount() const;
-    bool                  checkPos(int i, int j) const;
+
+    void initGame();
+    void setCoords(int i, int j);
+    void numberEvent(int number);
+    int  getX() const;
+    int  getY() const;
+    int  getNumber(int i, int j) const;
+
+    void setHearts(const int count);
+    int  getHearts() const;
+
+    int  getEmptyCount() const;
+    void setEmptyCount(int count);
+
+    void setDifficulty(int diff);
+    int  getDifficulty() const;
+
+    bool checkPos(int i, int j) const;
 
 private:
     QVector<QVector<int>> m_full_board;

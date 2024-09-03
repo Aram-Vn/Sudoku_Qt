@@ -148,6 +148,8 @@ MainWindow::MainWindow(QWidget* parent)
                                           .arg(minutes, 2, 10, QLatin1Char('0'))
                                           .arg(secs, 2, 10, QLatin1Char('0')));
             });
+
+    loadGameState();
 }
 
 MainWindow::~MainWindow() {}
@@ -300,4 +302,219 @@ void MainWindow::openColorPicker()
             sudokuButton->setStyleSheet(colorStyle);
         }
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    saveGameState();
+    event->accept();
+}
+
+void MainWindow::saveGameState()
+{
+    QFile file("sudoku_save.txt");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+
+        // Save the current board
+        QVector<QVector<int>> board = m_game->getBoard();
+        for (int row = 0; row < 9; ++row)
+        {
+            for (int col = 0; col < 9; ++col)
+            {
+                out << board[row][col] << " ";
+            }
+            out << "\n";
+        }
+
+        // Save the full board (the solution)
+        QVector<QVector<int>> fullBoard = m_game->getFullBoard();
+        out << "FullBoard:\n";
+        for (int row = 0; row < 9; ++row)
+        {
+            for (int col = 0; col < 9; ++col)
+            {
+                out << fullBoard[row][col] << " ";
+            }
+            out << "\n";
+        }
+
+        // Save the difficulty level
+        out << "Difficulty: " << m_game->getDifficulty() << "\n";
+
+        // Save the number of empty fields
+        out << "EmptyFields: " << m_game->getEmptyCount() << "\n";
+
+        // Save the number of hearts
+        out << "Hearts: " << m_game->getHearts() << "\n";
+
+        // Save the elapsed time
+        out << "Time: " << m_seconds << "\n";
+
+        file.close();
+    }
+}
+
+void MainWindow::loadGameState()
+{
+    QFile file("sudoku_save.txt");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qWarning() << "Failed to open file.";
+        return;
+    }
+
+    QTextStream in(&file);
+
+    // Read lines into a QStringList to process them later
+    QStringList lines;
+    while (!in.atEnd())
+    {
+        lines.append(in.readLine());
+    }
+
+    file.close();
+
+    // Check if the file has at least the minimum number of lines (board + FullBoard + Difficulty + EmptyFields + Hearts
+    // + Time)
+    if (lines.size() < 23)
+    {
+        qWarning() << "File does not contain enough data to load the game state.";
+        return;
+    }
+
+    QVector<QVector<int>> board(9, QVector<int>(9, 0));
+
+    // Load the board state
+    for (int row = 0; row < 9; ++row)
+    {
+        QStringList rowValues = lines[row].split(' ');
+        rowValues.removeAll(""); // Remove empty parts
+        for (int col = 0; col < 9; ++col)
+        {
+            board[row][col] = rowValues[col].toInt();
+
+            auto button = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            if (button)
+            {
+                button->setText(board[row][col] != 0 ? QString::number(board[row][col]) : "");
+                button->setEnabled(true);
+            }
+        }
+    }
+
+    // Check and skip the "FullBoard:" header
+    int currentLine = 9;
+    if (lines[currentLine] != "FullBoard:")
+    {
+        qWarning() << "Expected 'FullBoard:' line not found.";
+        return;
+    }
+
+    // Load FullBoard data
+    QVector<QVector<int>> fullBoard(9, QVector<int>(9, 0));
+    ++currentLine; // Move to the first line of FullBoard data
+    for (int row = 0; row < 9 && currentLine < lines.size(); ++row)
+    {
+        QStringList rowValues = lines[currentLine].split(' ');
+        rowValues.removeAll(""); // Remove empty parts
+        for (int col = 0; col < 9 && col < rowValues.size(); ++col)
+        {
+            fullBoard[row][col] = rowValues[col].toInt();
+        }
+        ++currentLine;
+    }
+
+    // Check and read Difficulty
+    if (currentLine < lines.size() && lines[currentLine].startsWith("Difficulty: "))
+    {
+        bool ok;
+        int  difficulty = lines[currentLine].mid(QString("Difficulty: ").length()).toInt(&ok);
+        if (ok)
+        {
+            m_game->setDifficulty(difficulty);
+        }
+        else
+        {
+            qWarning() << "Failed to convert difficulty value to an integer.";
+        }
+    }
+    else
+    {
+        qWarning() << "Difficulty line not found or does not match expected format.";
+        return;
+    }
+    ++currentLine;
+
+    // Read EmptyFields
+    if (currentLine < lines.size() && lines[currentLine].startsWith("EmptyFields: "))
+    {
+        bool ok;
+        int  emptyFields = lines[currentLine].mid(QString("EmptyFields: ").length()).toInt(&ok);
+        if (ok)
+        {
+            m_game->setEmptyCount(emptyFields);
+        }
+        else
+        {
+            qWarning() << "Failed to convert empty fields value to an integer.";
+        }
+    }
+    else
+    {
+        qWarning() << "EmptyFields line not found or does not match expected format.";
+        return;
+    }
+    ++currentLine;
+
+    // Read Hearts
+    if (currentLine < lines.size() && lines[currentLine].startsWith("Hearts: "))
+    {
+        bool ok;
+        int  hearts = lines[currentLine].mid(QString("Hearts: ").length()).toInt(&ok);
+        if (ok)
+        {
+            m_game->setHearts(hearts);
+        }
+        else
+        {
+            qWarning() << "Failed to convert hearts value to an integer.";
+        }
+    }
+    else
+    {
+        qWarning() << "Hearts line not found or does not match expected format.";
+        return;
+    }
+    ++currentLine;
+
+    // Read Time
+    if (currentLine < lines.size() && lines[currentLine].startsWith("Time: "))
+    {
+        bool ok;
+        int  time = lines[currentLine].mid(QString("Time: ").length()).toInt(&ok);
+        if (ok)
+        {
+            m_seconds = time;
+            m_time_label->setText(QString("%1:%2:%3")
+                                      .arg(m_seconds / 3600, 2, 10, QLatin1Char('0'))
+                                      .arg((m_seconds % 3600) / 60, 2, 10, QLatin1Char('0'))
+                                      .arg(m_seconds % 60, 2, 10, QLatin1Char('0')));
+            m_timer->start();
+        }
+        else
+        {
+            qWarning() << "Failed to convert time value to an integer.";
+        }
+    }
+    else
+    {
+        qWarning() << "Time line not found or does not match expected format.";
+        return;
+    }
+
+    // Set the loaded board and FullBoard to the game
+    m_game->setBoard(board);
+    m_game->setFullBoard(fullBoard); // Ensure you have a method to set FullBoard data
 }
