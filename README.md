@@ -69,16 +69,6 @@ mkdir build
 cd build
 ```
 
-install it by using `make install` and use as from anywhere in terminal using `Sudoku` command
-
-```bash
-sudo make install
-
-Sudoku # now you can call from anywhere
-```
-
-or 
-
 3. Generate the Makefiles using CMake:
 
 ```bash
