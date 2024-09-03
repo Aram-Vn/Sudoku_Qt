@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget* parent)
       m_timer(new QTimer(this))
 
 {
-    this->setGeometry(100, 100, 700, 900);
+    this->setFixedSize(700, 850);
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setGeometry(0, 150, 700, 700);
     this->setStyleSheet("background-color: #282828;");
@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget* parent)
 
             QColor baseColor  = is_dark ? QColor("#018AAF") : QColor("#4FD9FF");
             QColor hoverColor = baseColor.darker(150);
+            QColor focusColor = hoverColor.darker(150);
 
             QString colorStyle = QString("QPushButton {"
                                          "background-color: %1;"
@@ -36,6 +37,9 @@ MainWindow::MainWindow(QWidget* parent)
                                          "font-size: 16px;"
                                          "font-weight: bold;"
                                          "}"
+                                         "QPushButton:focus {"
+                                         "border: 6px solid %3;"
+                                         "}"
                                          "QPushButton:hover {"
                                          "background-color: %2;"
                                          "border: 2px solid black;"
@@ -43,14 +47,15 @@ MainWindow::MainWindow(QWidget* parent)
                                          "border-radius: 10px;"
                                          "}")
                                      .arg(baseColor.name())
-                                     .arg(hoverColor.name());
+                                     .arg(hoverColor.name())
+                                     .arg(focusColor.name());
 
             sudokuButton->setStyleSheet(colorStyle);
 
             sudokuButton->setEnabled(false);
 
             connect(sudokuButton, &QPushButton::clicked, this,
-                    [row, col, this]()
+                    [row, col, sudokuButton, this]()
                     {
                         int x = m_game->getX();
                         int y = m_game->getY();
@@ -68,7 +73,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_game = new Game(this);
 
     QStringList difficulties = { "Easy", "Medium", "Hard" };
-    
+
     for (int i = 0; i < m_difficulty_buttons.size(); ++i)
     {
         m_difficulty_buttons[i] = new QPushButton(difficulties[i], this);
@@ -269,45 +274,28 @@ void MainWindow::openColorPicker()
             QPushButton* sudokuButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
 
             bool   is_dark    = ((row / 3) % 2 == (col / 3) % 2);
-            QColor hoverColor = is_dark ? colorDark.darker(150) : colorLight.darker(150);
+            QColor baseColor  = is_dark ? colorDark : colorLight;
+            QColor hoverColor = baseColor.darker(150);
 
-            QString colorStyle;
-            if (is_dark)
-            {
-                colorStyle = QString("QPushButton {"
-                                     "background-color: %1;"
-                                     "color: black;"
-                                     "border-radius: 8px;"
-                                     "font-size: 16px;"
-                                     "font-weight: bold;"
-                                     "}"
-                                     "QPushButton:hover {"
-                                     "background-color: %2;"
-                                     "border: 2px solid black;"
-                                     "color: white;"
-                                     "border-radius: 10px;"
-                                     "}")
-                                 .arg(colorDark.name())
-                                 .arg(hoverColor.name());
-            }
-            else
-            {
-                colorStyle = QString("QPushButton {"
-                                     "background-color: %1;"
-                                     "color: black;"
-                                     "border-radius: 8px;"
-                                     "font-size: 16px;"
-                                     "font-weight: bold;"
-                                     "}"
-                                     "QPushButton:hover {"
-                                     "background-color: %2;"
-                                     "border: 2px solid black;"
-                                     "color: white;"
-                                     "border-radius: 10px;"
-                                     "}")
-                                 .arg(colorLight.name())
-                                 .arg(hoverColor.name());
-            }
+            // Determine if the color is too dark for black text
+            QString textColor = (baseColor.lightness() < 128) ? "white" : "black";
+
+            QString colorStyle = QString("QPushButton {"
+                                         "background-color: %1;"
+                                         "color: %2;"
+                                         "border-radius: 8px;"
+                                         "font-size: 16px;"
+                                         "font-weight: bold;"
+                                         "}"
+                                         "QPushButton:hover {"
+                                         "background-color: %3;"
+                                         "border: 2px solid black;"
+                                         "color: white;"
+                                         "border-radius: 10px;"
+                                         "}")
+                                     .arg(baseColor.name())
+                                     .arg(textColor)
+                                     .arg(hoverColor.name());
 
             sudokuButton->setStyleSheet(colorStyle);
         }
