@@ -1,9 +1,12 @@
 #include "../include/mainwindow.h"
+#include <qlogging.h>
+#include <qpushbutton.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
       m_difficulty_buttons(3),
       m_start_button(new QPushButton(this)),
+      m_continue_old_game(new QPushButton(this)),
       m_reset_game(new QPushButton(this)),
       m_heart_label(new QLabel(this)),
       m_time_label(new QLabel(this)),
@@ -149,7 +152,13 @@ MainWindow::MainWindow(QWidget* parent)
                                           .arg(secs, 2, 10, QLatin1Char('0')));
             });
 
-    loadGameState();
+    m_continue_old_game->setText("Continue old game");
+    m_continue_old_game->setStyleSheet("background-color: dimGray;"
+                                       "text-align: left;"
+                                       "padding-left: 8px;"); // Adjust padding as needed
+    m_continue_old_game->setGeometry(0, 0, 145, 40);
+
+    connect(m_continue_old_game, &QPushButton::clicked, this, [this]() { promptContinueOldGame(); });
 }
 
 MainWindow::~MainWindow() {}
@@ -376,11 +385,11 @@ void MainWindow::loadGameState()
 
     file.close();
 
-    // Check if the file has at least the minimum number of lines (board + FullBoard + Difficulty + EmptyFields + Hearts
-    // + Time)
+    // Check if the file has at least the minimum number of lines
     if (lines.size() < 23)
     {
-        qWarning() << "File does not contain enough data to load the game state.";
+        QMessageBox::information(nullptr, "attention", "there is no ald game to continue");
+        // qWarning() << "File does not contain enough data to load the game state.";
         return;
     }
 
@@ -517,4 +526,28 @@ void MainWindow::loadGameState()
     // Set the loaded board and FullBoard to the game
     m_game->setBoard(board);
     m_game->setFullBoard(fullBoard); // Ensure you have a method to set FullBoard data
+}
+
+void MainWindow::promptContinueOldGame()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Continue Game", "Do you want to continue your old game?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        loadGameState();
+
+        int     hearts    = m_game->getHearts();
+        QString heartText = QString("Hearts: ");
+        for (int i = 0; i < hearts; ++i)
+        {
+            heartText += "<span style='color:red;'>♥&nbsp;</span>";
+        }
+        m_heart_label->setText(heartText.trimmed());
+    }
+    else
+    {
+        resetGame();
+    }
 }
