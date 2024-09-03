@@ -1,6 +1,4 @@
 #include "../include/mainwindow.h"
-#include <qlogging.h>
-#include <qpushbutton.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -339,6 +337,9 @@ void MainWindow::saveGameState()
 
         // Save the full board (the solution)
         QVector<QVector<int>> fullBoard = m_game->getFullBoard();
+
+        if (fullBoard.empty()) return;
+        
         out << "FullBoard:\n";
         for (int row = 0; row < 9; ++row)
         {
