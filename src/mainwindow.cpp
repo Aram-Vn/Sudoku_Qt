@@ -538,6 +538,11 @@ void MainWindow::promptContinueOldGame()
     {
         loadGameState();
 
+        for (int i = 0; i < m_difficulty_buttons.size(); ++i)
+        {
+            m_difficulty_buttons[i]->setEnabled(false);
+        }
+
         int     hearts    = m_game->getHearts();
         QString heartText = QString("Hearts: ");
         for (int i = 0; i < hearts; ++i)
