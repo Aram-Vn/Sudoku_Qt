@@ -526,16 +526,22 @@ bool MainWindow::loadGameState()
 
     // Set the loaded board and FullBoard to the game
     m_game->setBoard(board);
-    m_game->setFullBoard(fullBoard); // Ensure you have a method to set FullBoard data
+    m_game->setFullBoard(fullBoard);
 
     return true;
 }
 
 void MainWindow::promptContinueOldGame()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Continue Game", "Do you want to continue your old game?",
-                                  QMessageBox::Yes | QMessageBox::No);
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Continue Game");
+    msgBox.setText("Do you want to continue your old game?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
+    msgBox.setStyleSheet("QLabel{color: white;} "
+                         "QMessageBox{background-color: #22262e;}");
+
+    int reply = msgBox.exec();
 
     if (reply == QMessageBox::Yes)
     {
@@ -548,10 +554,12 @@ void MainWindow::promptContinueOldGame()
 
         int     hearts    = m_game->getHearts();
         QString heartText = QString("Hearts: ");
+
         for (int i = 0; i < hearts; ++i)
         {
             heartText += "<span style='color:red;'>♥&nbsp;</span>";
         }
+
         m_heart_label->setText(heartText.trimmed());
     }
     else
