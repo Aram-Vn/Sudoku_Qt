@@ -366,13 +366,13 @@ void MainWindow::saveGameState()
     }
 }
 
-void MainWindow::loadGameState()
+bool MainWindow::loadGameState()
 {
     QFile file("sudoku_save.txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qWarning() << "Failed to open file.";
-        return;
+        return false;
     }
 
     QTextStream in(&file);
@@ -391,7 +391,7 @@ void MainWindow::loadGameState()
     {
         QMessageBox::information(nullptr, "attention", "there is no ald game to continue");
         // qWarning() << "File does not contain enough data to load the game state.";
-        return;
+        return false;
     }
 
     QVector<QVector<int>> board(9, QVector<int>(9, 0));
@@ -419,7 +419,7 @@ void MainWindow::loadGameState()
     if (lines[currentLine] != "FullBoard:")
     {
         qWarning() << "Expected 'FullBoard:' line not found.";
-        return;
+        return false;
     }
 
     // Load FullBoard data
@@ -453,7 +453,7 @@ void MainWindow::loadGameState()
     else
     {
         qWarning() << "Difficulty line not found or does not match expected format.";
-        return;
+        return false;
     }
     ++currentLine;
 
@@ -474,7 +474,7 @@ void MainWindow::loadGameState()
     else
     {
         qWarning() << "EmptyFields line not found or does not match expected format.";
-        return;
+        return false;
     }
     ++currentLine;
 
@@ -495,7 +495,7 @@ void MainWindow::loadGameState()
     else
     {
         qWarning() << "Hearts line not found or does not match expected format.";
-        return;
+        return false;
     }
     ++currentLine;
 
@@ -521,12 +521,14 @@ void MainWindow::loadGameState()
     else
     {
         qWarning() << "Time line not found or does not match expected format.";
-        return;
+        return false;
     }
 
     // Set the loaded board and FullBoard to the game
     m_game->setBoard(board);
     m_game->setFullBoard(fullBoard); // Ensure you have a method to set FullBoard data
+
+    return true;
 }
 
 void MainWindow::promptContinueOldGame()
@@ -537,7 +539,7 @@ void MainWindow::promptContinueOldGame()
 
     if (reply == QMessageBox::Yes)
     {
-        loadGameState();
+        if (!loadGameState()) return;
 
         for (int i = 0; i < m_difficulty_buttons.size(); ++i)
         {

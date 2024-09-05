@@ -42,7 +42,7 @@ private:
     void resetGame();
     //
     void saveGameState();
-    void loadGameState();
+    bool loadGameState();
 
 private:
     Game*                 m_game;
