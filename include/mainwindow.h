@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "../include/game.h"
+#include "../include/utils.h"
 
 #include <QCloseEvent>
 #include <QColor>
@@ -16,6 +17,7 @@
 #include <QPushButton>
 #include <QTextStream>
 #include <QTimer>
+#include <qcontainerfwd.h>
 #include <qpushbutton.h>
 
 class MainWindow : public QMainWindow

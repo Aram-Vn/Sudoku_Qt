@@ -1,5 +1,7 @@
 #include "../include/mainwindow.h"
-#include "game.h"
+#include "../include/game.h"
+#include <qcontainerfwd.h>
+#include <qwidget.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -33,28 +35,9 @@ MainWindow::MainWindow(QWidget* parent)
             QColor hoverColor = baseColor.darker(150);
             QColor focusColor = hoverColor.darker(150);
 
-            QString colorStyle = QString("QPushButton {"
-                                         "background-color: %1;"
-                                         "color: black;"
-                                         "border-radius: 8px;"
-                                         "font-size: 16px;"
-                                         "font-weight: bold;"
-                                         "}"
-                                         "QPushButton:focus {"
-                                         "border: 6px solid %3;"
-                                         "}"
-                                         "QPushButton:hover {"
-                                         "background-color: %2;"
-                                         "border: 2px solid black;"
-                                         "color: white;"
-                                         "border-radius: 10px;"
-                                         "}")
-                                     .arg(baseColor.name())
-                                     .arg(hoverColor.name())
-                                     .arg(focusColor.name());
+            QString colorStyle = util::colorStyleSet(baseColor, hoverColor, focusColor);
 
             sudokuButton->setStyleSheet(colorStyle);
-
             sudokuButton->setEnabled(false);
 
             connect(sudokuButton, &QPushButton::clicked, this,
@@ -72,8 +55,6 @@ MainWindow::MainWindow(QWidget* parent)
             m_grid_layout->addWidget(sudokuButton, row, col);
         }
     }
-
-    // m_game = new Game(this);
 
     QStringList difficulties = { "Easy", "Medium", "Hard" };
 
@@ -287,26 +268,12 @@ void MainWindow::openColorPicker()
             bool   is_dark    = ((row / 3) % 2 == (col / 3) % 2);
             QColor baseColor  = is_dark ? colorDark : colorLight;
             QColor hoverColor = baseColor.darker(150);
+            QColor focusColor = hoverColor.darker(150);
 
             // Determine if the color is too dark for black text
             QString textColor = (baseColor.lightness() < 128) ? "white" : "black";
 
-            QString colorStyle = QString("QPushButton {"
-                                         "background-color: %1;"
-                                         "color: %2;"
-                                         "border-radius: 8px;"
-                                         "font-size: 16px;"
-                                         "font-weight: bold;"
-                                         "}"
-                                         "QPushButton:hover {"
-                                         "background-color: %3;"
-                                         "border: 2px solid black;"
-                                         "color: white;"
-                                         "border-radius: 10px;"
-                                         "}")
-                                     .arg(baseColor.name())
-                                     .arg(textColor)
-                                     .arg(hoverColor.name());
+            QString colorStyle = util::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
 
             sudokuButton->setStyleSheet(colorStyle);
         }
@@ -365,6 +332,15 @@ void MainWindow::saveGameState()
         // Save the elapsed time
         out << "Time: " << m_seconds << "\n";
 
+        // Save color state
+        QPushButton* sudokuButton1 = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 0)->widget());
+        QString      style1        = sudokuButton1->styleSheet();
+        out << "Color1: " << style1 << "\n";
+
+        QPushButton* sudokuButton2 = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 4)->widget());
+        QString      style2        = sudokuButton2->styleSheet();
+        out << "Color2: " << style2;
+
         file.close();
     }
 }
@@ -372,6 +348,7 @@ void MainWindow::saveGameState()
 bool MainWindow::loadGameState()
 {
     QFile file("sudoku_save.txt");
+
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qWarning() << "Failed to open file.";
@@ -390,7 +367,7 @@ bool MainWindow::loadGameState()
     file.close();
 
     // Check if the file has at least the minimum number of lines
-    if (lines.size() < 23)
+    if (lines.size() < 25)
     {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Attention");
@@ -532,6 +509,42 @@ bool MainWindow::loadGameState()
     {
         qWarning() << "Time line not found or does not match expected format.";
         return false;
+    }
+
+    ++currentLine;
+    QString style1;
+    if (currentLine < lines.size() && lines[currentLine].startsWith("Color1: "))
+    {
+        style1 = lines[currentLine].mid(QString("Color1: ").length());
+    }
+
+    ++currentLine;
+    QString style2;
+    if (currentLine < lines.size() && lines[currentLine].startsWith("Color2: "))
+    {
+        style2 = lines[currentLine].mid(QString("Color2: ").length());
+    }
+
+    QString colorStyleString;
+    for (int row = 0; row < 9; ++row)
+    {
+        for (int col = 0; col < 9; ++col)
+        {
+            QPushButton* sudokuButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+
+            bool    is_dark    = ((row / 3) % 2 == (col / 3) % 2);
+            QString ColorStyle = is_dark ? style1 : style2;
+
+            QColor  baseColor;
+            QColor  hoverColor;
+            QColor  focusColor;
+            QString textColor;
+
+            util::parseColors(ColorStyle, baseColor, hoverColor, focusColor, textColor);
+
+            colorStyleString = util::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
+            sudokuButton->setStyleSheet(colorStyleString);
+        }
     }
 
     // Set the loaded board and FullBoard to the game
