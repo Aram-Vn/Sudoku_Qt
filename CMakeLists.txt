@@ -22,8 +22,8 @@ set(PROJECT_SOURCES
     include/game.h
     src/sudokugenerator.cpp
     include/sudokugenerator.h
-    src/utils.cpp
-    include/utils.h
+    src/utils/util.cpp
+    include/utils/util.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

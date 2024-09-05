@@ -1,4 +1,4 @@
-#include "../include/utils.h"
+#include "../../include/utils/util.h"
 
 namespace util {
     void parseColors(const QString& stylesheet, QColor& baseColor, QColor& hoverColor, QColor& focusColor,

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include "../include/game.h"
-#include "../include/utils.h"
+#include "../include/utils/util.h"
 
 #include <QCloseEvent>
 #include <QColor>
