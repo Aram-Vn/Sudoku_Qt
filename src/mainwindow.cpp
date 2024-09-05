@@ -1,4 +1,5 @@
 #include "../include/mainwindow.h"
+#include "game.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -8,7 +9,8 @@ MainWindow::MainWindow(QWidget* parent)
       m_reset_game(new QPushButton(this)),
       m_heart_label(new QLabel(this)),
       m_time_label(new QLabel(this)),
-      m_timer(new QTimer(this))
+      m_timer(new QTimer(this)),
+      m_game(new Game(this))
 
 {
     this->setFixedSize(700, 850);
@@ -71,7 +73,7 @@ MainWindow::MainWindow(QWidget* parent)
         }
     }
 
-    m_game = new Game(this);
+    // m_game = new Game(this);
 
     QStringList difficulties = { "Easy", "Medium", "Hard" };
 
@@ -338,8 +340,9 @@ void MainWindow::saveGameState()
         // Save the full board (the solution)
         QVector<QVector<int>> fullBoard = m_game->getFullBoard();
 
-        if (fullBoard.empty()) return;
-        
+        if (fullBoard.empty())
+            return;
+
         out << "FullBoard:\n";
         for (int row = 0; row < 9; ++row)
         {
@@ -389,8 +392,15 @@ bool MainWindow::loadGameState()
     // Check if the file has at least the minimum number of lines
     if (lines.size() < 23)
     {
-        QMessageBox::information(nullptr, "attention", "there is no ald game to continue");
-        // qWarning() << "File does not contain enough data to load the game state.";
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Attention");
+        msgBox.setText("There is no old game to continue");
+        msgBox.setIcon(QMessageBox::Information);
+
+        msgBox.setStyleSheet("QLabel{color: white;} "
+                             "QMessageBox{background-color: #22262e;}");
+
+        msgBox.exec();
         return false;
     }
 
@@ -545,7 +555,8 @@ void MainWindow::promptContinueOldGame()
 
     if (reply == QMessageBox::Yes)
     {
-        if (!loadGameState()) return;
+        if (!loadGameState())
+            return;
 
         for (int i = 0; i < m_difficulty_buttons.size(); ++i)
         {
