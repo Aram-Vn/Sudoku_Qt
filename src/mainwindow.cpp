@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget* parent)
     {
         for (int col = 0; col < grid_size; ++col)
         {
-            QPushButton* sudokuButton = new QPushButton();
+            QPushButton* sudokuButton = new QPushButton(this);
             sudokuButton->setFixedSize(60, 60);
 
             bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
@@ -152,8 +152,16 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 
 void MainWindow::handleStart()
 {
-    m_heart_label->setText("Hearts: <span style='color:red;'>♥&nbsp;♥&nbsp;♥</span>");
-    m_time_label->setText("00:00:00");
+    int     hearts    = m_game->getHearts();
+    QString heartText = QString("Hearts: ");
+
+    for (int i = 0; i < hearts; ++i)
+    {
+        heartText += "<span style='color:red;'>♥&nbsp;</span>";
+    }
+
+    m_heart_label->setText(heartText.trimmed());
+
     QVector<QVector<int>> board     = m_game->getBoard();
     const int             grid_size = 9;
     for (int row = 0; row < grid_size; ++row)
@@ -165,7 +173,6 @@ void MainWindow::handleStart()
                 dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())
                     ->setText(QString::number(board[row][col]));
             }
-
             else
             {
                 dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setText("");
@@ -176,8 +183,6 @@ void MainWindow::handleStart()
     }
 
     m_timer->start();
-
-    m_seconds = 0;
 }
 
 void MainWindow::addOnGrid()
@@ -348,13 +353,6 @@ bool MainWindow::loadGameState()
 
     if (lines.size() < 25)
     {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Attention");
-        msgBox.setText("There is no old game to continue");
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setStyleSheet("QLabel{color: white;} "
-                             "QMessageBox{background-color: #22262e;}");
-        msgBox.exec();
         return false;
     }
 
@@ -485,43 +483,23 @@ void MainWindow::promptContinueOldGame()
     if (reply == QMessageBox::Yes)
     {
         if (!loadGameState())
-            return;
-
-        const int             grid_size = 9;
-        QVector<QVector<int>> board     = m_game->getBoard();
-        for (int row = 0; row < grid_size; ++row)
         {
-            for (int col = 0; col < grid_size; ++col)
-            {
-                if (board[row][col])
-                {
-                    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())
-                        ->setText(QString::number(board[row][col]));
-                }
-
-                else
-                {
-                    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setText("");
-                }
-
-                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(true);
-            }
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Attention");
+            msgBox.setText("There is no old valid game to continue");
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setStyleSheet("QLabel{color: white;} "
+                                 "QMessageBox{background-color: #22262e;}");
+            msgBox.exec();
+            return;
         }
+
+        this->handleStart();
 
         for (int i = 0; i < m_difficulty_buttons.size(); ++i)
         {
             m_difficulty_buttons[i]->setEnabled(false);
         }
-
-        int     hearts    = m_game->getHearts();
-        QString heartText = QString("Hearts: ");
-
-        for (int i = 0; i < hearts; ++i)
-        {
-            heartText += "<span style='color:red;'>♥&nbsp;</span>";
-        }
-
-        m_heart_label->setText(heartText.trimmed());
     }
     else
     {
