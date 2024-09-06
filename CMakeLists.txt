@@ -14,16 +14,22 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 include_directories(include)
 
+# List source files separately using GLOB to handle wildcard patterns
+file(GLOB SOURCE_FILES
+    src/*.cpp
+    src/utils/*.cpp
+)
+
+# List header files separately using GLOB
+file(GLOB HEADER_FILES
+    include/*.h
+    include/utils/*.h
+)
+
+# Combine source and header files
 set(PROJECT_SOURCES
-    src/main.cpp
-    src/mainwindow.cpp
-    include/mainwindow.h
-    src/game.cpp
-    include/game.h
-    src/sudokugenerator.cpp
-    include/sudokugenerator.h
-    src/utils/util.cpp
-    include/utils/util.h
+    ${SOURCE_FILES}
+    ${HEADER_FILES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -44,6 +50,12 @@ else()
 endif()
 
 target_link_libraries(Sudoku PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
+# Add sanitizers for Debug builds
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(Sudoku PRIVATE -fsanitize=address -fsanitize=undefined)
+    target_link_options(Sudoku PRIVATE -fsanitize=address -fsanitize=undefined)
+endif()
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)
   set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Sudoku)
@@ -66,7 +78,6 @@ install(TARGETS Sudoku
 install(TARGETS Sudoku
     RUNTIME DESTINATION bin
 )
-
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Sudoku)

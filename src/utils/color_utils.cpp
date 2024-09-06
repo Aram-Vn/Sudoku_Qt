@@ -1,6 +1,6 @@
-#include "../../include/utils/util.h"
+#include "../../include/utils/color_utils.h"
 
-namespace util {
+namespace colorUtil {
     void parseColors(const QString& stylesheet, QColor& baseColor, QColor& hoverColor, QColor& focusColor,
                      QString& textColor)
     {
@@ -57,4 +57,4 @@ namespace util {
             .arg(focusColor.name())
             .arg(textColor);
     }
-} // namespace util
+} // namespace colorUtil

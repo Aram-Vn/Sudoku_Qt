@@ -23,17 +23,23 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 
 ```bash
 .
-├── CMakeLists.txt          # CMake build configuration
+├── CMakeLists.txt
 ├── include
-│   ├── game.h              # Header file for game logic
-│   ├── mainwindow.h        # Header file for main window UI
-│   └── sudokugenerator.h   # Header file for Sudoku board generation
-├── README.md               # Project overview and instructions
+│   ├── game.h
+│   ├── mainwindow.h
+│   ├── sudokugenerator.h
+│   └── utils
+│       ├── color_utils.h
+│       └── file_utils.h
+├── README.md
 └── src
-    ├── game.cpp            # Implementation of game logic
-    ├── main.cpp            # Entry point for the application
-    ├── mainwindow.cpp      # Implementation of the main window UI
-    └── sudokugenerator.cpp # Implementation of Sudoku board generation
+    ├── game.cpp
+    ├── main.cpp
+    ├── mainwindow.cpp
+    ├── sudokugenerator.cpp
+    └── utils
+        ├── color_utils.cpp
+        └── file_utils.cpp
 
 ```
 
@@ -78,7 +84,7 @@ cmake ..
 4. Build the project:
 
 ```bash
-make
+cmake --build .
 ```
 
 5. Run the application:

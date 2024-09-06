@@ -1,5 +1,4 @@
 #include "../include/mainwindow.h"
-#include "../include/game.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -33,7 +32,7 @@ MainWindow::MainWindow(QWidget* parent)
             QColor hoverColor = baseColor.darker(150);
             QColor focusColor = hoverColor.darker(150);
 
-            QString colorStyle = util::colorStyleSet(baseColor, hoverColor, focusColor);
+            QString colorStyle = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor);
 
             sudokuButton->setStyleSheet(colorStyle);
             sudokuButton->setEnabled(false);
@@ -271,7 +270,7 @@ void MainWindow::openColorPicker()
             // Determine if the color is too dark for black text
             QString textColor = (baseColor.lightness() < 128) ? "white" : "black";
 
-            QString colorStyle = util::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
+            QString colorStyle = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
 
             sudokuButton->setStyleSheet(colorStyle);
         }
@@ -345,59 +344,22 @@ void MainWindow::saveGameState()
 
 bool MainWindow::loadGameState()
 {
-    QFile file("sudoku_save.txt");
+    QStringList lines = fileUtil::readFileLines("sudoku_save.txt");
 
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qWarning() << "Failed to open file.";
-        return false;
-    }
-
-    QTextStream in(&file);
-
-    // Read lines into a QStringList to process them later
-    QStringList lines;
-    while (!in.atEnd())
-    {
-        lines.append(in.readLine());
-    }
-
-    file.close();
-
-    // Check if the file has at least the minimum number of lines
     if (lines.size() < 25)
     {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Attention");
         msgBox.setText("There is no old game to continue");
         msgBox.setIcon(QMessageBox::Information);
-
         msgBox.setStyleSheet("QLabel{color: white;} "
                              "QMessageBox{background-color: #22262e;}");
-
         msgBox.exec();
         return false;
     }
 
     QVector<QVector<int>> board(9, QVector<int>(9, 0));
-
-    // Load the board state
-    for (int row = 0; row < 9; ++row)
-    {
-        QStringList rowValues = lines[row].split(' ');
-        rowValues.removeAll(""); // Remove empty parts
-        for (int col = 0; col < 9; ++col)
-        {
-            board[row][col] = rowValues[col].toInt();
-
-            auto button = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
-            if (button)
-            {
-                button->setText(board[row][col] != 0 ? QString::number(board[row][col]) : "");
-                button->setEnabled(true);
-            }
-        }
-    }
+    board = fileUtil::parseBoard(lines, 0);
 
     // Check and skip the "FullBoard:" header
     int currentLine = 9;
@@ -407,121 +369,78 @@ bool MainWindow::loadGameState()
         return false;
     }
 
-    // Load FullBoard data
-    QVector<QVector<int>> fullBoard(9, QVector<int>(9, 0));
-    ++currentLine; // Move to the first line of FullBoard data
-    for (int row = 0; row < 9 && currentLine < lines.size(); ++row)
-    {
-        QStringList rowValues = lines[currentLine].split(' ');
-        rowValues.removeAll(""); // Remove empty parts
-        for (int col = 0; col < 9 && col < rowValues.size(); ++col)
-        {
-            fullBoard[row][col] = rowValues[col].toInt();
-        }
-        ++currentLine;
-    }
+    ++currentLine;
 
-    // Check and read Difficulty
-    if (currentLine < lines.size() && lines[currentLine].startsWith("Difficulty: "))
+    QVector<QVector<int>> fullBoard(9, QVector<int>(9, 0));
+    fullBoard = fileUtil::parseBoard(lines, currentLine, 9);
+
+    currentLine += 9;
+
+    // Read Difficulty
+    QString difficultyStr = fileUtil::parseTextLine(lines, currentLine, "Difficulty: ");
+
+    bool ok;
+    int  difficulty = difficultyStr.toInt(&ok);
+    if (ok)
     {
-        bool ok;
-        int  difficulty = lines[currentLine].mid(QString("Difficulty: ").length()).toInt(&ok);
-        if (ok)
-        {
-            m_game->setDifficulty(difficulty);
-        }
-        else
-        {
-            qWarning() << "Failed to convert difficulty value to an integer.";
-        }
+        m_game->setDifficulty(difficulty);
     }
     else
     {
-        qWarning() << "Difficulty line not found or does not match expected format.";
+        qWarning() << "Failed to convert difficulty value to an integer.";
+        qWarning() << lines[currentLine];
         return false;
     }
-    ++currentLine;
 
     // Read EmptyFields
-    if (currentLine < lines.size() && lines[currentLine].startsWith("EmptyFields: "))
+    QString emptyFieldsStr = fileUtil::parseTextLine(lines, currentLine, "EmptyFields: ");
+    int     emptyFields    = emptyFieldsStr.toInt(&ok);
+    if (ok)
     {
-        bool ok;
-        int  emptyFields = lines[currentLine].mid(QString("EmptyFields: ").length()).toInt(&ok);
-        if (ok)
-        {
-            m_game->setEmptyCount(emptyFields);
-        }
-        else
-        {
-            qWarning() << "Failed to convert empty fields value to an integer.";
-        }
+        m_game->setEmptyCount(emptyFields);
     }
     else
     {
-        qWarning() << "EmptyFields line not found or does not match expected format.";
+        qWarning() << "Failed to convert empty fields value to an integer.";
+        qWarning() << lines[currentLine];
+
         return false;
     }
-    ++currentLine;
 
     // Read Hearts
-    if (currentLine < lines.size() && lines[currentLine].startsWith("Hearts: "))
+    QString heartsStr = fileUtil::parseTextLine(lines, currentLine, "Hearts: ");
+    int     hearts    = heartsStr.toInt(&ok);
+    if (ok)
     {
-        bool ok;
-        int  hearts = lines[currentLine].mid(QString("Hearts: ").length()).toInt(&ok);
-        if (ok)
-        {
-            m_game->setHearts(hearts);
-        }
-        else
-        {
-            qWarning() << "Failed to convert hearts value to an integer.";
-        }
+        m_game->setHearts(hearts);
     }
     else
     {
-        qWarning() << "Hearts line not found or does not match expected format.";
+        qWarning() << "Failed to convert hearts value to an integer.";
         return false;
     }
-    ++currentLine;
 
     // Read Time
-    if (currentLine < lines.size() && lines[currentLine].startsWith("Time: "))
+    QString timeStr = fileUtil::parseTextLine(lines, currentLine, "Time: ");
+    int     time    = timeStr.toInt(&ok);
+    if (ok)
     {
-        bool ok;
-        int  time = lines[currentLine].mid(QString("Time: ").length()).toInt(&ok);
-        if (ok)
-        {
-            m_seconds = time;
-            m_time_label->setText(QString("%1:%2:%3")
-                                      .arg(m_seconds / 3600, 2, 10, QLatin1Char('0'))
-                                      .arg((m_seconds % 3600) / 60, 2, 10, QLatin1Char('0'))
-                                      .arg(m_seconds % 60, 2, 10, QLatin1Char('0')));
-            m_timer->start();
-        }
-        else
-        {
-            qWarning() << "Failed to convert time value to an integer.";
-        }
+        m_seconds = time;
+        m_time_label->setText(QString("%1:%2:%3")
+                                  .arg(m_seconds / 3600, 2, 10, QLatin1Char('0'))
+                                  .arg((m_seconds % 3600) / 60, 2, 10, QLatin1Char('0'))
+                                  .arg(m_seconds % 60, 2, 10, QLatin1Char('0')));
+        m_timer->start();
     }
     else
     {
-        qWarning() << "Time line not found or does not match expected format.";
+        qWarning() << "Failed to convert time value to an integer.";
         return false;
     }
 
-    ++currentLine;
-    QString style1;
-    if (currentLine < lines.size() && lines[currentLine].startsWith("Color1: "))
-    {
-        style1 = lines[currentLine].mid(QString("Color1: ").length());
-    }
-
-    ++currentLine;
-    QString style2;
-    if (currentLine < lines.size() && lines[currentLine].startsWith("Color2: "))
-    {
-        style2 = lines[currentLine].mid(QString("Color2: ").length());
-    }
+    // Read Colors
+    QString darkStyle  = fileUtil::parseTextLine(lines, currentLine, "Color1: ");
+    QString lightStyle = fileUtil::parseTextLine(lines, currentLine, "Color2: ");
 
     QString colorStyleString;
     for (int row = 0; row < 9; ++row)
@@ -531,21 +450,20 @@ bool MainWindow::loadGameState()
             QPushButton* sudokuButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
 
             bool    is_dark    = ((row / 3) % 2 == (col / 3) % 2);
-            QString ColorStyle = is_dark ? style1 : style2;
+            QString ColorStyle = is_dark ? darkStyle : lightStyle;
 
             QColor  baseColor;
             QColor  hoverColor;
             QColor  focusColor;
             QString textColor;
 
-            util::parseColors(ColorStyle, baseColor, hoverColor, focusColor, textColor);
+            colorUtil::parseColors(ColorStyle, baseColor, hoverColor, focusColor, textColor);
 
-            colorStyleString = util::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
+            colorStyleString = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
             sudokuButton->setStyleSheet(colorStyleString);
         }
     }
 
-    // Set the loaded board and FullBoard to the game
     m_game->setBoard(board);
     m_game->setFullBoard(fullBoard);
 
@@ -568,6 +486,27 @@ void MainWindow::promptContinueOldGame()
     {
         if (!loadGameState())
             return;
+
+        const int             grid_size = 9;
+        QVector<QVector<int>> board     = m_game->getBoard();
+        for (int row = 0; row < grid_size; ++row)
+        {
+            for (int col = 0; col < grid_size; ++col)
+            {
+                if (board[row][col])
+                {
+                    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())
+                        ->setText(QString::number(board[row][col]));
+                }
+
+                else
+                {
+                    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setText("");
+                }
+
+                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(true);
+            }
+        }
 
         for (int i = 0; i < m_difficulty_buttons.size(); ++i)
         {
