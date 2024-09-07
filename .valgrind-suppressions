@@ -1,0 +1,845 @@
+# Gnome memory leaks
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   writev(vector[0])
+   fun:__writev
+   fun:writev
+   fun:UnknownInlinedFun
+   fun:_xcb_conn_wait.part.0
+   fun:UnknownInlinedFun
+   fun:_xcb_out_send
+   fun:_xcb_out_flush_to
+   fun:wait_for_reply
+   fun:xcb_wait_for_reply
+   fun:_ZN14QXcbConnection28initializeScreensFromMonitorEP21xcb_screen_iterator_tiPP10QXcbScreenb
+   fun:_ZN14QXcbConnection17initializeScreensEb
+   fun:_ZN14QXcbConnectionC1EP19QXcbNativeInterfacebjPKc
+   fun:_ZN15QXcbIntegrationC1ERK5QListI7QStringERiPPc
+   fun:_ZN21QXcbIntegrationPlugin6createERK7QStringRK5QListIS0_ERiPPc
+   fun:UnknownInlinedFun
+   fun:_ZN22QGuiApplicationPrivate25createPlatformIntegrationEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_strdup
+   fun:UnknownInlinedFun
+   fun:pango_font_description_copy
+   fun:pango_context_set_font_description
+   fun:update_pango_context.lto_priv.0
+   fun:gtk_widget_create_pango_context
+   fun:gtk_widget_get_pango_context
+   fun:gtk_widget_create_pango_layout
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_strdup
+   fun:UnknownInlinedFun
+   fun:gtk_widget_buildable_set_name
+   fun:UnknownInlinedFun
+   fun:gtk_builder_expose_object
+   fun:gtk_builder_extend_with_template
+   fun:gtk_widget_init_template
+   fun:gtk_combo_box_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_strdup
+   fun:UnknownInlinedFun
+   fun:gtk_widget_buildable_set_name
+   fun:UnknownInlinedFun
+   fun:gtk_builder_expose_object
+   fun:gtk_builder_extend_with_template
+   fun:gtk_widget_init_template
+   fun:gtk_combo_box_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_strdup
+   fun:UnknownInlinedFun
+   fun:gtk_widget_buildable_set_name
+   fun:UnknownInlinedFun
+   fun:gtk_builder_expose_object
+   fun:gtk_builder_extend_with_template
+   fun:gtk_widget_init_template
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_target_list_new
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+   fun:UnknownInlinedFun
+   fun:_ZN12QGtk3Storage11populateMapEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_target_list_add
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+   fun:UnknownInlinedFun
+   fun:_ZN12QGtk3Storage11populateMapEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_list_append
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_list_append
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_list_append
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_list_append
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_list_append
+   fun:gtk_target_list_add
+   fun:gtk_target_list_add_text_targets
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_list_append
+   fun:gtk_target_list_add
+   fun:gtk_drag_dest_add_text_targets
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   fun:pango_language_from_string
+   fun:pango_language_get_default
+   fun:pango_context_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:pango_font_map_create_context
+   fun:gdk_pango_context_get_for_screen
+   fun:gtk_widget_create_pango_context
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_drag_dest_set
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface5colorEP10_GtkWidgetNS_15QGtkColorSourceE13GtkStateFlags
+   fun:UnknownInlinedFun
+   fun:_ZN12QGtk3Storage11populateMapEv
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:_ZN16QGtk3ThemePlugin6createERK7QStringRK5QListIS0_E
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:pango_font_description_copy
+   fun:pango_context_set_font_description
+   fun:update_pango_context.lto_priv.0
+   fun:gtk_widget_create_pango_context
+   fun:gtk_widget_get_pango_context
+   fun:gtk_widget_create_pango_layout
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:datalist_append
+   fun:g_datalist_id_replace_data
+   fun:get_context_info
+   fun:UnknownInlinedFun
+   fun:pango_cairo_context_set_font_options
+   fun:gdk_pango_context_get_for_screen
+   fun:gtk_widget_create_pango_context
+   fun:gtk_widget_get_pango_context
+   fun:gtk_widget_create_pango_layout
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:cairo_font_options_copy
+   fun:UnknownInlinedFun
+   fun:pango_cairo_context_set_font_options
+   fun:gdk_pango_context_get_for_screen
+   fun:gtk_widget_create_pango_context
+   fun:gtk_widget_get_pango_context
+   fun:gtk_widget_create_pango_layout
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:cairo_font_options_create
+   fun:UnknownInlinedFun
+   fun:pango_cairo_fc_font_map_context_key_get
+   fun:UnknownInlinedFun
+   fun:pango_fc_font_map_load_fontset
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_itemize_with_font
+   fun:pango_layout_check_lines.part.0.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_layout_get_unknown_glyphs_count
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:datalist_append
+   fun:g_data_set_internal
+   fun:UnknownInlinedFun
+   fun:gtk_builder_expose_object
+   fun:gtk_builder_extend_with_template
+   fun:gtk_widget_init_template
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:_ZNK14QGtk3Interface6widgetENS_10QGtkWidgetE
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   fun:datalist_shrink
+   fun:g_data_set_internal
+   fun:g_object_notify_queue_thaw.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_widget_unparent
+   fun:gtk_bin_remove
+   fun:g_cclosure_marshal_VOID__OBJECTv
+   fun:UnknownInlinedFun
+   fun:signal_emit_valist_unlocked
+   fun:g_signal_emit_valist
+   fun:g_signal_emit
+   fun:UnknownInlinedFun
+   fun:gtk_container_remove
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:get_context_info
+   fun:UnknownInlinedFun
+   fun:pango_cairo_context_set_font_options
+   fun:gdk_pango_context_get_for_screen
+   fun:gtk_widget_create_pango_context
+   fun:gtk_widget_get_pango_context
+   fun:gtk_widget_create_pango_layout
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   fun:UnknownInlinedFun
+   fun:g_atomic_rc_box_alloc0
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_fc_font_map_load_fontset
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_itemize_with_font
+   fun:pango_layout_check_lines.part.0.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_layout_get_unknown_glyphs_count
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:pango_font_map_create_context
+   fun:gdk_pango_context_get_for_screen
+   fun:gtk_widget_create_pango_context
+   fun:gtk_widget_get_pango_context
+   fun:gtk_widget_create_pango_layout
+   fun:find_invisible_char.lto_priv.0
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   fun:datalist_append
+   fun:g_data_set_internal
+   fun:UnknownInlinedFun
+   fun:g_object_weak_ref
+   fun:object_set_property
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_valist
+   fun:g_object_new
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   fun:datalist_shrink
+   fun:g_data_set_internal
+   fun:gtk_widget_real_destroy.lto_priv.0
+   fun:gtk_combo_box_destroy
+   fun:g_closure_invoke
+   fun:signal_emit_unlocked_R.isra.0
+   fun:signal_emit_valist_unlocked
+   fun:g_signal_emit_valist
+   fun:g_signal_emit
+   fun:gtk_widget_dispose.lto_priv.0
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:UnknownInlinedFun
+   fun:g_memdup
+   fun:gtk_css_node_declaration_make_writable.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:gtk_style_context_set_state
+   fun:gtk_style_update_from_context
+   fun:gtk_style_constructed
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_valist
+   fun:g_object_new
+   fun:_gtk_style_new_for_path
+   fun:gtk_style_new
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_css_node_declaration_make_writable_resize.lto_priv.0
+   fun:gtk_css_node_declaration_add_class
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:gtk_style_context_add_class
+   fun:gtk_style_update_from_context
+   fun:gtk_style_constructed
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_valist
+   fun:g_object_new
+   fun:_gtk_style_new_for_path
+   fun:gtk_style_new
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_css_node_declaration_make_writable_resize.lto_priv.0
+   fun:gtk_css_node_declaration_add_class
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:gtk_style_context_add_class
+   fun:UnknownInlinedFun
+   fun:set_color
+   fun:gtk_style_update_from_context
+   fun:gtk_style_constructed
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_valist
+   fun:g_object_new
+   fun:_gtk_style_new_for_path
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:gtk_css_node_declaration_make_writable_resize.lto_priv.0
+   fun:gtk_css_node_declaration_add_class
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:gtk_style_context_add_class
+   fun:UnknownInlinedFun
+   fun:set_color
+   fun:gtk_style_update_from_context
+   fun:gtk_style_constructed
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_valist
+   fun:g_object_new
+   fun:_gtk_style_new_for_path
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.34
+   fun:UnknownInlinedFun
+   fun:g_thread_new_internal
+   fun:g_thread_new
+   fun:g_thread_pool_new_full
+   fun:UnknownInlinedFun
+   fun:g_task_get_type_once
+   fun:g_task_get_type
+   fun:UnknownInlinedFun
+   fun:_g_dbus_initialize.part.0
+   fun:UnknownInlinedFun
+   fun:g_bus_get_sync
+   fun:g_daemon_vfs_init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.34
+   fun:UnknownInlinedFun
+   fun:g_thread_new_internal
+   fun:g_thread_new
+   fun:g_get_worker_context
+   fun:UnknownInlinedFun
+   fun:g_task_get_type_once
+   fun:g_task_get_type
+   fun:UnknownInlinedFun
+   fun:_g_dbus_initialize.part.0
+   fun:UnknownInlinedFun
+   fun:g_bus_get_sync
+   fun:g_daemon_vfs_init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.34
+   fun:UnknownInlinedFun
+   fun:g_thread_new_internal
+   fun:g_thread_new
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:initable_init
+   fun:g_bus_get_sync
+   fun:g_daemon_vfs_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.34
+   fun:UnknownInlinedFun
+   fun:g_thread_new_internal
+   fun:g_thread_new
+   fun:UnknownInlinedFun
+   fun:pango_fc_font_map_init
+   fun:g_type_create_instance
+   fun:g_object_new_internal.part.0
+   fun:UnknownInlinedFun
+   fun:g_object_new_with_properties
+   fun:g_object_new
+   fun:UnknownInlinedFun
+   fun:pango_cairo_font_map_get_default
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:realloc
+   fun:FcPatternObjectInsertElt
+   fun:FcPatternObjectListAdd.isra.0
+   fun:FcFontRenderPrepare
+   fun:FcFontSetMatch
+   fun:UnknownInlinedFun
+   fun:fc_thread_func
+   fun:g_thread_proxy
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:realloc
+   fun:FcPatternObjectInsertElt
+   fun:FcPatternObjectAddWithBinding
+   fun:_cairo_ft_font_options_substitute
+   fun:pango_cairo_fc_font_map_fontset_key_substitute
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_fc_font_map_load_fontset
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_itemize_with_font
+   fun:pango_layout_check_lines.part.0.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:pango_layout_get_unknown_glyphs_count
+   fun:find_invisible_char.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:gtk_entry_init
+   fun:g_type_create_instance
+}

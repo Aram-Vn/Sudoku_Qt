@@ -52,10 +52,10 @@ endif()
 target_link_libraries(Sudoku PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 # Add sanitizers for Debug builds
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(Sudoku PRIVATE -fsanitize=address -fsanitize=undefined)
-    target_link_options(Sudoku PRIVATE -fsanitize=address -fsanitize=undefined)
-endif()
+# if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#     target_compile_options(Sudoku PRIVATE -fsanitize=address -fsanitize=undefined)
+#     target_link_options(Sudoku PRIVATE -fsanitize=address -fsanitize=undefined)
+# endif()
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)
   set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Sudoku)
@@ -66,6 +66,15 @@ set_target_properties(Sudoku PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+)
+
+# Valgrind target with suppressions and logging, without failing on errors
+add_custom_target(valgrind
+    COMMAND valgrind --leak-check=full --track-origins=yes --gen-suppressions=all --suppressions=${CMAKE_SOURCE_DIR}/.valgrind-suppressions --log-file=${CMAKE_BINARY_DIR}/memcheck.log
+    ./${CMAKE_PROJECT_NAME}
+    DEPENDS ${CMAKE_PROJECT_NAME}
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Running Valgrind with suppressions and logging to memcheck.log..."
 )
 
 include(GNUInstallDirs)
