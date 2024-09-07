@@ -1,4 +1,6 @@
 #include "../include/mainwindow.h"
+#include "utils/file_utils.h"
+#include <qcontainerfwd.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -9,7 +11,8 @@ MainWindow::MainWindow(QWidget* parent)
       m_heart_label(new QLabel(this)),
       m_time_label(new QLabel(this)),
       m_timer(new QTimer(this)),
-      m_game(new Game(this))
+      m_game(new Game(this)),
+      m_seconds(0)
 
 {
     this->setFixedSize(700, 850);
@@ -290,215 +293,49 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::saveGameState()
 {
-    QFile file("sudoku_save.json");
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QJsonObject json;
+    QString filePath = "sudoku_save.json";
 
-        // Save the current board
-        QVector<QVector<int>> board = m_game->getBoard();
-        QJsonArray            boardArray;
-        
-        for (int row = 0; row < 9; ++row)
-        {
-            QJsonArray rowArray;
-            for (int col = 0; col < 9; ++col)
-            {
-                rowArray.append(board[row][col]);
-            }
-            boardArray.append(rowArray);
-        }
-        json["board"] = boardArray;
+    QPushButton* darkStyleButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 0)->widget());
+    QString      darkStyle       = darkStyleButton->styleSheet();
 
-        // Save the full board (the solution)
-        QVector<QVector<int>> fullBoard = m_game->getFullBoard();
-        QJsonArray            fullBoardArray;
-        if (!fullBoard.empty())
-        {
-            for (int row = 0; row < 9; ++row)
-            {
-                QJsonArray rowArray;
-                for (int col = 0; col < 9; ++col)
-                {
-                    rowArray.append(fullBoard[row][col]);
-                }
-                fullBoardArray.append(rowArray);
-            }
-            json["fullBoard"] = fullBoardArray;
-        }
+    QPushButton* lightStyleButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 4)->widget());
+    QString      lightStyle       = lightStyleButton->styleSheet();
 
-        // Save the difficulty level
-        json["difficulty"] = m_game->getDifficulty();
+    QVector<QVector<int>> board     = m_game->getBoard();
+    QVector<QVector<int>> fullBoard = m_game->getFullBoard();
 
-        // Save the number of empty fields
-        json["emptyFields"] = m_game->getEmptyCount();
-
-        // Save the number of hearts
-        json["hearts"] = m_game->getHearts();
-
-        // Save the elapsed time
-        json["time"] = m_seconds;
-
-        // Save color state
-        QJsonObject  colorStyles;
-        QPushButton* sudokuButton1 = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 0)->widget());
-        colorStyles["color1"]      = sudokuButton1->styleSheet();
-
-        QPushButton* sudokuButton2 = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 4)->widget());
-        colorStyles["color2"]      = sudokuButton2->styleSheet();
-
-        json["colors"] = colorStyles;
-
-        QJsonDocument doc(json);
-        file.write(doc.toJson());
-        file.close();
-    }
+    fileUtil::writeInJSON(filePath, board, fullBoard, m_game->getDifficulty(), m_game->getEmptyCount(),
+                          m_game->getHearts(), m_seconds, darkStyle, lightStyle);
 }
 
 bool MainWindow::loadGameState()
 {
-    QFile file("sudoku_save.json");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    QString               filePath = "sudoku_save.json";
+    QVector<QVector<int>> board{};
+    QVector<QVector<int>> fullBoard{};
+    int                   difficulty{};
+    int                   emptyCount{};
+    int                   heartCount{};
+    int                   seconds{};
+    QString               darkStyle{};
+    QString               lightStyle{};
+
+    bool is_success = fileUtil::readFromJSON(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
+                                             darkStyle, lightStyle);
+
+    if (!is_success)
     {
-        qWarning() << "Unable to open file for reading.";
         return false;
     }
 
-    QByteArray data = file.readAll();
-    file.close();
+    m_game->setBoard(board);
+    m_game->setFullBoard(fullBoard);
+    m_game->setDifficulty(difficulty);
+    m_game->setEmptyCount(emptyCount);
+    m_game->setHearts(heartCount);
+    m_seconds = seconds;
 
-    QJsonDocument doc(QJsonDocument::fromJson(data));
-    if (doc.isNull() || !doc.isObject())
-    {
-        qWarning() << "Invalid JSON document.";
-        return false;
-    }
-
-    QJsonObject json = doc.object();
-
-    // Load the current board
-    QVector<QVector<int>> board(9, QVector<int>(9, 0));
-    if (json.contains("board"))
-    {
-        QJsonArray boardArray = json["board"].toArray();
-        for (int row = 0; row < 9; ++row)
-        {
-            QJsonArray rowArray = boardArray[row].toArray();
-            for (int col = 0; col < 9; ++col)
-            {
-                board[row][col] = rowArray[col].toInt();
-            }
-        }
-        m_game->setBoard(board);
-    }
-    else
-    {
-        qWarning() << "Missing 'board' in JSON.";
-        return false;
-    }
-
-    // Load the full board (the solution)
-    QVector<QVector<int>> fullBoard(9, QVector<int>(9, 0));
-    if (json.contains("fullBoard"))
-    {
-        QJsonArray fullBoardArray = json["fullBoard"].toArray();
-        for (int row = 0; row < 9; ++row)
-        {
-            QJsonArray rowArray = fullBoardArray[row].toArray();
-            for (int col = 0; col < 9; ++col)
-            {
-                fullBoard[row][col] = rowArray[col].toInt();
-            }
-        }
-        m_game->setFullBoard(fullBoard);
-    }
-
-    // Load difficulty level
-    if (json.contains("difficulty"))
-    {
-        int difficulty = json["difficulty"].toInt();
-        m_game->setDifficulty(difficulty);
-    }
-    else
-    {
-        qWarning() << "Missing 'difficulty' in JSON.";
-        return false;
-    }
-
-    // Load number of empty fields
-    if (json.contains("emptyFields"))
-    {
-        int emptyFields = json["emptyFields"].toInt();
-        m_game->setEmptyCount(emptyFields);
-    }
-    else
-    {
-        qWarning() << "Missing 'emptyFields' in JSON.";
-        return false;
-    }
-
-    // Load number of hearts
-    if (json.contains("hearts"))
-    {
-        int hearts = json["hearts"].toInt();
-        m_game->setHearts(hearts);
-    }
-    else
-    {
-        qWarning() << "Missing 'hearts' in JSON.";
-        return false;
-    }
-
-    // Load elapsed time
-    if (json.contains("time"))
-    {
-        m_seconds = json["time"].toInt();
-        m_time_label->setText(QString("%1:%2:%3")
-                                  .arg(m_seconds / 3600, 2, 10, QLatin1Char('0'))
-                                  .arg((m_seconds % 3600) / 60, 2, 10, QLatin1Char('0'))
-                                  .arg(m_seconds % 60, 2, 10, QLatin1Char('0')));
-        m_timer->start();
-    }
-    else
-    {
-        qWarning() << "Missing 'time' in JSON.";
-        return false;
-    }
-
-    // Load colors
-    if (json.contains("colors"))
-    {
-        QJsonObject colorStyles = json["colors"].toObject();
-        QString     darkStyle   = colorStyles["color1"].toString();
-        QString     lightStyle  = colorStyles["color2"].toString();
-
-        for (int row = 0; row < 9; ++row)
-        {
-            for (int col = 0; col < 9; ++col)
-            {
-                QPushButton* sudokuButton =
-                    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
-
-                bool    is_dark    = ((row / 3) % 2 == (col / 3) % 2);
-                QString colorStyle = is_dark ? darkStyle : lightStyle;
-
-                QColor  baseColor;
-                QColor  hoverColor;
-                QColor  focusColor;
-                QString textColor;
-
-                colorUtil::parseColors(colorStyle, baseColor, hoverColor, focusColor, textColor);
-
-                QString colorStyleString = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
-                sudokuButton->setStyleSheet(colorStyleString);
-            }
-        }
-    }
-    else
-    {
-        qWarning() << "Missing 'colors' in JSON.";
-        return false;
-    }
+    fileUtil::applyColorStyles(m_grid_layout, darkStyle, lightStyle);
 
     return true;
 }
