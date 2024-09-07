@@ -4,6 +4,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
+      m_game(new Game(this)),
       m_difficulty_buttons(3),
       m_start_button(new QPushButton(this)),
       m_continue_old_game(new QPushButton(this)),
@@ -11,8 +12,7 @@ MainWindow::MainWindow(QWidget* parent)
       m_heart_label(new QLabel(this)),
       m_time_label(new QLabel(this)),
       m_timer(new QTimer(this)),
-      m_game(new Game(this)),
-      m_seconds(0)
+      m_seconds{}
 
 {
     this->setFixedSize(700, 850);
@@ -323,21 +323,20 @@ bool MainWindow::loadGameState()
     bool is_success = fileUtil::readFromJSON(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
                                              darkStyle, lightStyle);
 
-    if (!is_success)
+    if (is_success)
     {
-        return false;
+        m_game->setBoard(board);
+        m_game->setFullBoard(fullBoard);
+        m_game->setDifficulty(difficulty);
+        m_game->setEmptyCount(emptyCount);
+        m_game->setHearts(heartCount);
+        m_seconds = seconds;
+
+        colorUtil::applyColorStyles(m_grid_layout, darkStyle, lightStyle);
+
+        return true;
     }
-
-    m_game->setBoard(board);
-    m_game->setFullBoard(fullBoard);
-    m_game->setDifficulty(difficulty);
-    m_game->setEmptyCount(emptyCount);
-    m_game->setHearts(heartCount);
-    m_seconds = seconds;
-
-    fileUtil::applyColorStyles(m_grid_layout, darkStyle, lightStyle);
-
-    return true;
+    return false;
 }
 
 void MainWindow::promptContinueOldGame()

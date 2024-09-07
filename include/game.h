@@ -36,12 +36,15 @@ public:
     int  getY() const;
     int  getNumber(int i, int j) const;
 
+    // hearts get set
     void setHearts(const int count);
     int  getHearts() const;
 
+    // empty field get set
     int  getEmptyCount() const;
     void setEmptyCount(int count);
 
+    // difficulty get set
     void setDifficulty(int diff);
     int  getDifficulty() const;
 

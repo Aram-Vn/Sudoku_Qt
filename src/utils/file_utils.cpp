@@ -183,28 +183,5 @@ namespace fileUtil {
         return true;
     }
 
-    void applyColorStyles(QGridLayout* gridLayout, const QString& darkStyle, const QString& lightStyle)
-    {
-        for (int row = 0; row < 9; ++row)
-        {
-            for (int col = 0; col < 9; ++col)
-            {
-                QPushButton* sudokuButton = dynamic_cast<QPushButton*>(gridLayout->itemAtPosition(row, col)->widget());
-
-                bool    is_dark    = ((row / 3) % 2 == (col / 3) % 2);
-                QString colorStyle = is_dark ? darkStyle : lightStyle;
-
-                QColor  baseColor;
-                QColor  hoverColor;
-                QColor  focusColor;
-                QString textColor;
-
-                colorUtil::parseColors(colorStyle, baseColor, hoverColor, focusColor, textColor);
-
-                QString colorStyleString = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
-                sudokuButton->setStyleSheet(colorStyleString);
-            }
-        }
-    }
 
 } // namespace fileUtil

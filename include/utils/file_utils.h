@@ -5,7 +5,6 @@
 
 #include <QColor>
 #include <QFile>
-#include <QGridLayout>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -23,7 +22,6 @@ namespace fileUtil {
                       int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
                       QString& lightStyle);
 
-    void applyColorStyles(QGridLayout* gridLayout, const QString& darkStyle, const QString& lightStyle);
 
 } // namespace fileUtil
 
