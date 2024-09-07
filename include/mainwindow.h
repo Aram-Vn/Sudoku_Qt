@@ -8,9 +8,13 @@
 #include <QCloseEvent>
 #include <QColor>
 #include <QColorDialog>
+#include <QDebug>
 #include <QFile>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QMainWindow>
@@ -18,8 +22,6 @@
 #include <QPushButton>
 #include <QTextStream>
 #include <QTimer>
-#include <qcontainerfwd.h>
-#include <qpushbutton.h>
 
 class MainWindow : public QMainWindow
 {

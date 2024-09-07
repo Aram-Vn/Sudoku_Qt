@@ -290,140 +290,169 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::saveGameState()
 {
-    QFile file("sudoku_save.txt");
+    QFile file("sudoku_save.json");
     if (file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QTextStream out(&file);
+        QJsonObject json;
 
         // Save the current board
         QVector<QVector<int>> board = m_game->getBoard();
+        QJsonArray            boardArray;
+        
         for (int row = 0; row < 9; ++row)
         {
+            QJsonArray rowArray;
             for (int col = 0; col < 9; ++col)
             {
-                out << board[row][col] << " ";
+                rowArray.append(board[row][col]);
             }
-            out << "\n";
+            boardArray.append(rowArray);
         }
+        json["board"] = boardArray;
 
         // Save the full board (the solution)
         QVector<QVector<int>> fullBoard = m_game->getFullBoard();
-
-        if (fullBoard.empty())
-            return;
-
-        out << "FullBoard:\n";
-        for (int row = 0; row < 9; ++row)
+        QJsonArray            fullBoardArray;
+        if (!fullBoard.empty())
         {
-            for (int col = 0; col < 9; ++col)
+            for (int row = 0; row < 9; ++row)
             {
-                out << fullBoard[row][col] << " ";
+                QJsonArray rowArray;
+                for (int col = 0; col < 9; ++col)
+                {
+                    rowArray.append(fullBoard[row][col]);
+                }
+                fullBoardArray.append(rowArray);
             }
-            out << "\n";
+            json["fullBoard"] = fullBoardArray;
         }
 
         // Save the difficulty level
-        out << "Difficulty: " << m_game->getDifficulty() << "\n";
+        json["difficulty"] = m_game->getDifficulty();
 
         // Save the number of empty fields
-        out << "EmptyFields: " << m_game->getEmptyCount() << "\n";
+        json["emptyFields"] = m_game->getEmptyCount();
 
         // Save the number of hearts
-        out << "Hearts: " << m_game->getHearts() << "\n";
+        json["hearts"] = m_game->getHearts();
 
         // Save the elapsed time
-        out << "Time: " << m_seconds << "\n";
+        json["time"] = m_seconds;
 
         // Save color state
+        QJsonObject  colorStyles;
         QPushButton* sudokuButton1 = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 0)->widget());
-        QString      style1        = sudokuButton1->styleSheet();
-        out << "Color1: " << style1 << "\n";
+        colorStyles["color1"]      = sudokuButton1->styleSheet();
 
         QPushButton* sudokuButton2 = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 4)->widget());
-        QString      style2        = sudokuButton2->styleSheet();
-        out << "Color2: " << style2;
+        colorStyles["color2"]      = sudokuButton2->styleSheet();
 
+        json["colors"] = colorStyles;
+
+        QJsonDocument doc(json);
+        file.write(doc.toJson());
         file.close();
     }
 }
 
 bool MainWindow::loadGameState()
 {
-    QStringList lines = fileUtil::readFileLines("sudoku_save.txt");
-
-    if (lines.size() < 25)
+    QFile file("sudoku_save.json");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
+        qWarning() << "Unable to open file for reading.";
         return false;
     }
 
+    QByteArray data = file.readAll();
+    file.close();
+
+    QJsonDocument doc(QJsonDocument::fromJson(data));
+    if (doc.isNull() || !doc.isObject())
+    {
+        qWarning() << "Invalid JSON document.";
+        return false;
+    }
+
+    QJsonObject json = doc.object();
+
+    // Load the current board
     QVector<QVector<int>> board(9, QVector<int>(9, 0));
-    board = fileUtil::parseBoard(lines, 0);
-
-    // Check and skip the "FullBoard:" header
-    int currentLine = 9;
-    if (lines[currentLine] != "FullBoard:")
+    if (json.contains("board"))
     {
-        qWarning() << "Expected 'FullBoard:' line not found.";
+        QJsonArray boardArray = json["board"].toArray();
+        for (int row = 0; row < 9; ++row)
+        {
+            QJsonArray rowArray = boardArray[row].toArray();
+            for (int col = 0; col < 9; ++col)
+            {
+                board[row][col] = rowArray[col].toInt();
+            }
+        }
+        m_game->setBoard(board);
+    }
+    else
+    {
+        qWarning() << "Missing 'board' in JSON.";
         return false;
     }
 
-    ++currentLine;
-
+    // Load the full board (the solution)
     QVector<QVector<int>> fullBoard(9, QVector<int>(9, 0));
-    fullBoard = fileUtil::parseBoard(lines, currentLine, 9);
-
-    currentLine += 9;
-
-    // Read Difficulty
-    QString difficultyStr = fileUtil::parseTextLine(lines, currentLine, "Difficulty: ");
-
-    bool ok;
-    int  difficulty = difficultyStr.toInt(&ok);
-    if (ok)
+    if (json.contains("fullBoard"))
     {
+        QJsonArray fullBoardArray = json["fullBoard"].toArray();
+        for (int row = 0; row < 9; ++row)
+        {
+            QJsonArray rowArray = fullBoardArray[row].toArray();
+            for (int col = 0; col < 9; ++col)
+            {
+                fullBoard[row][col] = rowArray[col].toInt();
+            }
+        }
+        m_game->setFullBoard(fullBoard);
+    }
+
+    // Load difficulty level
+    if (json.contains("difficulty"))
+    {
+        int difficulty = json["difficulty"].toInt();
         m_game->setDifficulty(difficulty);
     }
     else
     {
-        qWarning() << "Failed to convert difficulty value to an integer.";
-        qWarning() << lines[currentLine];
+        qWarning() << "Missing 'difficulty' in JSON.";
         return false;
     }
 
-    // Read EmptyFields
-    QString emptyFieldsStr = fileUtil::parseTextLine(lines, currentLine, "EmptyFields: ");
-    int     emptyFields    = emptyFieldsStr.toInt(&ok);
-    if (ok)
+    // Load number of empty fields
+    if (json.contains("emptyFields"))
     {
+        int emptyFields = json["emptyFields"].toInt();
         m_game->setEmptyCount(emptyFields);
     }
     else
     {
-        qWarning() << "Failed to convert empty fields value to an integer.";
-        qWarning() << lines[currentLine];
-
+        qWarning() << "Missing 'emptyFields' in JSON.";
         return false;
     }
 
-    // Read Hearts
-    QString heartsStr = fileUtil::parseTextLine(lines, currentLine, "Hearts: ");
-    int     hearts    = heartsStr.toInt(&ok);
-    if (ok)
+    // Load number of hearts
+    if (json.contains("hearts"))
     {
+        int hearts = json["hearts"].toInt();
         m_game->setHearts(hearts);
     }
     else
     {
-        qWarning() << "Failed to convert hearts value to an integer.";
+        qWarning() << "Missing 'hearts' in JSON.";
         return false;
     }
 
-    // Read Time
-    QString timeStr = fileUtil::parseTextLine(lines, currentLine, "Time: ");
-    int     time    = timeStr.toInt(&ok);
-    if (ok)
+    // Load elapsed time
+    if (json.contains("time"))
     {
-        m_seconds = time;
+        m_seconds = json["time"].toInt();
         m_time_label->setText(QString("%1:%2:%3")
                                   .arg(m_seconds / 3600, 2, 10, QLatin1Char('0'))
                                   .arg((m_seconds % 3600) / 60, 2, 10, QLatin1Char('0'))
@@ -432,38 +461,44 @@ bool MainWindow::loadGameState()
     }
     else
     {
-        qWarning() << "Failed to convert time value to an integer.";
+        qWarning() << "Missing 'time' in JSON.";
         return false;
     }
 
-    // Read Colors
-    QString darkStyle  = fileUtil::parseTextLine(lines, currentLine, "Color1: ");
-    QString lightStyle = fileUtil::parseTextLine(lines, currentLine, "Color2: ");
-
-    QString colorStyleString;
-    for (int row = 0; row < 9; ++row)
+    // Load colors
+    if (json.contains("colors"))
     {
-        for (int col = 0; col < 9; ++col)
+        QJsonObject colorStyles = json["colors"].toObject();
+        QString     darkStyle   = colorStyles["color1"].toString();
+        QString     lightStyle  = colorStyles["color2"].toString();
+
+        for (int row = 0; row < 9; ++row)
         {
-            QPushButton* sudokuButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            for (int col = 0; col < 9; ++col)
+            {
+                QPushButton* sudokuButton =
+                    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
 
-            bool    is_dark    = ((row / 3) % 2 == (col / 3) % 2);
-            QString ColorStyle = is_dark ? darkStyle : lightStyle;
+                bool    is_dark    = ((row / 3) % 2 == (col / 3) % 2);
+                QString colorStyle = is_dark ? darkStyle : lightStyle;
 
-            QColor  baseColor;
-            QColor  hoverColor;
-            QColor  focusColor;
-            QString textColor;
+                QColor  baseColor;
+                QColor  hoverColor;
+                QColor  focusColor;
+                QString textColor;
 
-            colorUtil::parseColors(ColorStyle, baseColor, hoverColor, focusColor, textColor);
+                colorUtil::parseColors(colorStyle, baseColor, hoverColor, focusColor, textColor);
 
-            colorStyleString = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
-            sudokuButton->setStyleSheet(colorStyleString);
+                QString colorStyleString = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
+                sudokuButton->setStyleSheet(colorStyleString);
+            }
         }
     }
-
-    m_game->setBoard(board);
-    m_game->setFullBoard(fullBoard);
+    else
+    {
+        qWarning() << "Missing 'colors' in JSON.";
+        return false;
+    }
 
     return true;
 }
