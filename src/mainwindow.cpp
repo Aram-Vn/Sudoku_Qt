@@ -1,6 +1,6 @@
 #include "../include/mainwindow.h"
 #include "utils/file_utils.h"
-#include <qcontainerfwd.h>
+#include <qcolor.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -270,13 +270,32 @@ void MainWindow::openColorPicker()
         {
             QPushButton* sudokuButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
 
-            bool   is_dark    = ((row / 3) % 2 == (col / 3) % 2);
-            QColor baseColor  = is_dark ? colorDark : colorLight;
-            QColor hoverColor = baseColor.darker(150);
-            QColor focusColor = hoverColor.darker(150);
+            bool   is_dark   = ((row / 3) % 2 == (col / 3) % 2);
+            QColor baseColor = is_dark ? colorDark : colorLight;
 
-            // Determine if the color is too dark for black text
-            QString textColor = (baseColor.lightness() < 128) ? "white" : "black";
+            QColor  hoverColor, focusColor;
+            QString textColor = "black";
+
+            if (baseColor == Qt::black || baseColor.lightness() < 10)
+            {
+                // If the base color is black, set hover and focus colors to dark gray
+                hoverColor = QColor(50, 50, 50);    // Dark gray for hover
+                focusColor = QColor(100, 100, 100); // Lighter gray for focus
+                textColor  = "white";               
+            }
+            else if (baseColor.lightness() < 128)
+            {
+                // Make hover and focus colors lighter if base color is dark
+                hoverColor = baseColor.lighter(150);
+                focusColor = hoverColor.lighter(150);
+                textColor  = "white";
+            }
+            else
+            {
+                // Make hover and focus colors darker if base color is light
+                hoverColor = baseColor.darker(150);
+                focusColor = hoverColor.darker(150);
+            }
 
             QString colorStyle = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
 
@@ -336,6 +355,7 @@ bool MainWindow::loadGameState()
 
         return true;
     }
+
     return false;
 }
 
