@@ -33,7 +33,7 @@ namespace colorUtil {
     }
 
     QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
-                          const QString& textColor)
+                          const QString& textColor, const QString& FocusTextColor)
     {
         return QString("QPushButton {"
                        "background-color: %1;"
@@ -49,13 +49,14 @@ namespace colorUtil {
                        "QPushButton:hover {"
                        "background-color: %2;"
                        "border: 2px solid black;"
-                       "color: white;"
+                       "color: %5;"
                        "border-radius: 10px;"
                        "}")
             .arg(baseColor.name())
             .arg(hoverColor.name())
             .arg(focusColor.name())
-            .arg(textColor);
+            .arg(textColor)
+            .arg(FocusTextColor);
     }
 
     void applyColorStyles(QGridLayout* gridLayout, const QString& darkStyle, const QString& lightStyle)

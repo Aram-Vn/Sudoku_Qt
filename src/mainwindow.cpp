@@ -1,6 +1,6 @@
 #include "../include/mainwindow.h"
 #include "utils/file_utils.h"
-#include <qcolor.h>
+
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -258,7 +258,7 @@ void MainWindow::openColorPicker()
         return;
     }
 
-    QColor colorLight = QColorDialog::getColor(Qt::white, this, "Choose Light Button Color");
+    QColor colorLight = QColorDialog::getColor(Qt::black, this, "Choose Light Button Color");
     if (!colorLight.isValid())
     {
         return;
@@ -273,31 +273,37 @@ void MainWindow::openColorPicker()
             bool   is_dark   = ((row / 3) % 2 == (col / 3) % 2);
             QColor baseColor = is_dark ? colorDark : colorLight;
 
-            QColor  hoverColor, focusColor;
-            QString textColor = "black";
+            QColor  hoverColor{};
+            QColor  focusColor{};
+            QString FocusTextColor{};
+            QString textColor{};
 
             if (baseColor == Qt::black || baseColor.lightness() < 10)
             {
                 // If the base color is black, set hover and focus colors to dark gray
                 hoverColor = QColor(50, 50, 50);    // Dark gray for hover
                 focusColor = QColor(100, 100, 100); // Lighter gray for focus
-                textColor  = "white";               
+                textColor  = "white";
+                FocusTextColor = "black";
             }
             else if (baseColor.lightness() < 128)
             {
                 // Make hover and focus colors lighter if base color is dark
-                hoverColor = baseColor.lighter(150);
-                focusColor = hoverColor.lighter(150);
+                hoverColor = baseColor.lighter(180);
+                focusColor = hoverColor.lighter(180);
                 textColor  = "white";
+                FocusTextColor = "black";
             }
             else
             {
                 // Make hover and focus colors darker if base color is light
                 hoverColor = baseColor.darker(150);
                 focusColor = hoverColor.darker(150);
+                textColor  = "black";
+                FocusTextColor = "white";
             }
 
-            QString colorStyle = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor);
+            QString colorStyle = colorUtil::colorStyleSet(baseColor, hoverColor, focusColor, textColor, FocusTextColor);
 
             sudokuButton->setStyleSheet(colorStyle);
         }

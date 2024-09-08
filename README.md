@@ -23,7 +23,9 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 
 ```bash
 .
+├── .clang-format
 ├── CMakeLists.txt
+├── .gitignore
 ├── include
 │   ├── game.h
 │   ├── mainwindow.h
@@ -32,14 +34,15 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 │       ├── color_utils.h
 │       └── file_utils.h
 ├── README.md
-└── src
-    ├── game.cpp
-    ├── main.cpp
-    ├── mainwindow.cpp
-    ├── sudokugenerator.cpp
-    └── utils
-        ├── color_utils.cpp
-        └── file_utils.cpp
+├── src
+│   ├── game.cpp
+│   ├── main.cpp
+│   ├── mainwindow.cpp
+│   ├── sudokugenerator.cpp
+│   └── utils
+│       ├── color_utils.cpp
+│       └── file_utils.cpp
+└── .valgrind-suppressions
 
 ```
 
