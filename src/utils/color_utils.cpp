@@ -1,36 +1,6 @@
 #include "../../include/utils/color_utils.h"
 
 namespace colorUtil {
-    void parseColors(const QString& stylesheet, QColor& baseColor, QColor& hoverColor, QColor& focusColor,
-                     QString& textColor)
-    {
-        QRegularExpression baseColorRegex("background-color: (#[0-9a-fA-F]{6})");
-        QRegularExpression textColorRegex("QPushButton \\{[^}]*color: ([a-zA-Z]+|#[0-9a-fA-F]{6})");
-        QRegularExpression focusColorRegex("QPushButton:focus \\{[^}]*background-color: (#[0-9a-fA-F]{6})");
-        QRegularExpression hoverColorRegex("QPushButton:hover \\{[^}]*background-color: (#[0-9a-fA-F]{6})");
-
-        QRegularExpressionMatch baseMatch  = baseColorRegex.match(stylesheet);
-        QRegularExpressionMatch textMatch  = textColorRegex.match(stylesheet);
-        QRegularExpressionMatch focusMatch = focusColorRegex.match(stylesheet);
-        QRegularExpressionMatch hoverMatch = hoverColorRegex.match(stylesheet);
-
-        if (baseMatch.hasMatch())
-        {
-            baseColor = QColor(baseMatch.captured(1));
-        }
-        if (textMatch.hasMatch())
-        {
-            textColor = textMatch.captured(1);
-        }
-        if (focusMatch.hasMatch())
-        {
-            focusColor = QColor(focusMatch.captured(1));
-        }
-        if (hoverMatch.hasMatch())
-        {
-            hoverColor = QColor(hoverMatch.captured(1));
-        }
-    }
 
     QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
                           const QString& textColor, const QString& FocusTextColor)

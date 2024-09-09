@@ -1,6 +1,4 @@
 #include "../include/mainwindow.h"
-#include "utils/file_utils.h"
-
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -281,25 +279,25 @@ void MainWindow::openColorPicker()
             if (baseColor == Qt::black || baseColor.lightness() < 10)
             {
                 // If the base color is black, set hover and focus colors to dark gray
-                hoverColor = QColor(50, 50, 50);    // Dark gray for hover
-                focusColor = QColor(100, 100, 100); // Lighter gray for focus
-                textColor  = "white";
+                hoverColor     = QColor(50, 50, 50);    // Dark gray for hover
+                focusColor     = QColor(100, 100, 100); // Lighter gray for focus
+                textColor      = "white";
                 FocusTextColor = "black";
             }
             else if (baseColor.lightness() < 128)
             {
                 // Make hover and focus colors lighter if base color is dark
-                hoverColor = baseColor.lighter(180);
-                focusColor = hoverColor.lighter(180);
-                textColor  = "white";
+                hoverColor     = baseColor.lighter(120);
+                focusColor     = hoverColor.lighter(120);
+                textColor      = "white";
                 FocusTextColor = "black";
             }
             else
             {
                 // Make hover and focus colors darker if base color is light
-                hoverColor = baseColor.darker(150);
-                focusColor = hoverColor.darker(150);
-                textColor  = "black";
+                hoverColor     = baseColor.darker(150);
+                focusColor     = hoverColor.darker(150);
+                textColor      = "black";
                 FocusTextColor = "white";
             }
 
@@ -400,6 +398,6 @@ void MainWindow::promptContinueOldGame()
     }
     else
     {
-        resetGame();
+        this->resetGame();
     }
 }
