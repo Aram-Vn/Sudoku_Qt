@@ -1,4 +1,5 @@
 #include "../include/mainwindow.h"
+#include "../include/custombutton/custombutton.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -13,6 +14,8 @@ MainWindow::MainWindow(QWidget* parent)
       m_seconds{}
 
 {
+    CustomButton* sudokuButton = new CustomButton(this);
+
     this->setFixedSize(700, 850);
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setGeometry(0, 150, 700, 700);
@@ -24,7 +27,7 @@ MainWindow::MainWindow(QWidget* parent)
     {
         for (int col = 0; col < grid_size; ++col)
         {
-            QPushButton* sudokuButton = new QPushButton(this);
+            CustomButton* sudokuButton = new CustomButton(this);
             sudokuButton->setFixedSize(60, 60);
 
             bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
@@ -38,7 +41,7 @@ MainWindow::MainWindow(QWidget* parent)
             sudokuButton->setStyleSheet(colorStyle);
             sudokuButton->setEnabled(false);
 
-            connect(sudokuButton, &QPushButton::clicked, this,
+            connect(sudokuButton, &CustomButton::leftClicked, this,
                     [row, col, sudokuButton, this]()
                     {
                         int x = m_game->getX();
@@ -48,6 +51,13 @@ MainWindow::MainWindow(QWidget* parent)
                         {
                             m_game->setCoords(row, col);
                         }
+                    });
+
+            connect(sudokuButton, &CustomButton::rightClicked, this,
+                    [row, col, sudokuButton, this]()
+                    {
+                        // hm.......
+                        qDebug() << "Right-click detected at: " << row << ", " << col;
                     });
 
             m_grid_layout->addWidget(sudokuButton, row, col);
@@ -134,7 +144,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_continue_old_game->setText("Continue old game");
     m_continue_old_game->setStyleSheet("background-color: dimGray;"
                                        "text-align: left;"
-                                       "padding-left: 8px;"); // Adjust padding as needed
+                                       "padding-left: 8px;");
     m_continue_old_game->setGeometry(0, 0, 145, 40);
 
     connect(m_continue_old_game, &QPushButton::clicked, this, [this]() { promptContinueOldGame(); });

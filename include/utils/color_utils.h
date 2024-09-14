@@ -1,5 +1,5 @@
-#ifndef SUDOKU_QT_INCLUDE_UTILS_COLORUTIL_H
-#define SUDOKU_QT_INCLUDE_UTILS_COLORUTIL_H
+#ifndef SUDOKU_QT_INCLUDE_UTILS_COLOR_UTIL_H
+#define SUDOKU_QT_INCLUDE_UTILS_COLOR_UTIL_H
 
 #include <QColor>
 #include <QGridLayout>
@@ -17,4 +17,4 @@ namespace colorUtil {
 
 } // namespace colorUtil
 
-#endif // SUDOKU_QT_INCLUDE_UTILS_COLORUTIL_H
+#endif // SUDOKU_QT_INCLUDE_UTILS_COLOR_UTIL_H

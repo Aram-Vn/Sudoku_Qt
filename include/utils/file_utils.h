@@ -1,5 +1,5 @@
-#ifndef FILE_UTILS_H
-#define FILE_UTILS_H
+#ifndef SUDOKU_QT_INCLUDE_UTILS_FILE_UTILS_H
+#define SUDOKU_QT_INCLUDE_UTILS_FILE_UTILS_H
 
 #include "color_utils.h"
 
@@ -25,4 +25,4 @@ namespace fileUtil {
 
 } // namespace fileUtil
 
-#endif // FILE_UTILS_H
+#endif // SUDOKU_QT_INCLUDE_UTILS_FILE_UTILS_H
