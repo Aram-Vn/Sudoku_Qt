@@ -29,6 +29,35 @@ namespace colorUtil {
             .arg(FocusTextColor);
     }
 
+
+    // QString("QPushButton {"
+    //         "background-color: %1;"
+    //         "color: %4;"
+    //         "border-radius: 8px;"
+    //         "font-size: 16px;"
+    //         "font-weight: bold;"
+    //         "text-align: right;"    
+    //         "padding-top: 0px;"     
+    //         "padding-right: 0px;"   
+    //         "padding-bottom: auto;" 
+    //         "padding-left: auto;"   
+    //         "}"
+    //         "QPushButton:focus {"
+    //         "background-color: %2;"
+    //         "border: 6px solid %3;"
+    //         "}"
+    //         "QPushButton:hover {"
+    //         "background-color: %2;"
+    //         "border: 2px solid black;"
+    //         "color: %5;"
+    //         "border-radius: 10px;"
+    //         "}")
+    //     .arg(baseColor.name())
+    //     .arg(hoverColor.name())
+    //     .arg(focusColor.name())
+    //     .arg(textColor)
+    //     .arg(FocusTextColor);
+
     void applyColorStyles(QGridLayout* gridLayout, const QString& darkStyle, const QString& lightStyle)
     {
         for (int row = 0; row < 9; ++row)

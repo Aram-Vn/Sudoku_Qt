@@ -60,6 +60,7 @@ private:
     QLabel*               m_time_label;
     int                   m_seconds;
     QTimer*               m_timer;
+    bool                  m_is_left;
 };
 
 #endif // MAINWINDOW_H

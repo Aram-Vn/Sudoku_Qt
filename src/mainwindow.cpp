@@ -11,11 +11,10 @@ MainWindow::MainWindow(QWidget* parent)
       m_heart_label(new QLabel(this)),
       m_time_label(new QLabel(this)),
       m_timer(new QTimer(this)),
-      m_seconds{}
+      m_seconds{},
+      m_is_left{ true }
 
 {
-    CustomButton* sudokuButton = new CustomButton(this);
-
     this->setFixedSize(700, 850);
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setGeometry(0, 150, 700, 700);
@@ -44,6 +43,11 @@ MainWindow::MainWindow(QWidget* parent)
             connect(sudokuButton, &CustomButton::leftClicked, this,
                     [row, col, sudokuButton, this]()
                     {
+                        m_is_left = true;
+
+                        qDebug() << "leftClicked detected at: " << row << ", " << col;
+                        qDebug() << "m_is_left is now: " << m_is_left;
+
                         int x = m_game->getX();
                         int y = m_game->getY();
 
@@ -56,8 +60,10 @@ MainWindow::MainWindow(QWidget* parent)
             connect(sudokuButton, &CustomButton::rightClicked, this,
                     [row, col, sudokuButton, this]()
                     {
-                        // hm.......
+                        m_is_left = false;
+                        // fix !!!
                         qDebug() << "Right-click detected at: " << row << ", " << col;
+                        qDebug() << "m_is_left is now: " << m_is_left;
                     });
 
             m_grid_layout->addWidget(sudokuButton, row, col);
@@ -102,6 +108,14 @@ MainWindow::MainWindow(QWidget* parent)
     connect(m_reset_game, &QPushButton::clicked, this,
             [this]()
             {
+                for (int row = 0; row < grid_size; ++row)
+                {
+                    for (int col = 0; col < grid_size; ++col)
+                    {
+                        dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->clearNumber();
+                    }
+                }
+
                 m_time_label->setText("00:00:00");
                 resetGame();
                 QMessageBox::information(nullptr, "Reset", "you give up!!!");
@@ -154,10 +168,15 @@ MainWindow::~MainWindow() {}
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() >= Qt::Key_1 && event->key() <= Qt::Key_9)
+    qDebug() << "keyPressEvent detected " << m_is_left;
+
+    if (m_is_left)
     {
-        int number = event->key() - Qt::Key_0;
-        m_game->numberEvent(number);
+        if (event->key() >= Qt::Key_1 && event->key() <= Qt::Key_9)
+        {
+            int number = event->key() - Qt::Key_0;
+            m_game->numberEvent(number);
+        }
     }
 }
 
@@ -202,6 +221,8 @@ void MainWindow::addOnGrid()
     int y = m_game->getY();
     dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(x, y)->widget())
         ->setText(QString::number(m_game->getNumber(x, y)));
+
+    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(x, y)->widget())->setEnabled(false);
 
     m_game->setCoords(-1, -1);
 
