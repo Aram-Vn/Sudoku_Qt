@@ -197,17 +197,17 @@ void MainWindow::handleStart()
     {
         for (int col = 0; col < grid_size; ++col)
         {
+            CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+
             if (board[row][col])
             {
-                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())
-                    ->setText(QString::number(board[row][col]));
-
-                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(false);
+                button->setText(QString::number(board[row][col]));
+                button->setEnabled(false);
             }
             else
             {
-                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setText("");
-                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(true);
+                button->setText("");
+                button->setEnabled(true);
             }
         }
     }
@@ -219,11 +219,12 @@ void MainWindow::addOnGrid()
 {
     int x = m_game->getX();
     int y = m_game->getY();
-    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(x, y)->widget())
-        ->setText(QString::number(m_game->getNumber(x, y)));
 
-    dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(x, y)->widget())->setEnabled(false);
-    dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(x, y)->widget())->clearNumber();
+    CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(x, y)->widget());
+
+    button->setText(QString::number(m_game->getNumber(x, y)));
+    button->setEnabled(false);
+    button->clearNumber();
 
     m_game->setCoords(-1, -1);
 
@@ -260,8 +261,10 @@ void MainWindow::resetGame()
     {
         for (int col = 0; col < grid_size; ++col)
         {
-            dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setText("");
-            dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(false);
+            CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            button->setText("");
+            button->setEnabled(false);
+            button->clearNumber();
         }
     }
 

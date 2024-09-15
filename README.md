@@ -24,24 +24,31 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 ```bash
 .
 │
-├── include
-│   ├── custombutton
-│   │   └── custombutton.h
+├── include/
+│   │
+│   │
 │   ├── game.h
 │   ├── mainwindow.h
 │   ├── sudokugenerator.h
-│   └── utils
+│   │
+│   ├── custombutton/
+│   │   └── custombutton.h
+│   │
+│   └── utils/
 │       ├── color_utils.h
 │       └── file_utils.h
 │
-├── src
-│   ├── custombutton
-│   │   └── custombutton.cpp
+├── src/
+│   │
 │   ├── game.cpp
 │   ├── main.cpp
 │   ├── mainwindow.cpp
 │   ├── sudokugenerator.cpp
-│   └── utils
+│   │
+│   ├── custombutton/
+│   │   └── custombutton.cpp
+│   │
+│   └── utils/
 │       ├── color_utils.cpp
 │       └── file_utils.cpp
 │
