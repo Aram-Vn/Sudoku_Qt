@@ -23,18 +23,20 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 
 ```bash
 .
-├── .clang-format
-├── CMakeLists.txt
-├── .gitignore
+│
 ├── include
+│   ├── custombutton
+│   │   └── custombutton.h
 │   ├── game.h
 │   ├── mainwindow.h
 │   ├── sudokugenerator.h
 │   └── utils
 │       ├── color_utils.h
 │       └── file_utils.h
-├── README.md
+│
 ├── src
+│   ├── custombutton
+│   │   └── custombutton.cpp
 │   ├── game.cpp
 │   ├── main.cpp
 │   ├── mainwindow.cpp
@@ -42,6 +44,11 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 │   └── utils
 │       ├── color_utils.cpp
 │       └── file_utils.cpp
+│
+├── .clang-format
+├── CMakeLists.txt
+├── README.md
+├── .gitignore
 └── .valgrind-suppressions
 
 ```
