@@ -22,7 +22,9 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 public:
-    void clearNumber();
+    void    clearNumber();
+    QString getTopRightNumber() const;
+    void    setTopRightNumber(const QString& number);
 
 private:
     QString m_inputNumber;

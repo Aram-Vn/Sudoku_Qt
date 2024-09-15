@@ -44,7 +44,7 @@ void CustomButton::keyPressEvent(QKeyEvent* event)
             }
         }
     }
-    
+
     QPushButton::keyPressEvent(event);
 }
 
@@ -71,5 +71,16 @@ void CustomButton::paintEvent(QPaintEvent* event)
 void CustomButton::clearNumber()
 {
     m_inputNumber.clear();
+    update();
+}
+
+QString CustomButton::getTopRightNumber() const
+{
+    return m_inputNumber;
+}
+
+void CustomButton::setTopRightNumber(const QString& number)
+{
+    m_inputNumber = number;
     update();
 }

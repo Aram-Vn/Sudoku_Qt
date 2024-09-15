@@ -61,7 +61,6 @@ MainWindow::MainWindow(QWidget* parent)
                     [row, col, sudokuButton, this]()
                     {
                         m_is_left = false;
-                        // fix !!!
                         qDebug() << "Right-click detected at: " << row << ", " << col;
                         qDebug() << "m_is_left is now: " << m_is_left;
                     });
