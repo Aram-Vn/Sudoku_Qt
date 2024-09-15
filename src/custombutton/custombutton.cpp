@@ -64,7 +64,20 @@ void CustomButton::paintEvent(QPaintEvent* event)
         textRect.setTop(textRect.top() + padding);
         textRect.setRight(textRect.right() - padding);
 
+        QColor textColor = painter.pen().color(); // Get the current text color
+
+        if (textColor.value() > 128)
+        {
+            painter.setPen(textColor.darker(150));
+        }
+        else
+        {
+            painter.setPen(textColor.lighter(150));
+        }
+
+        painter.setOpacity(0.5);
         painter.drawText(textRect, Qt::AlignRight | Qt::AlignTop, m_inputNumber);
+        painter.setOpacity(2.0);
     }
 }
 

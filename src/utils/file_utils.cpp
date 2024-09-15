@@ -5,7 +5,7 @@ namespace fileUtil {
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,
                      const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle,
-                     const QVector<QVector<QString>>& buttonNumbers)
+                     const QVector<QVector<QString>>& TopRightButtonNumbers)
     {
         QFile file(filePath);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -61,19 +61,19 @@ namespace fileUtil {
 
             json["colors"] = colorStyles;
 
-            QJsonArray buttonNumbersArray;
+            QJsonArray TopRightButtonNumbersArray;
 
             for (int row = 0; row < 9; ++row)
             {
                 QJsonArray rowArray;
                 for (int col = 0; col < 9; ++col)
                 {
-                    rowArray.append(buttonNumbers[row][col]);
+                    rowArray.append(TopRightButtonNumbers[row][col]);
                 }
-                buttonNumbersArray.append(rowArray);
+                TopRightButtonNumbersArray.append(rowArray);
             }
 
-            json["buttonNumbers"] = buttonNumbersArray;
+            json["TopRightButtonNumbers"] = TopRightButtonNumbersArray;
 
             QJsonDocument doc(json);
             file.write(doc.toJson());
@@ -83,7 +83,7 @@ namespace fileUtil {
 
     bool readFromJSON(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
                       int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
-                      QString& lightStyle, QVector<QVector<QString>>& buttonNumbers)
+                      QString& lightStyle, QVector<QVector<QString>>& TopRightButtonNumbers)
     {
         QFile file(filePath);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -198,17 +198,17 @@ namespace fileUtil {
             return false;
         }
 
-        if (json.contains("buttonNumbers"))
+        if (json.contains("TopRightButtonNumbers"))
         {
-            QJsonArray buttonNumbersArray = json["buttonNumbers"].toArray();
-            buttonNumbers.resize(9);
+            QJsonArray TopRightButtonNumbersArray = json["TopRightButtonNumbers"].toArray();
+            TopRightButtonNumbers.resize(9);
             for (int row = 0; row < 9; ++row)
             {
-                QJsonArray rowArray = buttonNumbersArray[row].toArray();
-                buttonNumbers[row].resize(9);
+                QJsonArray rowArray = TopRightButtonNumbersArray[row].toArray();
+                TopRightButtonNumbers[row].resize(9);
                 for (int col = 0; col < 9; ++col)
                 {
-                    buttonNumbers[row][col] = rowArray[col].toString();
+                    TopRightButtonNumbers[row][col] = rowArray[col].toString();
                 }
             }
         }

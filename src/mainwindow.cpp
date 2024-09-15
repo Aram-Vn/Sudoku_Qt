@@ -359,7 +359,7 @@ void MainWindow::saveGameState()
     QVector<QVector<int>> board     = m_game->getBoard();
     QVector<QVector<int>> fullBoard = m_game->getFullBoard();
 
-    QVector<QVector<QString>> buttonNumbers(9, QVector<QString>(9, QString()));
+    QVector<QVector<QString>> TopRightButtonNumbers(9, QVector<QString>(9, QString()));
     for (int row = 0; row < 9; ++row)
     {
         for (int col = 0; col < 9; ++col)
@@ -367,13 +367,13 @@ void MainWindow::saveGameState()
             CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
             if (button)
             {
-                buttonNumbers[row][col] = button->getTopRightNumber(); // Get number for each button
+                TopRightButtonNumbers[row][col] = button->getTopRightNumber(); // Get number for each button
             }
         }
     }
 
     fileUtil::writeInJSON(filePath, board, fullBoard, m_game->getDifficulty(), m_game->getEmptyCount(),
-                          m_game->getHearts(), m_seconds, darkStyle, lightStyle, buttonNumbers);
+                          m_game->getHearts(), m_seconds, darkStyle, lightStyle, TopRightButtonNumbers);
 }
 
 bool MainWindow::loadGameState()
@@ -387,10 +387,10 @@ bool MainWindow::loadGameState()
     int                       seconds{};
     QString                   darkStyle{};
     QString                   lightStyle{};
-    QVector<QVector<QString>> buttonNumbers{};
+    QVector<QVector<QString>> TopRightButtonNumbers{};
 
     bool is_success = fileUtil::readFromJSON(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
-                                             darkStyle, lightStyle, buttonNumbers);
+                                             darkStyle, lightStyle, TopRightButtonNumbers);
 
     if (is_success)
     {
@@ -410,7 +410,7 @@ bool MainWindow::loadGameState()
                 CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
                 if (button)
                 {
-                    button->setTopRightNumber(buttonNumbers[row][col]);
+                    button->setTopRightNumber(TopRightButtonNumbers[row][col]);
                 }
             }
         }
