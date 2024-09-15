@@ -4,7 +4,8 @@ namespace fileUtil {
 
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,
-                     const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle)
+                     const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle,
+                     const QVector<QVector<QString>>& buttonNumbers)
     {
         QFile file(filePath);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -60,6 +61,20 @@ namespace fileUtil {
 
             json["colors"] = colorStyles;
 
+            QJsonArray buttonNumbersArray;
+
+            for (int row = 0; row < 9; ++row)
+            {
+                QJsonArray rowArray;
+                for (int col = 0; col < 9; ++col)
+                {
+                    rowArray.append(buttonNumbers[row][col]);
+                }
+                buttonNumbersArray.append(rowArray);
+            }
+
+            json["buttonNumbers"] = buttonNumbersArray;
+
             QJsonDocument doc(json);
             file.write(doc.toJson());
             file.close();
@@ -68,7 +83,7 @@ namespace fileUtil {
 
     bool readFromJSON(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
                       int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
-                      QString& lightStyle)
+                      QString& lightStyle, QVector<QVector<QString>>& buttonNumbers)
     {
         QFile file(filePath);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -110,7 +125,6 @@ namespace fileUtil {
             return false;
         }
 
-        // Load the full board (the solution)
         if (json.contains("fullBoard"))
         {
             QJsonArray fullBoardArray = json["fullBoard"].toArray();
@@ -124,6 +138,10 @@ namespace fileUtil {
                     fullBoard[row][col] = rowArray[col].toInt();
                 }
             }
+        }
+        else
+        {
+            return false;
         }
 
         // Load other data
@@ -180,8 +198,28 @@ namespace fileUtil {
             return false;
         }
 
+        if (json.contains("buttonNumbers"))
+        {
+            QJsonArray buttonNumbersArray = json["buttonNumbers"].toArray();
+            buttonNumbers.resize(9);
+            for (int row = 0; row < 9; ++row)
+            {
+                QJsonArray rowArray = buttonNumbersArray[row].toArray();
+                buttonNumbers[row].resize(9);
+                for (int col = 0; col < 9; ++col)
+                {
+                    buttonNumbers[row][col] = rowArray[col].toString();
+                }
+            }
+        }
+        else
+        {
+            {
+                return false;
+            }
+        }
+
         return true;
     }
-
 
 } // namespace fileUtil

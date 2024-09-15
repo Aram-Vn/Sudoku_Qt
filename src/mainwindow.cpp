@@ -359,24 +359,38 @@ void MainWindow::saveGameState()
     QVector<QVector<int>> board     = m_game->getBoard();
     QVector<QVector<int>> fullBoard = m_game->getFullBoard();
 
+    QVector<QVector<QString>> buttonNumbers(9, QVector<QString>(9, QString()));
+    for (int row = 0; row < 9; ++row)
+    {
+        for (int col = 0; col < 9; ++col)
+        {
+            CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            if (button)
+            {
+                buttonNumbers[row][col] = button->getTopRightNumber(); // Get number for each button
+            }
+        }
+    }
+
     fileUtil::writeInJSON(filePath, board, fullBoard, m_game->getDifficulty(), m_game->getEmptyCount(),
-                          m_game->getHearts(), m_seconds, darkStyle, lightStyle);
+                          m_game->getHearts(), m_seconds, darkStyle, lightStyle, buttonNumbers);
 }
 
 bool MainWindow::loadGameState()
 {
-    QString               filePath = "sudoku_save.json";
-    QVector<QVector<int>> board{};
-    QVector<QVector<int>> fullBoard{};
-    int                   difficulty{};
-    int                   emptyCount{};
-    int                   heartCount{};
-    int                   seconds{};
-    QString               darkStyle{};
-    QString               lightStyle{};
+    QString                   filePath = "sudoku_save.json";
+    QVector<QVector<int>>     board{};
+    QVector<QVector<int>>     fullBoard{};
+    int                       difficulty{};
+    int                       emptyCount{};
+    int                       heartCount{};
+    int                       seconds{};
+    QString                   darkStyle{};
+    QString                   lightStyle{};
+    QVector<QVector<QString>> buttonNumbers{};
 
     bool is_success = fileUtil::readFromJSON(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
-                                             darkStyle, lightStyle);
+                                             darkStyle, lightStyle, buttonNumbers);
 
     if (is_success)
     {
@@ -388,6 +402,18 @@ bool MainWindow::loadGameState()
         m_seconds = seconds;
 
         colorUtil::applyColorStyles(m_grid_layout, darkStyle, lightStyle);
+
+        for (int row = 0; row < 9; ++row)
+        {
+            for (int col = 0; col < 9; ++col)
+            {
+                CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+                if (button)
+                {
+                    button->setTopRightNumber(buttonNumbers[row][col]);
+                }
+            }
+        }
 
         return true;
     }

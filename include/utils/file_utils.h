@@ -16,12 +16,12 @@ namespace fileUtil {
 
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,
-                     const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle);
+                     const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle,
+                     const QVector<QVector<QString>>& buttonNumbers);
 
     bool readFromJSON(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
                       int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
-                      QString& lightStyle);
-
+                      QString& lightStyle, QVector<QVector<QString>>& buttonNumbers);
 
 } // namespace fileUtil
 
