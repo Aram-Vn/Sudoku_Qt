@@ -3,7 +3,8 @@
 #include <QPainter>
 
 CustomButton::CustomButton(QWidget* parent)
-    : QPushButton(parent)
+    : QPushButton(parent),
+      m_isListeningForKey{ false }
 {
 }
 
@@ -11,7 +12,6 @@ void CustomButton::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        m_clearOnNextKeyPress = true;
         emit leftClicked();
     }
     else if (event->button() == Qt::RightButton)
@@ -31,20 +31,20 @@ void CustomButton::keyPressEvent(QKeyEvent* event)
 
         if (key >= Qt::Key_1 && key <= Qt::Key_9)
         {
-            m_inputNumber         = QString::number(key - Qt::Key_0); 
-            m_isListeningForKey   = false;                            
-            m_clearOnNextKeyPress = false;                           
-            update();                                                 
+            m_inputNumber       = QString::number(key - Qt::Key_0);
+            m_isListeningForKey = false;
+
+            if (this->text().isEmpty())
+            {
+                update();
+            }
+            else
+            {
+                m_inputNumber.clear();
+            }
         }
     }
-
-    if (m_clearOnNextKeyPress)
-    {
-        m_inputNumber.clear();
-        m_clearOnNextKeyPress = false;
-        update();
-    }
-
+    
     QPushButton::keyPressEvent(event);
 }
 
@@ -71,5 +71,5 @@ void CustomButton::paintEvent(QPaintEvent* event)
 void CustomButton::clearNumber()
 {
     m_inputNumber.clear();
-    update(); 
+    update();
 }

@@ -26,8 +26,7 @@ public:
 
 private:
     QString m_inputNumber;
-    bool    m_isListeningForKey   = false;
-    bool    m_clearOnNextKeyPress = false; // Flag to control clearing behavior
+    bool    m_isListeningForKey;
 };
 
 #endif // CUSTOMBUTTON_H

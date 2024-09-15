@@ -202,13 +202,14 @@ void MainWindow::handleStart()
             {
                 dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())
                     ->setText(QString::number(board[row][col]));
+
+                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(false);
             }
             else
             {
                 dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setText("");
+                dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(true);
             }
-
-            dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->setEnabled(true);
         }
     }
 
@@ -223,6 +224,7 @@ void MainWindow::addOnGrid()
         ->setText(QString::number(m_game->getNumber(x, y)));
 
     dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(x, y)->widget())->setEnabled(false);
+    dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(x, y)->widget())->clearNumber();
 
     m_game->setCoords(-1, -1);
 
