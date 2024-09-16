@@ -18,14 +18,14 @@ include_directories(include)
 file(GLOB SOURCE_FILES
     src/*.cpp
     src/utils/*.cpp
-    src/custombutton/*.cpp
+    src/SudokuButton/*.cpp
 )
 
 # List header files separately using GLOB
 file(GLOB HEADER_FILES
     include/*.h
     include/utils/*.h
-    include/custombutton/*.h
+    include/SudokuButton/*.h
 )
 
 # Combine source and header files

@@ -1,16 +1,17 @@
-#ifndef CUSTOMBUTTON_H
-#define CUSTOMBUTTON_H
+#ifndef SudokuButton_H
+#define SudokuButton_H
 
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QPainter>
 #include <QPushButton>
 
-class CustomButton : public QPushButton
+class SudokuButton : public QPushButton
 {
     Q_OBJECT
 
 public:
-    explicit CustomButton(QWidget* parent = nullptr);
+    explicit SudokuButton(QWidget* parent = nullptr);
 
 signals:
     void rightClicked();
@@ -31,4 +32,4 @@ private:
     bool    m_isListeningForKey;
 };
 
-#endif // CUSTOMBUTTON_H
+#endif // SudokuButton_H

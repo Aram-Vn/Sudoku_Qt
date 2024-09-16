@@ -1,14 +1,12 @@
-#include "../../include/custombutton/custombutton.h"
-#include <QKeyEvent>
-#include <QPainter>
+#include "../../include/SudokuButton/SudokuButton.h"
 
-CustomButton::CustomButton(QWidget* parent)
+SudokuButton::SudokuButton(QWidget* parent)
     : QPushButton(parent),
       m_isListeningForKey{ false }
 {
 }
 
-void CustomButton::mousePressEvent(QMouseEvent* event)
+void SudokuButton::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -23,7 +21,7 @@ void CustomButton::mousePressEvent(QMouseEvent* event)
     QPushButton::mousePressEvent(event);
 }
 
-void CustomButton::keyPressEvent(QKeyEvent* event)
+void SudokuButton::keyPressEvent(QKeyEvent* event)
 {
     if (m_isListeningForKey)
     {
@@ -48,7 +46,7 @@ void CustomButton::keyPressEvent(QKeyEvent* event)
     QPushButton::keyPressEvent(event);
 }
 
-void CustomButton::paintEvent(QPaintEvent* event)
+void SudokuButton::paintEvent(QPaintEvent* event)
 {
     QPushButton::paintEvent(event);
 
@@ -81,18 +79,18 @@ void CustomButton::paintEvent(QPaintEvent* event)
     }
 }
 
-void CustomButton::clearNumber()
+void SudokuButton::clearNumber()
 {
     m_inputNumber.clear();
     update();
 }
 
-QString CustomButton::getTopRightNumber() const
+QString SudokuButton::getTopRightNumber() const
 {
     return m_inputNumber;
 }
 
-void CustomButton::setTopRightNumber(const QString& number)
+void SudokuButton::setTopRightNumber(const QString& number)
 {
     m_inputNumber = number;
     update();

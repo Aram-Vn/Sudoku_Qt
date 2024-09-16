@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "../include/game.h"
+#include "../include/SudokuButton/SudokuButton.h"
 #include "../include/utils/color_utils.h"
 #include "../include/utils/file_utils.h"
 
@@ -60,7 +61,7 @@ private:
     QLabel*               m_time_label;
     int                   m_seconds;
     QTimer*               m_timer;
-    bool                  m_is_left;
+    bool                  m_is_left_click;
 };
 
 #endif // MAINWINDOW_H

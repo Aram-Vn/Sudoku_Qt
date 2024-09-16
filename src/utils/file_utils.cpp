@@ -61,6 +61,7 @@ namespace fileUtil {
 
             json["colors"] = colorStyles;
 
+            // Save the board top right numbers
             QJsonArray TopRightButtonNumbersArray;
 
             for (int row = 0; row < 9; ++row)

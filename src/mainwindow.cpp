@@ -1,5 +1,4 @@
 #include "../include/mainwindow.h"
-#include "../include/custombutton/custombutton.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -12,7 +11,7 @@ MainWindow::MainWindow(QWidget* parent)
       m_time_label(new QLabel(this)),
       m_timer(new QTimer(this)),
       m_seconds{},
-      m_is_left{ true }
+      m_is_left_click{ true }
 
 {
     this->setFixedSize(700, 850);
@@ -26,7 +25,7 @@ MainWindow::MainWindow(QWidget* parent)
     {
         for (int col = 0; col < grid_size; ++col)
         {
-            CustomButton* sudokuButton = new CustomButton(this);
+            SudokuButton* sudokuButton = new SudokuButton(this);
             sudokuButton->setFixedSize(60, 60);
 
             bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
@@ -40,13 +39,10 @@ MainWindow::MainWindow(QWidget* parent)
             sudokuButton->setStyleSheet(colorStyle);
             sudokuButton->setEnabled(false);
 
-            connect(sudokuButton, &CustomButton::leftClicked, this,
-                    [row, col, sudokuButton, this]()
+            connect(sudokuButton, &SudokuButton::leftClicked, this,
+                    [row, col, this]()
                     {
-                        m_is_left = true;
-
-                        qDebug() << "leftClicked detected at: " << row << ", " << col;
-                        qDebug() << "m_is_left is now: " << m_is_left;
+                        m_is_left_click = true;
 
                         int x = m_game->getX();
                         int y = m_game->getY();
@@ -57,13 +53,7 @@ MainWindow::MainWindow(QWidget* parent)
                         }
                     });
 
-            connect(sudokuButton, &CustomButton::rightClicked, this,
-                    [row, col, sudokuButton, this]()
-                    {
-                        m_is_left = false;
-                        qDebug() << "Right-click detected at: " << row << ", " << col;
-                        qDebug() << "m_is_left is now: " << m_is_left;
-                    });
+            connect(sudokuButton, &SudokuButton::rightClicked, this, [this]() { m_is_left_click = false; });
 
             m_grid_layout->addWidget(sudokuButton, row, col);
         }
@@ -104,21 +94,34 @@ MainWindow::MainWindow(QWidget* parent)
     m_reset_game->setText("Reset");
     m_reset_game->setGeometry(400, 50, 70, 50);
     m_reset_game->setStyleSheet("background-color: dimGray;");
-    connect(m_reset_game, &QPushButton::clicked, this,
-            [this]()
+
+    connect(
+        m_reset_game, &QPushButton::clicked, this,
+        [this]()
+        {
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Reset The Game??");
+            msgBox.setText("Do you want to Reset your game?");
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
+            int reply = msgBox.exec();
+
+            if (reply == QMessageBox::Yes)
             {
                 for (int row = 0; row < grid_size; ++row)
                 {
                     for (int col = 0; col < grid_size; ++col)
                     {
-                        dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->clearNumber();
+                        dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(row, col)->widget())->clearNumber();
                     }
                 }
 
                 m_time_label->setText("00:00:00");
                 resetGame();
                 QMessageBox::information(nullptr, "Reset", "you give up!!!");
-            });
+            }
+            return;
+        });
 
     m_heart_label->setGeometry(500, 50, 90, 50);
     m_heart_label->setAlignment(Qt::AlignCenter);
@@ -167,9 +170,7 @@ MainWindow::~MainWindow() {}
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
-    qDebug() << "keyPressEvent detected " << m_is_left;
-
-    if (m_is_left)
+    if (m_is_left_click)
     {
         if (event->key() >= Qt::Key_1 && event->key() <= Qt::Key_9)
         {
@@ -197,7 +198,7 @@ void MainWindow::handleStart()
     {
         for (int col = 0; col < grid_size; ++col)
         {
-            CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            SudokuButton* button = dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
 
             if (board[row][col])
             {
@@ -220,7 +221,7 @@ void MainWindow::addOnGrid()
     int x = m_game->getX();
     int y = m_game->getY();
 
-    CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(x, y)->widget());
+    SudokuButton* button = dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(x, y)->widget());
 
     button->setText(QString::number(m_game->getNumber(x, y)));
     button->setEnabled(false);
@@ -261,7 +262,7 @@ void MainWindow::resetGame()
     {
         for (int col = 0; col < grid_size; ++col)
         {
-            CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            SudokuButton* button = dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
             button->setText("");
             button->setEnabled(false);
             button->clearNumber();
@@ -367,7 +368,7 @@ void MainWindow::saveGameState()
     {
         for (int col = 0; col < 9; ++col)
         {
-            CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+            SudokuButton* button = dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
             if (button)
             {
                 TopRightButtonNumbers[row][col] = button->getTopRightNumber(); // Get number for each button
@@ -410,7 +411,7 @@ bool MainWindow::loadGameState()
         {
             for (int col = 0; col < 9; ++col)
             {
-                CustomButton* button = dynamic_cast<CustomButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
+                SudokuButton* button = dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
                 if (button)
                 {
                     button->setTopRightNumber(TopRightButtonNumbers[row][col]);
