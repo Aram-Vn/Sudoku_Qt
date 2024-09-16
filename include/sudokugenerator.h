@@ -1,8 +1,10 @@
+#ifndef SUDOKU_QT_INCLUDE_SUDOKU_GENERATOR_H
+#define SUDOKU_QT_INCLUDE_SUDOKU_GENERATOR_H
+
 #include <QVector>
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 
 class SudokuGenerator
 {
@@ -25,3 +27,5 @@ public:
 
     static QVector<QVector<int>> getGeneratedSudoku();
 };
+
+#endif // SUDOKU_QT_INCLUDE_SUDOKU_GENERATOR_H

@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
+#define SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
 
 #include "../include/game.h"
 #include "../include/SudokuButton/SudokuButton.h"
@@ -24,7 +24,7 @@
 #include <QTextStream>
 #include <QTimer>
 
-class MainWindow : public QMainWindow
+    class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -64,4 +64,4 @@ private:
     bool                  m_is_left_click;
 };
 
-#endif // MAINWINDOW_H
+#endif // SUDOKU_QT_INCLUDE_MAIN_WINDOW_H

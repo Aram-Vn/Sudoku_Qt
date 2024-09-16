@@ -1,12 +1,12 @@
-#ifndef SudokuButton_H
-#define SudokuButton_H
+#ifndef SUDOKU_QT_INCLUDE_SUDOKU_BUTTON_SUDOKU_BUTTON_H
+#define SUDOKU_QT_INCLUDE_SUDOKU_BUTTON_SUDOKU_BUTTON_H
 
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPushButton>
 
-class SudokuButton : public QPushButton
+    class SudokuButton : public QPushButton
 {
     Q_OBJECT
 
@@ -32,4 +32,4 @@ private:
     bool    m_isListeningForKey;
 };
 
-#endif // SudokuButton_H
+#endif // SUDOKU_QT_INCLUDE_SUDOKU_BUTTON_SUDOKU_BUTTON_H
