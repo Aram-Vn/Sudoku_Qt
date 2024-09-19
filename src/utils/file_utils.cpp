@@ -2,6 +2,129 @@
 
 namespace fileUtil {
 
+    void writeInBinary(const QString& filePath, const QVector<QVector<int>>& board,
+                       const QVector<QVector<int>>& fullBoard, int difficulty, int emptyCount, int heartCount,
+                       int seconds, const QString& darkStyle, const QString& lightStyle,
+                       const QVector<QVector<QString>>& TopRightButtonNumbers)
+    {
+        QFile file(filePath);
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QDataStream out(&file);
+
+            // Write the current board
+            for (int row = 0; row < 9; ++row)
+            {
+                for (int col = 0; col < 9; ++col)
+                {
+                    out << (quint8)board[row][col]; 
+                }
+            }
+
+            // Write the full board
+            for (int row = 0; row < 9; ++row)
+            {
+                for (int col = 0; col < 9; ++col)
+                {
+                    out << (quint8)fullBoard[row][col]; 
+                }
+            }
+
+            // Write difficulty, emptyCount, heartCount, and time
+            out << (quint8)difficulty;
+            out << (quint8)emptyCount;
+            out << (quint8)heartCount;
+            out << (quint32)seconds;
+
+            // Write darkStyle and lightStyle
+            out << darkStyle << lightStyle;
+
+            // Write button numbers 
+            for (int row = 0; row < 9; ++row)
+            {
+                for (int col = 0; col < 9; ++col)
+                {
+                    out << TopRightButtonNumbers[row][col];
+                }
+            }
+
+            file.close();
+        }
+    }
+
+    bool readFromBinary(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
+                        int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
+                        QString& lightStyle, QVector<QVector<QString>>& TopRightButtonNumbers)
+    {
+        QFile file(filePath);
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            qWarning() << "Unable to open file for reading.";
+            return false;
+        }
+
+        QDataStream in(&file);
+
+        // Read the current board
+        board.resize(9);
+        for (int row = 0; row < 9; ++row)
+        {
+            board[row].resize(9);
+            for (int col = 0; col < 9; ++col)
+            {
+                quint8 value;
+                in >> value;
+                board[row][col] = value;
+            }
+        }
+
+        // Read the full board (solution)
+        fullBoard.resize(9);
+        for (int row = 0; row < 9; ++row)
+        {
+            fullBoard[row].resize(9);
+            for (int col = 0; col < 9; ++col)
+            {
+                quint8 value;
+                in >> value;
+                fullBoard[row][col] = value;
+            }
+        }
+
+        // Read difficulty, emptyCount, heartCount, and time
+        quint8  difficultyValue, emptyCountValue, heartCountValue;
+        quint32 secondsValue;
+
+        in >> difficultyValue;
+        in >> emptyCountValue;
+        in >> heartCountValue;
+        in >> secondsValue;
+
+        difficulty = difficultyValue;
+        emptyCount = emptyCountValue;
+        heartCount = heartCountValue;
+        seconds    = secondsValue;
+
+        // Read darkStyle and lightStyle
+        in >> darkStyle >> lightStyle;
+
+        // Read button numbers
+        TopRightButtonNumbers.resize(9);
+        for (int row = 0; row < 9; ++row)
+        {
+            TopRightButtonNumbers[row].resize(9);
+            for (int col = 0; col < 9; ++col)
+            {
+                QString buttonText;
+                in >> buttonText; // Read the QString
+                TopRightButtonNumbers[row][col] = buttonText;
+            }
+        }
+
+        file.close();
+        return true;
+    }
+
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,
                      const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle,

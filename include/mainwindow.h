@@ -1,8 +1,8 @@
 #ifndef SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
 #define SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
 
-#include "../include/game.h"
 #include "../include/SudokuButton/SudokuButton.h"
+#include "../include/game.h"
 #include "../include/utils/color_utils.h"
 #include "../include/utils/file_utils.h"
 
@@ -24,7 +24,7 @@
 #include <QTextStream>
 #include <QTimer>
 
-    class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 

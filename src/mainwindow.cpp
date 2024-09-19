@@ -1,4 +1,5 @@
 #include "../include/mainwindow.h"
+#include "utils/file_utils.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -352,7 +353,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::saveGameState()
 {
-    QString filePath = "sudoku_save.json";
+    QString filePath = "sudoku_save.bin";
 
     QPushButton* darkStyleButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 0)->widget());
     QString      darkStyle       = darkStyleButton->styleSheet();
@@ -376,13 +377,13 @@ void MainWindow::saveGameState()
         }
     }
 
-    fileUtil::writeInJSON(filePath, board, fullBoard, m_game->getDifficulty(), m_game->getEmptyCount(),
+    fileUtil::writeInBinary(filePath, board, fullBoard, m_game->getDifficulty(), m_game->getEmptyCount(),
                           m_game->getHearts(), m_seconds, darkStyle, lightStyle, TopRightButtonNumbers);
 }
 
 bool MainWindow::loadGameState()
 {
-    QString                   filePath = "sudoku_save.json";
+    QString                   filePath = "sudoku_save.bin";
     QVector<QVector<int>>     board{};
     QVector<QVector<int>>     fullBoard{};
     int                       difficulty{};
@@ -393,7 +394,7 @@ bool MainWindow::loadGameState()
     QString                   lightStyle{};
     QVector<QVector<QString>> TopRightButtonNumbers{};
 
-    bool is_success = fileUtil::readFromJSON(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
+    bool is_success = fileUtil::readFromBinary(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
                                              darkStyle, lightStyle, TopRightButtonNumbers);
 
     if (is_success)
