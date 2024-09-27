@@ -3,6 +3,8 @@
 build
 .cache
 sudoku_save.json
+sudoku_save.bin
+assets/sudoku_save.bin
 
 *~
 *.autosave

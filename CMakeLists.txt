@@ -28,6 +28,12 @@ file(GLOB HEADER_FILES
     include/SudokuButton/*.h
 )
 
+# Add the Qt resource file
+set(RESOURCE_FILE resources.qrc)
+
+# Add resources to the project
+qt_add_resources(RESOURCES ${RESOURCE_FILE})
+
 # Combine source and header files
 set(PROJECT_SOURCES
     ${SOURCE_FILES}
@@ -38,15 +44,18 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Sudoku
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ${RESOURCES} 
     )
 else()
     if(ANDROID)
         add_library(Sudoku SHARED
             ${PROJECT_SOURCES}
+            ${RESOURCES}
         )
     else()
         add_executable(Sudoku
             ${PROJECT_SOURCES}
+            ${RESOURCES}
         )
     endif()
 endif()

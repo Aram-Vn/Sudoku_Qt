@@ -126,8 +126,8 @@ MainWindow::MainWindow(QWidget* parent)
 
     m_heart_label->setGeometry(500, 50, 90, 50);
     m_heart_label->setAlignment(Qt::AlignCenter);
-    m_heart_label->setStyleSheet("background-color: dimGray;");
-    m_heart_label->setText("Hearts:");
+    m_heart_label->setStyleSheet("background-color: dimGray; border-radius: 25px;");
+    m_heart_label->setText("Heartcount");
 
     m_time_label->setText("00:00:00");
     m_time_label->setGeometry(600, 50, 70, 50);
@@ -183,15 +183,15 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 
 void MainWindow::handleStart()
 {
-    int     hearts    = m_game->getHearts();
-    QString heartText = QString("Hearts: ");
-
+    int     hearts = m_game->getHearts();
+    QString heartSpan;
     for (int i = 0; i < hearts; ++i)
     {
-        heartText += "<span style='color:red;'>♥&nbsp;</span>";
+        heartSpan += "<img src=':/assets/Heart.png' width='17' height='17'>";
     }
-
-    m_heart_label->setText(heartText.trimmed());
+    
+    m_heart_label->setText(heartSpan);
+    m_heart_label->setTextFormat(Qt::RichText);
 
     QVector<QVector<int>> board     = m_game->getBoard();
     const int             grid_size = 9;
@@ -241,13 +241,16 @@ void MainWindow::changeHeartLabel()
 {
     QMessageBox::information(nullptr, "wrong", "No!!!");
 
-    QString heartString;
-    for (int i = 0; i < m_game->getHearts(); ++i)
+    int     hearts = m_game->getHearts();
+    QString heartSpan;
+    for (int i = 0; i < hearts; ++i)
     {
-        heartString.append("♥&nbsp;");
+        heartSpan += "<img src=':/assets/Heart.png' width='17' height='17'>";
     }
 
-    m_heart_label->setText("Hearts: <span style='color:red;'>" + heartString.trimmed() + "</span>");
+    m_heart_label->setText(heartSpan);
+    m_heart_label->setTextFormat(Qt::RichText);
+
     if (m_game->getHearts() == 0)
     {
         m_timer->stop();
@@ -378,7 +381,7 @@ void MainWindow::saveGameState()
     }
 
     fileUtil::writeInBinary(filePath, board, fullBoard, m_game->getDifficulty(), m_game->getEmptyCount(),
-                          m_game->getHearts(), m_seconds, darkStyle, lightStyle, TopRightButtonNumbers);
+                            m_game->getHearts(), m_seconds, darkStyle, lightStyle, TopRightButtonNumbers);
 }
 
 bool MainWindow::loadGameState()
@@ -395,7 +398,7 @@ bool MainWindow::loadGameState()
     QVector<QVector<QString>> TopRightButtonNumbers{};
 
     bool is_success = fileUtil::readFromBinary(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
-                                             darkStyle, lightStyle, TopRightButtonNumbers);
+                                               darkStyle, lightStyle, TopRightButtonNumbers);
 
     if (is_success)
     {

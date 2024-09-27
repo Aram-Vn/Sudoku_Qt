@@ -20,9 +20,11 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QPixmap>
 #include <QPushButton>
 #include <QTextStream>
 #include <QTimer>
+#include <QWidget>
 
 class MainWindow : public QMainWindow
 {
@@ -62,6 +64,9 @@ private:
     int                   m_seconds;
     QTimer*               m_timer;
     bool                  m_is_left_click;
+
+    QPushButton* startButton;
+    // QWidget*     gameInterface; // The entire game interface
 };
 
 #endif // SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
