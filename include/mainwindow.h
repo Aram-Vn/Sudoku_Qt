@@ -44,7 +44,7 @@ protected:
 private slots:
     void openColorPicker();
     void promptContinueOldGame();
-    void starting();
+    void showHidden();
 
 private:
     void handleStart();

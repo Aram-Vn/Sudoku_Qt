@@ -19,7 +19,13 @@ MainWindow::MainWindow(QWidget* parent)
     this->setFixedSize(700, 850);
     m_central_widget = new QWidget(this);
     m_central_widget->setGeometry(0, 150, 700, 700);
-    this->setStyleSheet("background-color: #282828;");
+
+    this->setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+                        "stop:0 #484848, "    // Lightest color at the top
+                        "stop:0.33 #383838, " // Medium-light color
+                        "stop:0.66 #333333, " // Medium-dark color
+                        "stop:1 #282828);");  // Darkest color at the bottom
+
     m_grid_layout = new QGridLayout(m_central_widget);
 
     const int grid_size = 9;
@@ -137,7 +143,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_time_label->setStyleSheet("background-color: dimGray;");
 
     m_color_picker_button->setText("Choose Color");
-    m_color_picker_button->setGeometry(70, 100, 150, 50);
+    m_color_picker_button->setGeometry(0, 0, 120, 45);
     m_color_picker_button->setStyleSheet("background-color: dimGray;");
     connect(m_color_picker_button, &QPushButton::clicked, this, &MainWindow::openColorPicker);
 
@@ -160,13 +166,18 @@ MainWindow::MainWindow(QWidget* parent)
                                           .arg(secs, 2, 10, QLatin1Char('0')));
             });
 
+    int buttonWidth  = 150;
+    int buttonHeight = 50;
+
+    int x = (this->width() - buttonWidth) / 2;
+    int y = (this->height() - buttonHeight) / 2;
+
     m_continue_old_game->setText("Continue old game");
     m_continue_old_game->setStyleSheet("background-color: dimGray; text-align: center;");
-    m_continue_old_game->setGeometry(0, 0, 145, 40);
+    m_continue_old_game->setGeometry(x, y - 15, buttonWidth, buttonHeight);
 
     connect(m_continue_old_game, &QPushButton::clicked, this, [this]() { promptContinueOldGame(); });
 
-    m_continue_old_game->hide();
     m_reset_game->hide();
     m_heart_label->hide();
     m_start_button->hide();
@@ -174,28 +185,21 @@ MainWindow::MainWindow(QWidget* parent)
     m_color_picker_button->hide();
     m_central_widget->hide();
 
-    int buttonWidth  = 150;
-    int buttonHeight = 50;
-
-    int x = (this->width() - buttonWidth) / 2;
-    int y = (this->height() - buttonHeight) / 2;
-
-    m_start->setGeometry(x, y, buttonWidth, buttonHeight);
+    m_start->setGeometry(x, y - 80, buttonWidth, buttonHeight);
     m_start->setText("New game");
     m_start->setStyleSheet("background-color: dimGray; text-align: center;");
-    connect(m_start, &QPushButton::clicked, this, &MainWindow::starting);
+    connect(m_start, &QPushButton::clicked, this, &MainWindow::showHidden);
 }
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::starting()
+void MainWindow::showHidden()
 {
     for (auto& button : m_difficulty_buttons)
     {
         button->show();
     }
 
-    m_continue_old_game->show();
     m_reset_game->show();
     m_heart_label->show();
     m_start_button->show();
@@ -497,6 +501,7 @@ void MainWindow::promptContinueOldGame()
             return;
         }
 
+        this->showHidden();
         this->handleStart();
 
         for (int i = 0; i < m_difficulty_buttons.size(); ++i)
