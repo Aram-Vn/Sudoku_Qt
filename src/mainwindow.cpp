@@ -1,6 +1,5 @@
 #include "../include/mainwindow.h"
 #include "utils/file_utils.h"
-#include <qpushbutton.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -191,9 +190,9 @@ MainWindow::~MainWindow() {}
 
 void MainWindow::starting()
 {
-    for (int i = 0; i < m_difficulty_buttons.size(); ++i)
+    for (auto& button : m_difficulty_buttons)
     {
-        m_difficulty_buttons[i]->show();
+        button->show();
     }
 
     m_continue_old_game->show();
@@ -204,7 +203,7 @@ void MainWindow::starting()
     m_color_picker_button->show();
     m_central_widget->show();
 
-    m_start->hide();
+    delete m_start;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
@@ -394,7 +393,9 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::saveGameState()
 {
-    QString filePath = "sudoku_save.bin";
+    QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir().mkpath(filePath);
+    filePath.append("/sudoku_save.bin");
 
     QPushButton* darkStyleButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 0)->widget());
     QString      darkStyle       = darkStyleButton->styleSheet();
@@ -424,7 +425,10 @@ void MainWindow::saveGameState()
 
 bool MainWindow::loadGameState()
 {
-    QString                   filePath = "sudoku_save.bin";
+    QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir().mkpath(filePath);
+    filePath.append("/sudoku_save.bin");
+
     QVector<QVector<int>>     board{};
     QVector<QVector<int>>     fullBoard{};
     int                       difficulty{};

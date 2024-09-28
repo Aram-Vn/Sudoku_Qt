@@ -6,7 +6,6 @@
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QString>
-#include <qcontainerfwd.h>
 
 namespace colorUtil {
 

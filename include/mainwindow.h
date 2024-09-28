@@ -10,6 +10,7 @@
 #include <QColor>
 #include <QColorDialog>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -22,11 +23,10 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QPushButton>
+#include <QStandardPaths>
 #include <QTextStream>
 #include <QTimer>
 #include <QWidget>
-#include <qpushbutton.h>
-#include <qwidget.h>
 
 class MainWindow : public QMainWindow
 {
