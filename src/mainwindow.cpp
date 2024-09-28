@@ -1,5 +1,6 @@
 #include "../include/mainwindow.h"
 #include "utils/file_utils.h"
+#include <qpushbutton.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -12,8 +13,8 @@ MainWindow::MainWindow(QWidget* parent)
       m_time_label(new QLabel(this)),
       m_timer(new QTimer(this)),
       m_seconds{},
-      m_is_left_click{ true }
-
+      m_is_left_click{ true },
+      m_colorPickerButton(new QPushButton(this))
 {
     this->setFixedSize(700, 850);
     QWidget* centralWidget = new QWidget(this);
@@ -134,10 +135,10 @@ MainWindow::MainWindow(QWidget* parent)
     m_time_label->setAlignment(Qt::AlignCenter);
     m_time_label->setStyleSheet("background-color: dimGray;");
 
-    QPushButton* colorPickerButton = new QPushButton("Choose Color", this);
-    colorPickerButton->setGeometry(70, 100, 150, 50);
-    colorPickerButton->setStyleSheet("background-color: dimGray;");
-    connect(colorPickerButton, &QPushButton::clicked, this, &MainWindow::openColorPicker);
+    m_colorPickerButton->setText("Choose Color");
+    m_colorPickerButton->setGeometry(70, 100, 150, 50);
+    m_colorPickerButton->setStyleSheet("background-color: dimGray;");
+    connect(m_colorPickerButton, &QPushButton::clicked, this, &MainWindow::openColorPicker);
 
     connect(m_game, &Game::board_is_ready, this, &MainWindow::handleStart);
     connect(m_game, &Game::add_on_grid, this, &MainWindow::addOnGrid);

@@ -64,9 +64,7 @@ private:
     int                   m_seconds;
     QTimer*               m_timer;
     bool                  m_is_left_click;
-
-    QPushButton* startButton;
-    // QWidget*     gameInterface; // The entire game interface
+    QPushButton*          m_colorPickerButton;
 };
 
 #endif // SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
