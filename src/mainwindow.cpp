@@ -14,13 +14,14 @@ MainWindow::MainWindow(QWidget* parent)
       m_timer(new QTimer(this)),
       m_seconds{},
       m_is_left_click{ true },
-      m_colorPickerButton(new QPushButton(this))
+      m_color_picker_button(new QPushButton(this)),
+      m_start(new QPushButton(this))
 {
     this->setFixedSize(700, 850);
-    QWidget* centralWidget = new QWidget(this);
-    centralWidget->setGeometry(0, 150, 700, 700);
+    m_central_widget = new QWidget(this);
+    m_central_widget->setGeometry(0, 150, 700, 700);
     this->setStyleSheet("background-color: #282828;");
-    m_grid_layout = new QGridLayout(centralWidget);
+    m_grid_layout = new QGridLayout(m_central_widget);
 
     const int grid_size = 9;
     for (int row = 0; row < grid_size; ++row)
@@ -66,6 +67,7 @@ MainWindow::MainWindow(QWidget* parent)
     for (int i = 0; i < m_difficulty_buttons.size(); ++i)
     {
         m_difficulty_buttons[i] = new QPushButton(difficulties[i], this);
+        m_difficulty_buttons[i]->hide();
         m_difficulty_buttons[i]->setGeometry(70 * (i + 1), 50, 70, 50);
         m_difficulty_buttons[i]->setStyleSheet("background-color: dimGray;");
         connect(m_difficulty_buttons[i], &QPushButton::clicked, this,
@@ -128,17 +130,17 @@ MainWindow::MainWindow(QWidget* parent)
     m_heart_label->setGeometry(500, 50, 90, 50);
     m_heart_label->setAlignment(Qt::AlignCenter);
     m_heart_label->setStyleSheet("background-color: dimGray; border-radius: 25px;");
-    m_heart_label->setText("Heartcount");
+    m_heart_label->setText("HeartCount");
 
     m_time_label->setText("00:00:00");
     m_time_label->setGeometry(600, 50, 70, 50);
     m_time_label->setAlignment(Qt::AlignCenter);
     m_time_label->setStyleSheet("background-color: dimGray;");
 
-    m_colorPickerButton->setText("Choose Color");
-    m_colorPickerButton->setGeometry(70, 100, 150, 50);
-    m_colorPickerButton->setStyleSheet("background-color: dimGray;");
-    connect(m_colorPickerButton, &QPushButton::clicked, this, &MainWindow::openColorPicker);
+    m_color_picker_button->setText("Choose Color");
+    m_color_picker_button->setGeometry(70, 100, 150, 50);
+    m_color_picker_button->setStyleSheet("background-color: dimGray;");
+    connect(m_color_picker_button, &QPushButton::clicked, this, &MainWindow::openColorPicker);
 
     connect(m_game, &Game::board_is_ready, this, &MainWindow::handleStart);
     connect(m_game, &Game::add_on_grid, this, &MainWindow::addOnGrid);
@@ -160,15 +162,50 @@ MainWindow::MainWindow(QWidget* parent)
             });
 
     m_continue_old_game->setText("Continue old game");
-    m_continue_old_game->setStyleSheet("background-color: dimGray;"
-                                       "text-align: left;"
-                                       "padding-left: 8px;");
+    m_continue_old_game->setStyleSheet("background-color: dimGray; text-align: center;");
     m_continue_old_game->setGeometry(0, 0, 145, 40);
 
     connect(m_continue_old_game, &QPushButton::clicked, this, [this]() { promptContinueOldGame(); });
+
+    m_continue_old_game->hide();
+    m_reset_game->hide();
+    m_heart_label->hide();
+    m_start_button->hide();
+    m_time_label->hide();
+    m_color_picker_button->hide();
+    m_central_widget->hide();
+
+    int buttonWidth  = 150;
+    int buttonHeight = 50;
+
+    int x = (this->width() - buttonWidth) / 2;
+    int y = (this->height() - buttonHeight) / 2;
+
+    m_start->setGeometry(x, y, buttonWidth, buttonHeight);
+    m_start->setText("New game");
+    m_start->setStyleSheet("background-color: dimGray; text-align: center;");
+    connect(m_start, &QPushButton::clicked, this, &MainWindow::starting);
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::starting()
+{
+    for (int i = 0; i < m_difficulty_buttons.size(); ++i)
+    {
+        m_difficulty_buttons[i]->show();
+    }
+
+    m_continue_old_game->show();
+    m_reset_game->show();
+    m_heart_label->show();
+    m_start_button->show();
+    m_time_label->show();
+    m_color_picker_button->show();
+    m_central_widget->show();
+
+    m_start->hide();
+}
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
@@ -190,7 +227,7 @@ void MainWindow::handleStart()
     {
         heartSpan += "<img src=':/assets/Heart.png' width='17' height='17'>";
     }
-    
+
     m_heart_label->setText(heartSpan);
     m_heart_label->setTextFormat(Qt::RichText);
 

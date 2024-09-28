@@ -17,17 +17,18 @@ namespace fileUtil {
             {
                 for (int col = 0; col < 9; ++col)
                 {
-                    out << (quint8)board[row][col]; 
+                    out << (quint8)board[row][col];
                 }
             }
 
-            if (fullBoard.size() == 9) {
+            if (fullBoard.size() == 9)
+            {
                 // Write the full board
                 for (int row = 0; row < 9; ++row)
                 {
                     for (int col = 0; col < 9; ++col)
                     {
-                        out << (quint8)fullBoard[row][col]; 
+                        out << (quint8)fullBoard[row][col];
                     }
                 }
             }
@@ -41,7 +42,7 @@ namespace fileUtil {
             // Write darkStyle and lightStyle
             out << darkStyle << lightStyle;
 
-            // Write button numbers 
+            // Write button numbers
             for (int row = 0; row < 9; ++row)
             {
                 for (int col = 0; col < 9; ++col)
@@ -54,152 +55,152 @@ namespace fileUtil {
         }
     }
 
-bool readFromBinary(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
-                    int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
-                    QString& lightStyle, QVector<QVector<QString>>& TopRightButtonNumbers)
-{
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly))
+    bool readFromBinary(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
+                        int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
+                        QString& lightStyle, QVector<QVector<QString>>& TopRightButtonNumbers)
     {
-        qWarning() << "Unable to open file for reading.";
-        return false;
-    }
-
-    QDataStream in(&file);
-    in.setVersion(QDataStream::Qt_5_15);
-
-    if (file.size() < 9*9*2 + 4 + 2) // Minimum size for boards, settings, and styles
-    {
-        qWarning() << "File is too small to contain all required data.";
-        file.close();
-        return false;
-    }
-
-    // current board
-    board.resize(9);
-    for (int row = 0; row < 9; ++row)
-    {
-        board[row].resize(9);
-        for (int col = 0; col < 9; ++col)
+        QFile file(filePath);
+        if (!file.open(QIODevice::ReadOnly))
         {
-            quint8 value;
-            if (in.atEnd())
-            {
-                qWarning() << "Unexpected end of file while reading current board.";
-                file.close();
-                return false;
-            }
-            in >> value;
-            if (value > 9) // Sudoku values should be 0-9
-            {
-                qWarning() << "Invalid value in current board:" << value;
-                file.close();
-                return false;
-            }
-            board[row][col] = value;
+            qWarning() << "Unable to open file for reading.";
+            return false;
         }
-    }
 
-    // full board (solution)
-    fullBoard.resize(9);
-    for (int row = 0; row < 9; ++row)
-    {
-        fullBoard[row].resize(9);
-        for (int col = 0; col < 9; ++col)
+        QDataStream in(&file);
+        in.setVersion(QDataStream::Qt_5_15);
+
+        if (file.size() < 9 * 9 * 2 + 4 + 2) // Minimum size for boards, settings, and styles
         {
-            quint8 value;
-            if (in.atEnd())
-            {
-                qWarning() << "Unexpected end of file while reading full board.";
-                file.close();
-                return false;
-            }
-            in >> value;
-            if (value < 1 || value > 9)
-            {
-                qWarning() << "Invalid value in full board:" << value;
-                file.close();
-                return false;
-            }
-            fullBoard[row][col] = value;
+            qWarning() << "File is too small to contain all required data.";
+            file.close();
+            return false;
         }
-    }
 
-    quint8 difficultyValue, emptyCountValue, heartCountValue;
-    quint32 secondsValue;
-
-    if (in.atEnd())
-    {
-        qWarning() << "Unexpected end of file while reading game settings.";
-        file.close();
-        return false;
-    }
-    in >> difficultyValue >> emptyCountValue >> heartCountValue >> secondsValue;
-
-    // Validate the read values
-    if (difficultyValue > 2 || emptyCount > 81 || heartCount > 3)
-    {
-        qWarning() << "Invalid game settings values.";
-        file.close();
-        return false;
-    }
-
-    difficulty = difficultyValue;
-    emptyCount = emptyCountValue;
-    heartCount = heartCountValue;
-    seconds    = secondsValue;
-
-    if (in.atEnd())
-    {
-        qWarning() << "Unexpected end of file while reading styles.";
-        file.close();
-        return false;
-    }
-    in >> darkStyle >> lightStyle;
-
-    if (darkStyle.isEmpty() || lightStyle.isEmpty())
-    {
-        qWarning() << "Invalid style strings.";
-        file.close();
-        return false;
-    }
-
-    TopRightButtonNumbers.resize(9);
-    for (int row = 0; row < 9; ++row)
-    {
-        TopRightButtonNumbers[row].resize(9);
-        for (int col = 0; col < 9; ++col)
+        // current board
+        board.resize(9);
+        for (int row = 0; row < 9; ++row)
         {
-            QString buttonText;
-            if (in.atEnd())
+            board[row].resize(9);
+            for (int col = 0; col < 9; ++col)
             {
-                qWarning() << "Unexpected end of file while reading button numbers.";
-                file.close();
-                return false;
+                quint8 value;
+                if (in.atEnd())
+                {
+                    qWarning() << "Unexpected end of file while reading current board.";
+                    file.close();
+                    return false;
+                }
+                in >> value;
+                if (value > 9) // Sudoku values should be 0-9
+                {
+                    qWarning() << "Invalid value in current board:" << value;
+                    file.close();
+                    return false;
+                }
+                board[row][col] = value;
             }
-            in >> buttonText;
-            // Validate button text (adjust this check as needed)
-            if (buttonText.length() > 3)
-            {
-                qWarning() << "Invalid button text:" << buttonText;
-                file.close();
-                return false;
-            }
-            TopRightButtonNumbers[row][col] = buttonText;
         }
-    }
 
-    // Check if read all the data and reached the end of the file
-    if (!in.atEnd())
-    {
-        qWarning() << "File contains more data than expected.";
+        // full board (solution)
+        fullBoard.resize(9);
+        for (int row = 0; row < 9; ++row)
+        {
+            fullBoard[row].resize(9);
+            for (int col = 0; col < 9; ++col)
+            {
+                quint8 value;
+                if (in.atEnd())
+                {
+                    qWarning() << "Unexpected end of file while reading full board.";
+                    file.close();
+                    return false;
+                }
+                in >> value;
+                if (value < 1 || value > 9)
+                {
+                    qWarning() << "Invalid value in full board:" << value;
+                    file.close();
+                    return false;
+                }
+                fullBoard[row][col] = value;
+            }
+        }
+
+        quint8  difficultyValue, emptyCountValue, heartCountValue;
+        quint32 secondsValue;
+
+        if (in.atEnd())
+        {
+            qWarning() << "Unexpected end of file while reading game settings.";
+            file.close();
+            return false;
+        }
+        in >> difficultyValue >> emptyCountValue >> heartCountValue >> secondsValue;
+
+        // Validate the read values
+        if (difficultyValue > 2 || emptyCount > 81 || heartCount > 3)
+        {
+            qWarning() << "Invalid game settings values.";
+            file.close();
+            return false;
+        }
+
+        difficulty = difficultyValue;
+        emptyCount = emptyCountValue;
+        heartCount = heartCountValue;
+        seconds    = secondsValue;
+
+        if (in.atEnd())
+        {
+            qWarning() << "Unexpected end of file while reading styles.";
+            file.close();
+            return false;
+        }
+        in >> darkStyle >> lightStyle;
+
+        if (darkStyle.isEmpty() || lightStyle.isEmpty())
+        {
+            qWarning() << "Invalid style strings.";
+            file.close();
+            return false;
+        }
+
+        TopRightButtonNumbers.resize(9);
+        for (int row = 0; row < 9; ++row)
+        {
+            TopRightButtonNumbers[row].resize(9);
+            for (int col = 0; col < 9; ++col)
+            {
+                QString buttonText;
+                if (in.atEnd())
+                {
+                    qWarning() << "Unexpected end of file while reading button numbers.";
+                    file.close();
+                    return false;
+                }
+                in >> buttonText;
+                // Validate button text (adjust this check as needed)
+                if (buttonText.length() > 3)
+                {
+                    qWarning() << "Invalid button text:" << buttonText;
+                    file.close();
+                    return false;
+                }
+                TopRightButtonNumbers[row][col] = buttonText;
+            }
+        }
+
+        // Check if read all the data and reached the end of the file
+        if (!in.atEnd())
+        {
+            qWarning() << "File contains more data than expected.";
+            file.close();
+            return false;
+        }
+
         file.close();
-        return false;
+        return true;
     }
-
-    file.close();
-    return true;
-}
 
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,

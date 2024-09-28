@@ -25,6 +25,8 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QWidget>
+#include <qpushbutton.h>
+#include <qwidget.h>
 
 class MainWindow : public QMainWindow
 {
@@ -42,6 +44,7 @@ protected:
 private slots:
     void openColorPicker();
     void promptContinueOldGame();
+    void starting();
 
 private:
     void handleStart();
@@ -64,7 +67,9 @@ private:
     int                   m_seconds;
     QTimer*               m_timer;
     bool                  m_is_left_click;
-    QPushButton*          m_colorPickerButton;
+    QPushButton*          m_color_picker_button;
+    QWidget*              m_central_widget;
+    QPushButton*          m_start;
 };
 
 #endif // SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
