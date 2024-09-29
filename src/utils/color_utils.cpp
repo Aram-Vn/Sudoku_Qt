@@ -2,6 +2,91 @@
 
 namespace colorUtil {
 
+    QString getStyle(int type)
+    {
+        switch (type)
+        {
+            case EASY:
+                return "QPushButton {"
+                       "background-color: #005700;"
+                       "border-radius: 10px;"
+                       "padding: 10px;"
+                       "color: white;"
+                       "font-family: 'Arial';"
+                       "font-size: 16px;"
+                       "font-weight: bold;"
+                       "border: 2px solid #555;"
+                       "text-align: center;"
+                       "}"
+                       "QPushButton:hover {"
+                       "background-color: #007500;"
+                       "}";
+            case MEDIUM:
+                return "QPushButton {"
+                       "background-color: #7f7f00;"
+                       "border-radius: 10px;"
+                       "padding: 10px;"
+                       "color: black;"
+                       "font-family: 'Arial';"
+                       "font-size: 16px;"
+                       "font-weight: bold;"
+                       "border: 2px solid #555;"
+                       "text-align: center;"
+                       "}"
+                       "QPushButton:hover {"
+                       "background-color: #9f9f00;"
+                       "}";
+            case HARD:
+                return "QPushButton {"
+                       "background-color: #7f0000;"
+                       "border-radius: 10px;"
+                       "padding: 10px;"
+                       "color: white;"
+                       "font-family: 'Arial';"
+                       "font-size: 16px;"
+                       "font-weight: bold;"
+                       "border: 2px solid #555;"
+                       "text-align: center;"
+                       "}"
+                       "QPushButton:hover {"
+                       "background-color: #a70000;"
+                       "}";
+            case CUSTOM:
+                return "QPushButton {"
+                       "background-color: #4f4f4f;"
+                       "border-radius: 10px;"
+                       "padding: 10px;"
+                       "color: white;"
+                       "font-family: 'Arial';"
+                       "font-size: 16px;"
+                       "font-weight: bold;"
+                       "border: 2px solid #888;"
+                       "text-align: center;"
+                       "}"
+                       "QPushButton:hover {"
+                       "background-color: #7f7f7f;"
+                       "}";
+            case LABEL:
+                return "background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+                       "stop:0 #3e3e3e, stop:1 #2c2c2c);"
+                       "border-radius: 10px;"
+                       "padding: 10px;"
+                       "color: white;"
+                       "font-family: 'Arial';"
+                       "font-size: 18px;"
+                       "font-weight: bold;"
+                       "border: 2px solid #555;"
+                       "text-align: center;";
+            case MAIN:
+                return "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+                       "stop:0 #484848, "
+                       "stop:0.33 #383838, "
+                       "stop:0.66 #333333, "
+                       "stop:1 #282828);";
+            default: return "";
+        }
+    }
+
     QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
                           const QString& textColor, const QString& FocusTextColor)
     {

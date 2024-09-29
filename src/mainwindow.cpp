@@ -1,4 +1,5 @@
 #include "../include/mainwindow.h"
+#include "utils/color_utils.h"
 #include "utils/file_utils.h"
 
 MainWindow::MainWindow(QWidget* parent)
@@ -20,11 +21,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_central_widget = new QWidget(this);
     m_central_widget->setGeometry(0, 150, 700, 700);
 
-    this->setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
-                        "stop:0 #484848, "    // Lightest color at the top
-                        "stop:0.33 #383838, " // Medium-light color
-                        "stop:0.66 #333333, " // Medium-dark color
-                        "stop:1 #282828);");  // Darkest color at the bottom
+    this->setStyleSheet(colorUtil::getStyle(colorUtil::MAIN));
 
     m_grid_layout = new QGridLayout(m_central_widget);
 
@@ -73,8 +70,9 @@ MainWindow::MainWindow(QWidget* parent)
     {
         m_difficulty_buttons[i] = new QPushButton(difficulties[i], this);
         m_difficulty_buttons[i]->hide();
-        m_difficulty_buttons[i]->setGeometry(70 * (i + 1), 50, 70, BUTTON_HEIGHT);
-        m_difficulty_buttons[i]->setStyleSheet("background-color: dimGray;");
+        m_difficulty_buttons[i]->setGeometry(86 * i + 5, 50, 85, BUTTON_HEIGHT);
+        m_difficulty_buttons[i]->setStyleSheet(colorUtil::getStyle(i));
+
         connect(m_difficulty_buttons[i], &QPushButton::clicked, this,
                 [this, i]()
                 {
@@ -84,8 +82,8 @@ MainWindow::MainWindow(QWidget* parent)
     }
 
     m_start_button->setText("Start");
-    m_start_button->setGeometry(280, 50, 70, BUTTON_HEIGHT);
-    m_start_button->setStyleSheet("background-color: dimGray;");
+    m_start_button->setGeometry(300, 50, 70, BUTTON_HEIGHT);
+    m_start_button->setStyleSheet(colorUtil::getStyle(colorUtil::CUSTOM));
     m_start_button->setEnabled(false);
 
     connect(m_start_button, &QPushButton::clicked, this,
@@ -101,8 +99,8 @@ MainWindow::MainWindow(QWidget* parent)
             });
 
     m_reset_game->setText("Reset");
-    m_reset_game->setGeometry(400, 50, 70, BUTTON_HEIGHT);
-    m_reset_game->setStyleSheet("background-color: dimGray;");
+    m_reset_game->setGeometry(375, 50, 70, BUTTON_HEIGHT);
+    m_reset_game->setStyleSheet(colorUtil::getStyle(colorUtil::CUSTOM));
 
     connect(
         m_reset_game, &QPushButton::clicked, this,
@@ -132,19 +130,26 @@ MainWindow::MainWindow(QWidget* parent)
             return;
         });
 
-    m_heart_label->setGeometry(500, 50, 90, BUTTON_HEIGHT);
+    m_heart_label->setGeometry(480, 50, 90, BUTTON_HEIGHT);
     m_heart_label->setAlignment(Qt::AlignCenter);
     m_heart_label->setStyleSheet("background-color: dimGray; border-radius: 25px;");
-    m_heart_label->setText("HeartCount");
+    QString heartSpan;
+    for (int i = 0; i < 3; ++i)
+    {
+        heartSpan += "<img src=':/assets/Heart.png' width='17' height='17'>";
+    }
+
+    m_heart_label->setText(heartSpan);
+    m_heart_label->setTextFormat(Qt::RichText);
 
     m_time_label->setText("00:00:00");
-    m_time_label->setGeometry(600, 50, 70, BUTTON_HEIGHT);
+    m_time_label->setGeometry(580, 50, 100, BUTTON_HEIGHT);
+    m_time_label->setStyleSheet(colorUtil::getStyle(colorUtil::LABEL));
     m_time_label->setAlignment(Qt::AlignCenter);
-    m_time_label->setStyleSheet("background-color: dimGray;");
 
     m_color_picker_button->setText("Choose Color");
-    m_color_picker_button->setGeometry(0, 0, 120, 45);
-    m_color_picker_button->setStyleSheet("background-color: dimGray;");
+    m_color_picker_button->setGeometry(0, 0, 150, 45);
+    m_color_picker_button->setStyleSheet(colorUtil::getStyle(colorUtil::CUSTOM));
     connect(m_color_picker_button, &QPushButton::clicked, this, &MainWindow::openColorPicker);
 
     connect(m_game, &Game::board_is_ready, this, &MainWindow::handleStart);
@@ -166,7 +171,7 @@ MainWindow::MainWindow(QWidget* parent)
                                           .arg(secs, 2, 10, QLatin1Char('0')));
             });
 
-    int buttonWidth  = 150;
+    int buttonWidth = 150;
 
     int x = (this->width() - buttonWidth) / 2;
     int y = (this->height() - BUTTON_HEIGHT) / 2;

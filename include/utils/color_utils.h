@@ -6,8 +6,21 @@
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QString>
+#include <qtypes.h>
 
 namespace colorUtil {
+
+    enum DifficultyLevel : qint8
+    {
+        EASY = 0,
+        MEDIUM,
+        HARD,
+        CUSTOM,
+        LABEL,
+        MAIN
+    };
+
+    QString getStyle(int type);
 
     QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
                           const QString& textColor = "black", const QString& FocusTextColor = "white");
