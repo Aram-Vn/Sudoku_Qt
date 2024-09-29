@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget* parent)
       m_color_picker_button(new QPushButton(this)),
       m_start(new QPushButton(this))
 {
-    this->setFixedSize(700, 850);
+    this->setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     m_central_widget = new QWidget(this);
     m_central_widget->setGeometry(0, 150, 700, 700);
 
@@ -28,13 +28,13 @@ MainWindow::MainWindow(QWidget* parent)
 
     m_grid_layout = new QGridLayout(m_central_widget);
 
-    const int grid_size = 9;
+    const int grid_size = GRID_SIZE;
     for (int row = 0; row < grid_size; ++row)
     {
         for (int col = 0; col < grid_size; ++col)
         {
             SudokuButton* sudokuButton = new SudokuButton(this);
-            sudokuButton->setFixedSize(60, 60);
+            sudokuButton->setFixedSize(SUDOKU_BUTTON_SIZE, SUDOKU_BUTTON_SIZE);
 
             bool is_dark = ((row / 3) % 2 == (col / 3) % 2);
 
@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget* parent)
     {
         m_difficulty_buttons[i] = new QPushButton(difficulties[i], this);
         m_difficulty_buttons[i]->hide();
-        m_difficulty_buttons[i]->setGeometry(70 * (i + 1), 50, 70, 50);
+        m_difficulty_buttons[i]->setGeometry(70 * (i + 1), 50, 70, BUTTON_HEIGHT);
         m_difficulty_buttons[i]->setStyleSheet("background-color: dimGray;");
         connect(m_difficulty_buttons[i], &QPushButton::clicked, this,
                 [this, i]()
@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget* parent)
     }
 
     m_start_button->setText("Start");
-    m_start_button->setGeometry(280, 50, 70, 50);
+    m_start_button->setGeometry(280, 50, 70, BUTTON_HEIGHT);
     m_start_button->setStyleSheet("background-color: dimGray;");
     m_start_button->setEnabled(false);
 
@@ -101,7 +101,7 @@ MainWindow::MainWindow(QWidget* parent)
             });
 
     m_reset_game->setText("Reset");
-    m_reset_game->setGeometry(400, 50, 70, 50);
+    m_reset_game->setGeometry(400, 50, 70, BUTTON_HEIGHT);
     m_reset_game->setStyleSheet("background-color: dimGray;");
 
     connect(
@@ -132,13 +132,13 @@ MainWindow::MainWindow(QWidget* parent)
             return;
         });
 
-    m_heart_label->setGeometry(500, 50, 90, 50);
+    m_heart_label->setGeometry(500, 50, 90, BUTTON_HEIGHT);
     m_heart_label->setAlignment(Qt::AlignCenter);
     m_heart_label->setStyleSheet("background-color: dimGray; border-radius: 25px;");
     m_heart_label->setText("HeartCount");
 
     m_time_label->setText("00:00:00");
-    m_time_label->setGeometry(600, 50, 70, 50);
+    m_time_label->setGeometry(600, 50, 70, BUTTON_HEIGHT);
     m_time_label->setAlignment(Qt::AlignCenter);
     m_time_label->setStyleSheet("background-color: dimGray;");
 
@@ -167,14 +167,13 @@ MainWindow::MainWindow(QWidget* parent)
             });
 
     int buttonWidth  = 150;
-    int buttonHeight = 50;
 
     int x = (this->width() - buttonWidth) / 2;
-    int y = (this->height() - buttonHeight) / 2;
+    int y = (this->height() - BUTTON_HEIGHT) / 2;
 
     m_continue_old_game->setText("Continue old game");
     m_continue_old_game->setStyleSheet("background-color: dimGray; text-align: center;");
-    m_continue_old_game->setGeometry(x, y - 15, buttonWidth, buttonHeight);
+    m_continue_old_game->setGeometry(x, y - 15, buttonWidth, BUTTON_HEIGHT);
 
     connect(m_continue_old_game, &QPushButton::clicked, this, [this]() { promptContinueOldGame(); });
 
@@ -185,7 +184,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_color_picker_button->hide();
     m_central_widget->hide();
 
-    m_start->setGeometry(x, y - 80, buttonWidth, buttonHeight);
+    m_start->setGeometry(x, y - 80, buttonWidth, BUTTON_HEIGHT);
     m_start->setText("New game");
     m_start->setStyleSheet("background-color: dimGray; text-align: center;");
     connect(m_start, &QPushButton::clicked, this, &MainWindow::showHidden);
