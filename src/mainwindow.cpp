@@ -1,4 +1,5 @@
 #include "../include/mainwindow.h"
+#include "GameStateManager.h"
 #include "utils/color_utils.h"
 #include "utils/file_utils.h"
 
@@ -395,88 +396,8 @@ void MainWindow::openColorPicker()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-    saveGameState();
+    GameStateManager::saveGameState(m_game, m_grid_layout, m_seconds);
     event->accept();
-}
-
-void MainWindow::saveGameState()
-{
-    QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir().mkpath(filePath);
-    filePath.append("/sudoku_save.bin");
-
-    QPushButton* darkStyleButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 0)->widget());
-    QString      darkStyle       = darkStyleButton->styleSheet();
-
-    QPushButton* lightStyleButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(0, 4)->widget());
-    QString      lightStyle       = lightStyleButton->styleSheet();
-
-    QVector<QVector<int>> board     = m_game->getBoard();
-    QVector<QVector<int>> fullBoard = m_game->getFullBoard();
-
-    QVector<QVector<QString>> TopRightButtonNumbers(9, QVector<QString>(9, QString()));
-    for (int row = 0; row < 9; ++row)
-    {
-        for (int col = 0; col < 9; ++col)
-        {
-            SudokuButton* button = dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
-            if (button)
-            {
-                TopRightButtonNumbers[row][col] = button->getTopRightNumber(); // Get number for each button
-            }
-        }
-    }
-
-    fileUtil::writeInBinary(filePath, board, fullBoard, m_game->getDifficulty(), m_game->getEmptyCount(),
-                            m_game->getHearts(), m_seconds, darkStyle, lightStyle, TopRightButtonNumbers);
-}
-
-bool MainWindow::loadGameState()
-{
-    QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir().mkpath(filePath);
-    filePath.append("/sudoku_save.bin");
-
-    QVector<QVector<int>>     board{};
-    QVector<QVector<int>>     fullBoard{};
-    int                       difficulty{};
-    int                       emptyCount{};
-    int                       heartCount{};
-    int                       seconds{};
-    QString                   darkStyle{};
-    QString                   lightStyle{};
-    QVector<QVector<QString>> TopRightButtonNumbers{};
-
-    bool is_success = fileUtil::readFromBinary(filePath, board, fullBoard, difficulty, emptyCount, heartCount, seconds,
-                                               darkStyle, lightStyle, TopRightButtonNumbers);
-
-    if (is_success)
-    {
-        m_game->setBoard(board);
-        m_game->setFullBoard(fullBoard);
-        m_game->setDifficulty(difficulty);
-        m_game->setEmptyCount(emptyCount);
-        m_game->setHearts(heartCount);
-        m_seconds = seconds;
-
-        colorUtil::applyColorStyles(m_grid_layout, darkStyle, lightStyle);
-
-        for (int row = 0; row < 9; ++row)
-        {
-            for (int col = 0; col < 9; ++col)
-            {
-                SudokuButton* button = dynamic_cast<SudokuButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
-                if (button)
-                {
-                    button->setTopRightNumber(TopRightButtonNumbers[row][col]);
-                }
-            }
-        }
-
-        return true;
-    }
-
-    return false;
 }
 
 void MainWindow::promptContinueOldGame()
@@ -493,7 +414,8 @@ void MainWindow::promptContinueOldGame()
 
     if (reply == QMessageBox::Yes)
     {
-        if (!loadGameState())
+        bool isSuccess = GameStateManager::loadGameState(m_game, m_grid_layout, m_seconds);
+        if (!isSuccess)
         {
             QMessageBox msgBox;
             msgBox.setWindowTitle("Attention");

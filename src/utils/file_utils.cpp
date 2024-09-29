@@ -137,8 +137,8 @@ namespace fileUtil {
         }
         in >> difficultyValue >> emptyCountValue >> heartCountValue >> secondsValue;
 
-        // Validate the read values
-        if (difficultyValue > 2 || emptyCount > 81 || heartCount > 3)
+        if (difficultyValue > 2 || emptyCountValue < 0 || emptyCountValue > 81 || heartCountValue < 0 ||
+            heartCountValue > 3)
         {
             qWarning() << "Invalid game settings values.";
             file.close();

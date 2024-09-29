@@ -1,6 +1,7 @@
 #ifndef SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
 #define SUDOKU_QT_INCLUDE_MAIN_WINDOW_H
 
+#include "../include/GameStateManager.h"
 #include "../include/SudokuButton/SudokuButton.h"
 #include "../include/game.h"
 #include "../include/utils/color_utils.h"
@@ -51,9 +52,6 @@ private:
     void addOnGrid();
     void changeHeartLabel();
     void resetGame();
-    //
-    void saveGameState();
-    bool loadGameState();
 
 private:
     static constexpr int WINDOW_WIDTH       = 700;
