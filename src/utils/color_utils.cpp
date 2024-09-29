@@ -2,11 +2,11 @@
 
 namespace colorUtil {
 
-    QString getStyle(int type)
+    QString getStyle(buttonType type)
     {
         switch (type)
         {
-            case EASY:
+            case buttonType::EASY:
                 return "QPushButton {"
                        "background-color: #005700;"
                        "border-radius: 10px;"
@@ -21,7 +21,7 @@ namespace colorUtil {
                        "QPushButton:hover {"
                        "background-color: #007500;"
                        "}";
-            case MEDIUM:
+            case buttonType::MEDIUM:
                 return "QPushButton {"
                        "background-color: #7f7f00;"
                        "border-radius: 10px;"
@@ -36,7 +36,7 @@ namespace colorUtil {
                        "QPushButton:hover {"
                        "background-color: #9f9f00;"
                        "}";
-            case HARD:
+            case buttonType::HARD:
                 return "QPushButton {"
                        "background-color: #7f0000;"
                        "border-radius: 10px;"
@@ -51,7 +51,7 @@ namespace colorUtil {
                        "QPushButton:hover {"
                        "background-color: #a70000;"
                        "}";
-            case CUSTOM:
+            case buttonType::CUSTOM:
                 return "QPushButton {"
                        "background-color: #4f4f4f;"
                        "border-radius: 10px;"
@@ -66,7 +66,7 @@ namespace colorUtil {
                        "QPushButton:hover {"
                        "background-color: #7f7f7f;"
                        "}";
-            case LABEL:
+            case buttonType::LABEL:
                 return "background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
                        "stop:0 #3e3e3e, stop:1 #2c2c2c);"
                        "border-radius: 10px;"
@@ -77,7 +77,7 @@ namespace colorUtil {
                        "font-weight: bold;"
                        "border: 2px solid #555;"
                        "text-align: center;";
-            case MAIN:
+            case buttonType::MAIN:
                 return "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
                        "stop:0 #484848, "
                        "stop:0.33 #383838, "

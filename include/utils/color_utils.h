@@ -10,7 +10,7 @@
 
 namespace colorUtil {
 
-    enum DifficultyLevel : qint8
+    enum class buttonType : qint8
     {
         EASY = 0,
         MEDIUM,
@@ -20,7 +20,7 @@ namespace colorUtil {
         MAIN
     };
 
-    QString getStyle(int type);
+    QString getStyle(buttonType type);
 
     QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
                           const QString& textColor = "black", const QString& FocusTextColor = "white");

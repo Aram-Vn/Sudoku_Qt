@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_central_widget = new QWidget(this);
     m_central_widget->setGeometry(0, 150, 700, 700);
 
-    this->setStyleSheet(colorUtil::getStyle(colorUtil::MAIN));
+    this->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::MAIN));
 
     m_grid_layout = new QGridLayout(m_central_widget);
 
@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget* parent)
         m_difficulty_buttons[i] = new QPushButton(difficulties[i], this);
         m_difficulty_buttons[i]->hide();
         m_difficulty_buttons[i]->setGeometry(86 * i + 5, 50, 85, BUTTON_HEIGHT);
-        m_difficulty_buttons[i]->setStyleSheet(colorUtil::getStyle(i));
+        m_difficulty_buttons[i]->setStyleSheet(colorUtil::getStyle(static_cast<colorUtil::buttonType>(i)));
 
         connect(m_difficulty_buttons[i], &QPushButton::clicked, this,
                 [this, i]()
@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     m_start_button->setText("Start");
     m_start_button->setGeometry(300, 50, 70, BUTTON_HEIGHT);
-    m_start_button->setStyleSheet(colorUtil::getStyle(colorUtil::CUSTOM));
+    m_start_button->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
     m_start_button->setEnabled(false);
 
     connect(m_start_button, &QPushButton::clicked, this,
@@ -101,7 +101,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     m_reset_game->setText("Reset");
     m_reset_game->setGeometry(375, 50, 70, BUTTON_HEIGHT);
-    m_reset_game->setStyleSheet(colorUtil::getStyle(colorUtil::CUSTOM));
+    m_reset_game->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
 
     connect(
         m_reset_game, &QPushButton::clicked, this,
@@ -137,7 +137,7 @@ MainWindow::MainWindow(QWidget* parent)
     QString heartSpan;
     for (int i = 0; i < 3; ++i)
     {
-        heartSpan += "<img src=':/assets/Heart.png' width='17' height='17'>";
+        heartSpan += "<img src=':/assets/Heart.png' width='20' height='20'>";
     }
 
     m_heart_label->setText(heartSpan);
@@ -145,12 +145,12 @@ MainWindow::MainWindow(QWidget* parent)
 
     m_time_label->setText("00:00:00");
     m_time_label->setGeometry(580, 50, 100, BUTTON_HEIGHT);
-    m_time_label->setStyleSheet(colorUtil::getStyle(colorUtil::LABEL));
+    m_time_label->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::LABEL));
     m_time_label->setAlignment(Qt::AlignCenter);
 
     m_color_picker_button->setText("Choose Color");
     m_color_picker_button->setGeometry(0, 0, 150, 45);
-    m_color_picker_button->setStyleSheet(colorUtil::getStyle(colorUtil::CUSTOM));
+    m_color_picker_button->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
     connect(m_color_picker_button, &QPushButton::clicked, this, &MainWindow::openColorPicker);
 
     connect(m_game, &Game::board_is_ready, this, &MainWindow::handleStart);
@@ -233,7 +233,7 @@ void MainWindow::handleStart()
     QString heartSpan;
     for (int i = 0; i < hearts; ++i)
     {
-        heartSpan += "<img src=':/assets/Heart.png' width='17' height='17'>";
+        heartSpan += "<img src=':/assets/Heart.png' width='20' height='20'>";
     }
 
     m_heart_label->setText(heartSpan);
@@ -291,7 +291,7 @@ void MainWindow::changeHeartLabel()
     QString heartSpan;
     for (int i = 0; i < hearts; ++i)
     {
-        heartSpan += "<img src=':/assets/Heart.png' width='17' height='17'>";
+        heartSpan += "<img src=':/assets/Heart.png' width='20' height='20'>";
     }
 
     m_heart_label->setText(heartSpan);
