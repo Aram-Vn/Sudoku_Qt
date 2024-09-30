@@ -1,10 +1,9 @@
 #ifndef SUDOKU_QT_INCLUDE_SUDOKU_GENERATOR_H
 #define SUDOKU_QT_INCLUDE_SUDOKU_GENERATOR_H
 
+#include <QRandomGenerator>
 #include <QVector>
 #include <algorithm>
-#include <cstdlib>
-#include <ctime>
 
 class SudokuGenerator
 {

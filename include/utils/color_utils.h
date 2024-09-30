@@ -20,7 +20,14 @@ namespace colorUtil {
         MAIN
     };
 
+    constexpr int DEFAULT_HEART_COUNT        = 3;
+    constexpr int DEFAULT_HEART_WIDTH_HEIGHT = 22;
+    const QString DEFAULT_HEART_IMAGE_PATH   = ":/assets/Heart.png";
+
     QString getStyle(buttonType type);
+
+    QString generateHeartSpan(int heartCount = DEFAULT_HEART_COUNT, QString imgPath = DEFAULT_HEART_IMAGE_PATH,
+                              int width = DEFAULT_HEART_WIDTH_HEIGHT, int height = DEFAULT_HEART_WIDTH_HEIGHT);
 
     QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
                           const QString& textColor = "black", const QString& FocusTextColor = "white");

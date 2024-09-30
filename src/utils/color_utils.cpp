@@ -87,6 +87,16 @@ namespace colorUtil {
         }
     }
 
+    QString generateHeartSpan(int heartCount, QString imgPath, int width, int height)
+    {
+        QString heartSpan;
+        for (int i = 0; i < heartCount; ++i)
+        {
+            heartSpan += QString("<img src='%1' width='%2' height='%3'>").arg(imgPath).arg(width).arg(height);
+        }
+        return heartSpan;
+    }
+
     QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
                           const QString& textColor, const QString& FocusTextColor)
     {

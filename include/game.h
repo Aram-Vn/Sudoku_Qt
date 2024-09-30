@@ -23,12 +23,6 @@ private:
     void init_block(int i, int j);
 
 public:
-    QVector<QVector<int>> getFullBoard() const;
-    void                  setFullBoard(const QVector<QVector<int>>& boar);
-
-    void                  setBoard(const QVector<QVector<int>>& board);
-    QVector<QVector<int>> getBoard() const;
-
     void initGame();
     void setCoords(int i, int j);
     void numberEvent(int number);
@@ -47,6 +41,14 @@ public:
     // difficulty get set
     void setDifficulty(int diff);
     int  getDifficulty() const;
+
+    // full board(solved) get set
+    QVector<QVector<int>> getFullBoard() const;
+    void                  setFullBoard(const QVector<QVector<int>>& boar);
+
+    // board(current state) get set
+    void                  setBoard(const QVector<QVector<int>>& board);
+    QVector<QVector<int>> getBoard() const;
 
     bool checkPos(int i, int j) const;
 

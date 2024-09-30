@@ -134,12 +134,8 @@ MainWindow::MainWindow(QWidget* parent)
     m_heart_label->setGeometry(480, 50, 90, BUTTON_HEIGHT);
     m_heart_label->setAlignment(Qt::AlignCenter);
     m_heart_label->setStyleSheet("background-color: dimGray; border-radius: 25px;");
-    QString heartSpan;
-    for (int i = 0; i < 3; ++i)
-    {
-        heartSpan += "<img src=':/assets/Heart.png' width='20' height='20'>";
-    }
 
+    QString heartSpan = colorUtil::generateHeartSpan();
     m_heart_label->setText(heartSpan);
     m_heart_label->setTextFormat(Qt::RichText);
 
@@ -172,13 +168,13 @@ MainWindow::MainWindow(QWidget* parent)
                                           .arg(secs, 2, 10, QLatin1Char('0')));
             });
 
-    int buttonWidth = 150;
+    int buttonWidth = 180;
 
     int x = (this->width() - buttonWidth) / 2;
     int y = (this->height() - BUTTON_HEIGHT) / 2;
 
     m_continue_old_game->setText("Continue old game");
-    m_continue_old_game->setStyleSheet("background-color: dimGray; text-align: center;");
+    m_continue_old_game->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
     m_continue_old_game->setGeometry(x, y - 15, buttonWidth, BUTTON_HEIGHT);
 
     connect(m_continue_old_game, &QPushButton::clicked, this, [this]() { promptContinueOldGame(); });
@@ -192,7 +188,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     m_start->setGeometry(x, y - 80, buttonWidth, BUTTON_HEIGHT);
     m_start->setText("New game");
-    m_start->setStyleSheet("background-color: dimGray; text-align: center;");
+    m_start->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
     connect(m_start, &QPushButton::clicked, this, &MainWindow::showHidden);
 }
 
@@ -213,6 +209,7 @@ void MainWindow::showHidden()
     m_central_widget->show();
 
     delete m_start;
+    delete m_continue_old_game;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
@@ -229,12 +226,8 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 
 void MainWindow::handleStart()
 {
-    int     hearts = m_game->getHearts();
-    QString heartSpan;
-    for (int i = 0; i < hearts; ++i)
-    {
-        heartSpan += "<img src=':/assets/Heart.png' width='20' height='20'>";
-    }
+    int     heartCount = m_game->getHearts();
+    QString heartSpan  = colorUtil::generateHeartSpan(heartCount);
 
     m_heart_label->setText(heartSpan);
     m_heart_label->setTextFormat(Qt::RichText);
@@ -287,12 +280,8 @@ void MainWindow::changeHeartLabel()
 {
     QMessageBox::information(nullptr, "wrong", "No!!!");
 
-    int     hearts = m_game->getHearts();
-    QString heartSpan;
-    for (int i = 0; i < hearts; ++i)
-    {
-        heartSpan += "<img src=':/assets/Heart.png' width='20' height='20'>";
-    }
+    int     heartCount = m_game->getHearts();
+    QString heartSpan  = colorUtil::generateHeartSpan(heartCount);
 
     m_heart_label->setText(heartSpan);
     m_heart_label->setTextFormat(Qt::RichText);
@@ -324,6 +313,10 @@ void MainWindow::resetGame()
         m_game->setCoords(-1, -1);
     }
 
+    m_game->setDifficulty(-1);
+    m_game->setHearts(-1);
+    m_game->setEmptyCount(-1);
+
     for (int i = 0; i < m_difficulty_buttons.size(); ++i)
     {
         m_difficulty_buttons[i]->setEnabled(true);
@@ -331,7 +324,11 @@ void MainWindow::resetGame()
 
     m_seconds = 0;
     m_timer->stop();
-    m_heart_label->setText("Hearts:");
+
+    QString heartSpan = colorUtil::generateHeartSpan();
+
+    m_heart_label->setText(heartSpan);
+    m_heart_label->setTextFormat(Qt::RichText);
 }
 
 void MainWindow::openColorPicker()
