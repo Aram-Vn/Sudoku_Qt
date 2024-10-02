@@ -1,4 +1,5 @@
 #include "../include/GameStateManager.h"
+#include <qobject.h>
 
 void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLayout, int seconds)
 {
@@ -74,9 +75,19 @@ bool GameStateManager::loadGameState(Game* game, QGridLayout* gridLayout, int& s
     return false;
 }
 
-QString GameStateManager::getFilePath(QString fileNae)
+QString GameStateManager::getFilePath(savefile file)
 {
+    QString fileName;
+
+    switch (file)
+    {
+        case savefile::SUDOKU_SAVE_0: fileName = "/sudoku_save_1.bin"; break;
+        case savefile::SUDOKU_SAVE_1: fileName = "/sudoku_save_1.bin"; break;
+        case savefile::SUDOKU_SAVE_2: fileName = "/sudoku_save_2.bin"; break;
+        default: fileName = "NONAME";
+    }
+
     QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir().mkpath(filePath);
-    return filePath.append(fileNae);
+    return filePath.append(fileName);
 }

@@ -3,7 +3,6 @@
 
 #include <QRandomGenerator>
 #include <QVector>
-#include <algorithm>
 
 class SudokuGenerator
 {

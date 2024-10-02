@@ -11,8 +11,16 @@
 #include <QString>
 #include <QVector>
 #include <qcontainerfwd.h>
+#include <qtypes.h>
 
 class Game;
+
+enum class savefile : qint8
+{
+    SUDOKU_SAVE_0,
+    SUDOKU_SAVE_1,
+    SUDOKU_SAVE_2,
+};
 
 class GameStateManager
 {
@@ -21,5 +29,5 @@ public:
     static bool loadGameState(Game* game, QGridLayout* gridLayout, int& seconds);
 
 private:
-    static QString getFilePath(QString fileNae = "/sudoku_save.bin");
+    static QString getFilePath(savefile file = savefile::SUDOKU_SAVE_0);
 };

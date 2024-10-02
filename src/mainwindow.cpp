@@ -1,14 +1,12 @@
 #include "../include/mainwindow.h"
-#include "GameStateManager.h"
-#include "utils/color_utils.h"
-#include "utils/file_utils.h"
+#include <qlogging.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
       m_game(new Game(this)),
       m_difficulty_buttons(3),
+      m_continue_old_game(3),
       m_start_button(new QPushButton(this)),
-      m_continue_old_game(new QPushButton(this)),
       m_reset_game(new QPushButton(this)),
       m_heart_label(new QLabel(this)),
       m_time_label(new QLabel(this)),
@@ -80,6 +78,22 @@ MainWindow::MainWindow(QWidget* parent)
                     m_game->setDifficulty(i);
                     m_start_button->setEnabled(true);
                 });
+    }
+
+    int buttonWidth = 300;
+
+    int x = (this->width() - buttonWidth) / 2;
+    int y = (this->height() - BUTTON_HEIGHT) / 2 - 100;
+
+    QStringList continue_txt = { "continue save 1", "continue save 2", "continue save 3" };
+
+    for (int i = 0; i < m_continue_old_game.size(); ++i)
+    {
+        m_continue_old_game[i] = new QPushButton(continue_txt[i], this);
+        m_continue_old_game[i]->setGeometry(x, y + 70 * i, buttonWidth, BUTTON_HEIGHT);
+        m_continue_old_game[i]->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
+
+        connect(m_continue_old_game[i], &QPushButton::clicked, this, [this, i]() { promptContinueOldGame(i); });
     }
 
     m_start_button->setText("Start");
@@ -168,17 +182,6 @@ MainWindow::MainWindow(QWidget* parent)
                                           .arg(secs, 2, 10, QLatin1Char('0')));
             });
 
-    int buttonWidth = 180;
-
-    int x = (this->width() - buttonWidth) / 2;
-    int y = (this->height() - BUTTON_HEIGHT) / 2;
-
-    m_continue_old_game->setText("Continue old game");
-    m_continue_old_game->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
-    m_continue_old_game->setGeometry(x, y - 15, buttonWidth, BUTTON_HEIGHT);
-
-    connect(m_continue_old_game, &QPushButton::clicked, this, [this]() { promptContinueOldGame(); });
-
     m_reset_game->hide();
     m_heart_label->hide();
     m_start_button->hide();
@@ -186,7 +189,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_color_picker_button->hide();
     m_central_widget->hide();
 
-    m_start->setGeometry(x, y - 80, buttonWidth, BUTTON_HEIGHT);
+    m_start->setGeometry(x, y - 70, buttonWidth, BUTTON_HEIGHT);
     m_start->setText("New game");
     m_start->setStyleSheet(colorUtil::getStyle(colorUtil::buttonType::CUSTOM));
     connect(m_start, &QPushButton::clicked, this, &MainWindow::showHidden);
@@ -208,8 +211,12 @@ void MainWindow::showHidden()
     m_color_picker_button->show();
     m_central_widget->show();
 
+    for (int i = 0; i < m_continue_old_game.size(); ++i)
+    {
+        delete m_continue_old_game[i];
+    }
+
     delete m_start;
-    delete m_continue_old_game;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
@@ -397,8 +404,9 @@ void MainWindow::closeEvent(QCloseEvent* event)
     event->accept();
 }
 
-void MainWindow::promptContinueOldGame()
+void MainWindow::promptContinueOldGame(int i)
 {
+    qDebug() << i;
     QMessageBox msgBox;
     msgBox.setWindowTitle("Continue Game");
     msgBox.setText("Do you want to continue your old game?");

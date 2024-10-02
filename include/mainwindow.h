@@ -44,7 +44,7 @@ protected:
 
 private slots:
     void openColorPicker();
-    void promptContinueOldGame();
+    void promptContinueOldGame(int i);
     void showHidden();
 
 private:
@@ -65,7 +65,7 @@ private:
     QGridLayout*          m_grid_layout;
     QVector<QPushButton*> m_difficulty_buttons;
     QPushButton*          m_start_button;
-    QPushButton*          m_continue_old_game;
+    QVector<QPushButton*> m_continue_old_game;
     QPushButton*          m_reset_game;
     QLabel*               m_heart_label;
     QLabel*               m_time_label;
