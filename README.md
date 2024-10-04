@@ -24,39 +24,44 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 
 ```bash
 .
+├── assets
+│   ├── Heart.png
+│   └── Sudoku_Qt.ico
 │
-├── include/
+├── include
+│   ├── game.h
+│   ├── GameStateManager.h
+│   ├── mainwindow.h
+│   ├── sudokugenerator.h
 │   │
-│   │
-│   ├── game.h
-│   ├── mainwindow.h
-│   ├── sudokugenerator.h
-│   │
-│   ├── custombutton/
-│   │   └── custombutton.h
-│   │
-│   └── utils/
-│       ├── color_utils.h
-│       └── file_utils.h
+│   ├── SudokuButton
+│   │   └── SudokuButton.h
+│   │ 
+│   └── utils
+│       ├── color_utils.h
+│       └── file_utils.h
 │
-├── src/
+├── src
+│   ├── game.cpp
+│   ├── GameStateManager.cpp
+│   ├── main.cpp
+│   ├── mainwindow.cpp
 │   │
-│   ├── game.cpp
-│   ├── main.cpp
-│   ├── mainwindow.cpp
-│   ├── sudokugenerator.cpp
+│   ├── sudokugenerator.cpp
 │   │
-│   ├── custombutton/
-│   │   └── custombutton.cpp
 │   │
-│   └── utils/
-│       ├── color_utils.cpp
-│       └── file_utils.cpp
+│   ├── SudokuButton
+│   │   └── SudokuButton.cpp
+│   │
+│   └── utils
+│       ├── color_utils.cpp
+│       └── file_utils.cpp
 │
 ├── .clang-format
 ├── CMakeLists.txt
-├── README.md
 ├── .gitignore
+├── README.md
+├── resources.qrc
 └── .valgrind-suppressions
 
 ```
