@@ -12,7 +12,8 @@
 ## Preview
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/40c8312a-1d35-442b-aea8-afce0f7a320f" width="500" height="auto" alt="sudoku">
+  <img src="https://github.com/user-attachments/assets/f8fbc18b-e458-4ed7-b0af-2e78a7bd56af" width="45%" height="auto" alt="sudoku-start">
+  <img src="https://github.com/user-attachments/assets/504f77cd-bb92-4127-b7d5-7874dddfc442" width="45%" height="auto" alt="sudoku">
 </div>
 
 ## Overview
@@ -68,7 +69,6 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 - **Color Customization**: Choose colors for Sudoku buttons.
 - **Timer**: Tracks the time taken to solve the Sudoku puzzle.
 - **Heart System**: Indicates the number of remaining chances.
-
 
 ## Requirements
 

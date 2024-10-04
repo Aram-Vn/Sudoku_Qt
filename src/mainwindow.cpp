@@ -1,5 +1,4 @@
 #include "../include/mainwindow.h"
-#include <qlogging.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),

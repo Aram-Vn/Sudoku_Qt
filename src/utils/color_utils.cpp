@@ -104,7 +104,7 @@ namespace colorUtil {
                        "background-color: %1;"
                        "color: %4;"
                        "border-radius: 8px;"
-                       "font-size: 16px;"
+                       "font-size: 19px;"
                        "font-weight: bold;"
                        "}"
                        "QPushButton:focus {"
