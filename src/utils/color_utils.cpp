@@ -2,6 +2,7 @@
 
 namespace colorUtil {
 
+    QString getStyle(buttonType type)
     {
         QString background_color       = "";
         QString hover_background_color = "";
@@ -92,9 +93,38 @@ namespace colorUtil {
         return heartSpan;
     }
 
-    QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
-                          const QString& textColor, const QString& FocusTextColor)
+    QString colorStyleSet(const QColor& baseColor)
     {
+        QColor  hoverColor;
+        QColor  focusColor;
+        QString textColor;
+        QString focusTextColor;
+
+        if (baseColor == Qt::black || baseColor.lightness() < 10)
+        {
+            // If the base color is black, set hover and focus colors to dark gray
+            hoverColor     = QColor(50, 50, 50);    // Dark gray for hover
+            focusColor     = QColor(100, 100, 100); // Lighter gray for focus
+            textColor      = "white";
+            focusTextColor = "black";
+        }
+        else if (baseColor.lightness() < 128)
+        {
+            // Make hover and focus colors lighter if base color is dark
+            hoverColor     = baseColor.lighter(120);
+            focusColor     = hoverColor.lighter(120);
+            textColor      = "white";
+            focusTextColor = "black";
+        }
+        else
+        {
+            // Make hover and focus colors darker if base color is light
+            hoverColor     = baseColor.darker(150);
+            focusColor     = hoverColor.darker(150);
+            textColor      = "black";
+            focusTextColor = "white";
+        }
+
         return QString("QPushButton {"
                        "background-color: %1;"
                        "color: %4;"
@@ -116,7 +146,7 @@ namespace colorUtil {
             .arg(hoverColor.name())                  // 2
             .arg(focusColor.name())                  // 3
             .arg(textColor)                          // 4
-            .arg(FocusTextColor)                     // 5
+            .arg(focusTextColor)                     // 5
             .arg(fontSize::SUDOKU_BUTTON_FONT_SIZE); // 6
     }
 

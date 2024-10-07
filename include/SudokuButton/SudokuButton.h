@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QPushButton>
 
-    class SudokuButton : public QPushButton
+class SudokuButton : public QPushButton
 {
     Q_OBJECT
 

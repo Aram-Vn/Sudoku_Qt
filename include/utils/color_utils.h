@@ -34,8 +34,7 @@ namespace colorUtil {
     QString generateHeartSpan(int heartCount = DEFAULT_HEART_COUNT, QString imgPath = DEFAULT_HEART_IMAGE_PATH,
                               int width = DEFAULT_HEART_WIDTH_HEIGHT, int height = DEFAULT_HEART_WIDTH_HEIGHT);
 
-    QString colorStyleSet(const QColor& baseColor, const QColor& hoverColor, const QColor& focusColor,
-                          const QString& textColor = "black", const QString& FocusTextColor = "white");
+    QString colorStyleSet(const QColor& baseColor);
 
     void applyColorStyles(QGridLayout* gridLayout, const QString& darkStyle, const QString& lightStyle);
 
