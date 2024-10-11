@@ -22,7 +22,7 @@ namespace colorUtil {
     enum fontSize : qint8
     {
         DIFFICULTY_BUTTONS_FONT_SIZE = 16,
-        SUDOKU_BUTTON_FONT_SIZE      = 20
+        SUDOKU_BUTTON_FONT_SIZE      = 24
     };
 
     constexpr int DEFAULT_HEART_COUNT        = 3;

@@ -1,4 +1,7 @@
 #include "../../include/utils/color_utils.h"
+#include <qcolor.h>
+#include <qcontainerfwd.h>
+#include <qdebug.h>
 
 namespace colorUtil {
 
@@ -26,21 +29,10 @@ namespace colorUtil {
                 text_color             = "white";
                 break;
             case buttonType::CUSTOM:
-                return "QPushButton {"
-                       "background-color: #4f4f4f;"
-                       "border-radius: 10px;"
-                       "padding: 10px;"
-                       "color: white;"
-                       "font-family: 'Arial';"
-                       "font-size: 16px;"
-                       "font-weight: bold;"
-                       "border: 2px solid #888;"
-                       "text-align: center;"
-                       "}"
-                       "QPushButton:hover {"
-                       "background-color: #7f7f7f;"
-                       "}";
-                break; // Add break here
+                background_color       = "#4f4f4f";
+                hover_background_color = "#7f7f7f";
+                text_color             = "white";
+                break;
             case buttonType::LABEL:
                 return "background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
                        "stop:0 #3e3e3e, stop:1 #2c2c2c);"
@@ -63,24 +55,26 @@ namespace colorUtil {
             default: break;
         }
 
-        return QString("QPushButton {"
-                       "background-color: %2;"
-                       "border-radius: 10px;"
-                       "padding: 10px;"
-                       "color: %4;"
-                       "font-family: 'Arial';"
-                       "font-size: %1px;"
-                       "font-weight: bold;"
-                       "border: 2px solid #555;"
-                       "text-align: center;"
-                       "}"
-                       "QPushButton:hover {"
-                       "background-color: %3;"
-                       "}")
-            .arg(DIFFICULTY_BUTTONS_FONT_SIZE) // 1
-            .arg(background_color)             // 2
-            .arg(hover_background_color)       // 3
-            .arg(text_color);                  // 4
+        QString qc = QString("QPushButton {"
+                             "background-color: %2;"
+                             "border-radius: 10px;"
+                             "padding: 10px;"
+                             "color: %4;"
+                             "font-family: 'Arial';"
+                             "font-size: %1px;"
+                             "font-weight: bold;"
+                             "border: 2px solid #555;"
+                             "text-align: center;"
+                             "}"
+                             "QPushButton:hover {"
+                             "background-color: %3;"
+                             "}")
+                         .arg(DIFFICULTY_BUTTONS_FONT_SIZE) // 1
+                         .arg(background_color)             // 2
+                         .arg(hover_background_color)       // 3
+                         .arg(text_color);                  // 4
+
+        return qc;
     }
 
     QString generateHeartSpan(int heartCount, QString imgPath, int width, int height)

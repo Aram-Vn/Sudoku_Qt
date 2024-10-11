@@ -37,7 +37,6 @@ public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     void closeEvent(QCloseEvent* event) override;

@@ -31,10 +31,12 @@ MainWindow::MainWindow(QWidget* parent)
             SudokuButton* sudokuButton = new SudokuButton(this);
             sudokuButton->setFixedSize(SUDOKU_BUTTON_SIZE, SUDOKU_BUTTON_SIZE);
 
-            bool   is_dark   = ((row / 3) % 2 == (col / 3) % 2);
-            QColor baseColor = is_dark ? QColor("#0c438f") : QColor("#a2a3a0");
+            bool   is_light  = ((row / 3) % 2 == (col / 3) % 2);
+            QColor baseColor = is_light ? QColor("#00dbff") : QColor("#005c75");
 
             QString colorStyle = colorUtil::colorStyleSet(baseColor);
+
+            // qDebug() << colorStyle;
 
             sudokuButton->setStyleSheet(colorStyle);
             sudokuButton->setEnabled(false);
@@ -336,14 +338,14 @@ void MainWindow::resetGame()
 
 void MainWindow::openColorPicker()
 {
-    QColor colorDark = QColorDialog::getColor(Qt::white, this, "Choose Dark Button Color");
-    if (!colorDark.isValid())
+    QColor firstColor = QColorDialog::getColor(Qt::white, this, "Choose Dark Button Color");
+    if (!firstColor.isValid())
     {
         return;
     }
 
-    QColor colorLight = QColorDialog::getColor(Qt::black, this, "Choose Light Button Color");
-    if (!colorLight.isValid())
+    QColor secondColor = QColorDialog::getColor(Qt::black, this, "Choose Light Button Color");
+    if (!secondColor.isValid())
     {
         return;
     }
@@ -354,8 +356,8 @@ void MainWindow::openColorPicker()
         {
             QPushButton* sudokuButton = dynamic_cast<QPushButton*>(m_grid_layout->itemAtPosition(row, col)->widget());
 
-            bool   is_dark   = ((row / 3) % 2 == (col / 3) % 2);
-            QColor baseColor = is_dark ? colorDark : colorLight;
+            bool   is_first  = ((row / 3) % 2 == (col / 3) % 2);
+            QColor baseColor = is_first ? firstColor : secondColor;
 
             QString colorStyle = colorUtil::colorStyleSet(baseColor);
             sudokuButton->setStyleSheet(colorStyle);
