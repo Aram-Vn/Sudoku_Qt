@@ -26,33 +26,16 @@ void SudokuServer::sendGameData()
     QTcpSocket* clientSocket = server.nextPendingConnection();
     if (clientSocket)
     {
-        QVector<QVector<int>> board;
-        QVector<QVector<int>> fullBoard;
-        int                   difficulty = 1;
-        int                   emptyCount = 20;
-
         QDataStream out(clientSocket);
         out.setVersion(QDataStream::Qt_5_15);
 
-        for (int row = 0; row < 9; ++row)
-        {
-            for (int col = 0; col < 9; ++col)
-            {
-                out << (quint8)board[row][col];
-            }
-        }
+        QString message = "Hi";
+        out << message;
 
-        for (int row = 0; row < 9; ++row)
-        {
-            for (int col = 0; col < 9; ++col)
-            {
-                out << (quint8)fullBoard[row][col];
-            }
-        }
+        clientSocket->flush();
+        clientSocket->waitForBytesWritten(3000); 
+        qDebug() << "Sent message:" << message;
 
-        out << (quint8)difficulty;
-        out << (quint8)emptyCount;
-
-        clientSocket->disconnectFromHost();
+        // clientSocket->disconnectFromHost();
     }
 }
