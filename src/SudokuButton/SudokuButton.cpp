@@ -54,7 +54,7 @@ void SudokuButton::paintEvent(QPaintEvent* event)
     if (!m_inputNumber.isEmpty())
     {
         QFont font = painter.font();
-        font.setPointSize(12);
+        font.setPointSize(15);
         painter.setFont(font);
 
         QRect textRect = rect();
