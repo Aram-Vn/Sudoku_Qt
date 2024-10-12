@@ -3,22 +3,18 @@
 SudokuServer::SudokuServer(QObject* parent)
     : QObject(parent)
 {
-    connect(&server, &QTcpServer::newConnection, this, &SudokuServer::sendGameData);
-    if (!server.listen(QHostAddress::Any, 12345))
-    {
-        qWarning() << "Server could not start!";
-    }
-    else
-    {
-        qInfo() << "Server started on port 12345";
-    }
 }
 
-SudokuServer::~SudokuServer()
+void SudokuServer::startServer(quint16 port)
 {
-    qInfo() << "Server closed";
+    if (!server.listen(QHostAddress::Any, port))
+    {
+        qDebug() << "Server could not start!";
+        return;
+    }
+    qDebug() << "Server started on port" << port;
 
-    server.close();
+    connect(&server, &QTcpServer::newConnection, this, &SudokuServer::sendGameData);
 }
 
 void SudokuServer::sendGameData()
@@ -33,7 +29,7 @@ void SudokuServer::sendGameData()
         out << message;
 
         clientSocket->flush();
-        clientSocket->waitForBytesWritten(3000); 
+        clientSocket->waitForBytesWritten(3000);
         qDebug() << "Sent message:" << message;
 
         // clientSocket->disconnectFromHost();

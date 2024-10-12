@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
-    SudokuServer s;
+    SudokuServer::instance().startServer(12345);
     SudokuClient c{ "127.0.0.1", 12345 };
 
     MainWindow w;
