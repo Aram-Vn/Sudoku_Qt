@@ -4,7 +4,7 @@ namespace fileUtil {
 
     void writeInBinary(const QString& filePath, const QVector<QVector<int>>& board,
                        const QVector<QVector<int>>& fullBoard, int difficulty, int emptyCount, int heartCount,
-                       int seconds, const QString& darkStyle, const QString& lightStyle,
+                       quint32 seconds, const QString& darkStyle, const QString& lightStyle,
                        const QVector<QVector<QString>>& TopRightButtonNumbers)
     {
         QFile file(filePath);
@@ -56,7 +56,7 @@ namespace fileUtil {
     }
 
     bool readFromBinary(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
-                        int& difficulty, int& emptyCount, int& heartCount, int& seconds, QString& darkStyle,
+                        int& difficulty, int& emptyCount, int& heartCount, quint32& seconds, QString& darkStyle,
                         QString& lightStyle, QVector<QVector<QString>>& TopRightButtonNumbers)
     {
         QFile file(filePath);

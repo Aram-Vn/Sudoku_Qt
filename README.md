@@ -27,8 +27,18 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 ├── assets
 │   ├── Heart.png
 │   └── Sudoku_Qt.ico
-│
+│ 
+├── Network
+│   │
+│   ├── include
+│   │   ├── SudokuClient.h
+│   │   └── SudokuServer.h
+│   └── src
+│       ├── SudokuClient.cpp
+│       └── SudokuServer.cpp
+│ 
 ├── include
+│   ├── constants.h
 │   ├── game.h
 │   ├── GameStateManager.h
 │   ├── mainwindow.h
@@ -36,7 +46,7 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 │   │
 │   ├── SudokuButton
 │   │   └── SudokuButton.h
-│   │ 
+│   │
 │   └── utils
 │       ├── color_utils.h
 │       └── file_utils.h
@@ -46,22 +56,21 @@ This project is a Sudoku game implemented using C++ and the Qt framework. It fea
 │   ├── GameStateManager.cpp
 │   ├── main.cpp
 │   ├── mainwindow.cpp
-│   │
 │   ├── sudokugenerator.cpp
-│   │
-│   │
+│   │ 
 │   ├── SudokuButton
 │   │   └── SudokuButton.cpp
-│   │
+│   │ 
 │   └── utils
 │       ├── color_utils.cpp
 │       └── file_utils.cpp
-│
-├── .clang-format
+│ 
 ├── CMakeLists.txt
-├── .gitignore
+│ 
 ├── README.md
 ├── resources.qrc
+├── .clang-format
+├── .gitignore
 └── .valgrind-suppressions
 
 ```

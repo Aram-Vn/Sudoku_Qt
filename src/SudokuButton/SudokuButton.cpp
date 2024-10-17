@@ -1,7 +1,7 @@
 #include "../../include/SudokuButton/SudokuButton.h"
 
 SudokuButton::SudokuButton(QWidget* parent)
-    : QPushButton(parent),
+    : QPushButton{ parent },
       m_isListeningForKey{ false }
 {
 }
@@ -49,18 +49,17 @@ void SudokuButton::keyPressEvent(QKeyEvent* event)
 void SudokuButton::paintEvent(QPaintEvent* event)
 {
     QPushButton::paintEvent(event);
-
-    QPainter painter(this);
+    
     if (!m_inputNumber.isEmpty())
     {
+        QPainter painter(this);
         QFont font = painter.font();
-        font.setPointSize(15);
+        font.setPointSize(DEFAULT_CORNER_FONT_SIZE);
         painter.setFont(font);
 
         QRect textRect = rect();
-        int   padding  = 5;
-        textRect.setTop(textRect.top() + padding);
-        textRect.setRight(textRect.right() - padding);
+        textRect.setTop(textRect.top() + DEFAULT_CORNER_PADDING);
+        textRect.setRight(textRect.right() - DEFAULT_CORNER_PADDING);
 
         QColor textColor = painter.pen().color(); // Get the current text color
 
@@ -73,9 +72,9 @@ void SudokuButton::paintEvent(QPaintEvent* event)
             painter.setPen(textColor.lighter(150));
         }
 
-        painter.setOpacity(0.5);
+        painter.setOpacity(DEFAULT_CORNER_TEXT_OPACITY);
         painter.drawText(textRect, Qt::AlignRight | Qt::AlignTop, m_inputNumber);
-        painter.setOpacity(2.0);
+        painter.setOpacity(CORNER_FULL_OPACITY);
     }
 }
 

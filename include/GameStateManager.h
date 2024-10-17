@@ -25,8 +25,8 @@ enum class savefile : qint8
 class GameStateManager
 {
 public:
-    static void saveGameState(const Game* game, const QGridLayout* gridLayout, int seconds);
-    static bool loadGameState(Game* game, QGridLayout* gridLayout, int& seconds);
+    static void saveGameState(const Game* game, const QGridLayout* gridLayout, quint32 seconds);
+    static bool loadGameState(Game* game, QGridLayout* gridLayout, quint32& seconds);
 
 private:
     static QString getFilePath(savefile file = savefile::SUDOKU_SAVE_0);

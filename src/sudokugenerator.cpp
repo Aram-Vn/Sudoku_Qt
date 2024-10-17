@@ -17,7 +17,7 @@ QVector<QVector<int>> SudokuGenerator::getGeneratedSudoku()
 
     for (int i = 0; i < 10; ++i)
     {
-        int index = generator->bounded(shuffle_func.size());
+        qint64 index = generator->bounded(shuffle_func.size());
         shuffle_func[index](board);
     }
 
@@ -25,7 +25,7 @@ QVector<QVector<int>> SudokuGenerator::getGeneratedSudoku()
 
     for (int i = 0; i < 15; ++i)
     {
-        int index = generator->bounded(shuffle_func.size());
+        qint64 index = generator->bounded(shuffle_func.size());
         shuffle_func[index](board);
     }
 
@@ -59,7 +59,7 @@ void SudokuGenerator::counterClockwise(QVector<QVector<int>>& board)
 
 void SudokuGenerator::transpose(QVector<QVector<int>>& board)
 {
-    int size = board.size();
+    qsizetype size = board.size();
     for (int i = 0; i < size; ++i)
     {
         for (int j = i + 1; j < size; ++j)
@@ -71,7 +71,7 @@ void SudokuGenerator::transpose(QVector<QVector<int>>& board)
 
 void SudokuGenerator::counterTranspose(QVector<QVector<int>>& board)
 {
-    int size = board.size();
+    qsizetype size = board.size();
     for (int i = 0; i < size; ++i)
     {
         for (int j = 0; j < size - i - 1; ++j)

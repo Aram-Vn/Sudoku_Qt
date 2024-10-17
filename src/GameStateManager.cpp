@@ -1,7 +1,7 @@
 #include "../include/GameStateManager.h"
 #include <qobject.h>
 
-void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLayout, int seconds)
+void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLayout, quint32 seconds)
 {
     QString filePath = getFilePath();
 
@@ -31,7 +31,7 @@ void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLa
                             seconds, darkStyle, lightStyle, topRightButtonNumbers);
 }
 
-bool GameStateManager::loadGameState(Game* game, QGridLayout* gridLayout, int& seconds)
+bool GameStateManager::loadGameState(Game* game, QGridLayout* gridLayout, quint32& seconds)
 {
     QString filePath = getFilePath();
 

@@ -155,11 +155,6 @@ namespace colorUtil {
                 bool    is_dark    = ((row / 3) % 2 == (col / 3) % 2);
                 QString colorStyle = is_dark ? darkStyle : lightStyle;
 
-                QColor  baseColor;
-                QColor  hoverColor;
-                QColor  focusColor;
-                QString textColor;
-
                 sudokuButton->setStyleSheet(colorStyle);
             }
         }

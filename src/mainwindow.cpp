@@ -4,13 +4,13 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
       m_game(new Game(this)),
       m_difficulty_buttons(3),
-      m_continue_old_game(3),
       m_start_button(new QPushButton(this)),
+      m_continue_old_game(3),
       m_reset_game(new QPushButton(this)),
       m_heart_label(new QLabel(this)),
       m_time_label(new QLabel(this)),
-      m_timer(new QTimer(this)),
       m_seconds{},
+      m_timer(new QTimer(this)),
       m_is_left_click{ true },
       m_color_picker_button(new QPushButton(this)),
       m_start(new QPushButton(this))
@@ -45,9 +45,6 @@ MainWindow::MainWindow(QWidget* parent)
                     [row, col, this]()
                     {
                         m_is_left_click = true;
-
-                        int x = m_game->getX();
-                        int y = m_game->getY();
 
                         if (m_game->checkPos(row, col))
                         {
@@ -371,9 +368,9 @@ void MainWindow::closeEvent(QCloseEvent* event)
     event->accept();
 }
 
-void MainWindow::promptContinueOldGame(int i)
+void MainWindow::promptContinueOldGame(int index)
 {
-    qDebug() << i;
+    qDebug() << index;
     QMessageBox msgBox;
     msgBox.setWindowTitle("Continue Game");
     msgBox.setText("Do you want to continue your old game?");
@@ -389,13 +386,13 @@ void MainWindow::promptContinueOldGame(int i)
         bool isSuccess = GameStateManager::loadGameState(m_game, m_grid_layout, m_seconds);
         if (!isSuccess)
         {
-            QMessageBox msgBox;
-            msgBox.setWindowTitle("Attention");
-            msgBox.setText("There is no old valid game to continue");
-            msgBox.setIcon(QMessageBox::Information);
-            msgBox.setStyleSheet("QLabel{color: white;} "
-                                 "QMessageBox{background-color: #22262e;}");
-            msgBox.exec();
+            QMessageBox AttentionMsgBox;
+            AttentionMsgBox.setWindowTitle("Attention");
+            AttentionMsgBox.setText("There is no old valid game to continue");
+            AttentionMsgBox.setIcon(QMessageBox::Information);
+            AttentionMsgBox.setStyleSheet("QLabel{color: white;} "
+                                          "QMessageBox{background-color: #22262e;}");
+            AttentionMsgBox.exec();
             return;
         }
 

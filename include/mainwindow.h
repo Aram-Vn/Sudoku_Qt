@@ -43,7 +43,7 @@ protected:
 
 private slots:
     void openColorPicker();
-    void promptContinueOldGame(int i);
+    void promptContinueOldGame(int index);
     void showHidden();
 
 private:
@@ -68,7 +68,7 @@ private:
     QPushButton*          m_reset_game;
     QLabel*               m_heart_label;
     QLabel*               m_time_label;
-    int                   m_seconds;
+    quint32               m_seconds;
     QTimer*               m_timer;
     bool                  m_is_left_click;
     QPushButton*          m_color_picker_button;

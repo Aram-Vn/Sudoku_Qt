@@ -15,20 +15,20 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets Network)
 
 include_directories(include)
 
-# List source files separately using GLOB to handle wildcard patterns
-file(GLOB SOURCE_FILES
+
+file(GLOB_RECURSE SOURCE_FILES
     src/*.cpp
     src/utils/*.cpp
     src/SudokuButton/*.cpp
-    src/Network/*.cpp
+    Network/src/*.cpp
 )
 
-# List header files separately using GLOB
-file(GLOB HEADER_FILES
+
+file(GLOB_RECURSE HEADER_FILES
     include/*.h
     include/utils/*.h
     include/SudokuButton/*.h
-    include/Network/*.h
+    Network/include/*.h
 )
 
 # Add the Qt resource file
@@ -63,8 +63,37 @@ else()
     endif()
 endif()
 
-target_link_libraries(Sudoku PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Widgets Qt6::Network)
+target_link_libraries(Sudoku PRIVATE Qt${QT_VERSION_MAJOR}::Core 
+                                     Qt${QT_VERSION_MAJOR}::Widgets 
+                                     Qt${QT_VERSION_MAJOR}::Network)
+
+
+target_compile_options(Sudoku PRIVATE
+    -Wall                 # Enable all basic warnings
+    -Wextra               # Enable extra warning flags not covered by -Wall
+    -Wshadow              # Warn when variable declarations shadow others
+    -Wswitch              # Warn about missing cases in switch statements
+    -pedantic             # Enforce strict ISO C++ compliance
+    -Wformat=2            # Warn about security issues in printf/scanf format strings
+    -Wconversion          # Warn for implicit type conversions that may alter a value
+    -Wnull-dereference    # Warn if a null pointer dereference is detected
+    -Wunused-parameter    # Warn if function parameters are unused
+    -Wunreachable-code    # Warn if there is code that will never be executed
+    -Wimplicit-fallthrough # Warn when switch case falls through without a break
+)
+
+# Add additional strict checks in Debug mode
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(Sudoku PRIVATE
+        -Werror              # Treat all warnings as errors
+        -Werror=return-type  # Treat return-type warnings as errors
+        -Werror=uninitialized # Treat uninitialized variable warnings as errors
+        -Werror=unused-result # Treat unused result warnings as errors (e.g., ignoring return value)
+        -Werror=strict-overflow # Treat potential overflow warnings as errors
+    )
+endif()
+
+
 # Add sanitizers for Debug builds
 # if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 #     target_compile_options(Sudoku PRIVATE -fsanitize=address -fsanitize=undefined)
@@ -82,9 +111,11 @@ set_target_properties(Sudoku PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-# Valgrind target with suppressions and logging, without failing on errors
+# Valgrind target with suppressions and logging
 add_custom_target(valgrind
-    COMMAND valgrind --leak-check=full --track-origins=yes --gen-suppressions=all --suppressions=${CMAKE_SOURCE_DIR}/.valgrind-suppressions --log-file=${CMAKE_BINARY_DIR}/memcheck.log
+    COMMAND valgrind --leak-check=full --track-origins=yes --gen-suppressions=all 
+                     --suppressions=${CMAKE_SOURCE_DIR}/.valgrind-suppressions 
+                     --log-file=${CMAKE_BINARY_DIR}/memcheck.log
     ./${CMAKE_PROJECT_NAME}
     DEPENDS ${CMAKE_PROJECT_NAME}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -92,6 +123,7 @@ add_custom_target(valgrind
 )
 
 include(GNUInstallDirs)
+
 install(TARGETS Sudoku
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

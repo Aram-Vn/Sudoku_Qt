@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPushButton>
+#include <cstddef>
 
 class SudokuButton : public QPushButton
 {
@@ -26,6 +27,12 @@ public:
     void    clearNumber();
     QString getTopRightNumber() const;
     void    setTopRightNumber(const QString& number);
+
+private:
+    static constexpr std::size_t DEFAULT_CORNER_FONT_SIZE    = 15;
+    static constexpr int         DEFAULT_CORNER_PADDING      = 5;
+    static constexpr double      DEFAULT_CORNER_TEXT_OPACITY = 0.5;
+    static constexpr double      CORNER_FULL_OPACITY         = 1.0;
 
 private:
     QString m_inputNumber;
