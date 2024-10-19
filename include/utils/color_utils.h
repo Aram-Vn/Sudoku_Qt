@@ -9,14 +9,14 @@
 
 namespace colorUtil {
 
-    enum class buttonType : qint8
+    enum class widgetType : qint8
     {
-        EASY = 0,
-        MEDIUM,
-        HARD,
-        CUSTOM,
+        EASY_BUTTON = 0,
+        MEDIUM_BUTTON,
+        HARD_BUTTON,
+        CUSTOM_BUTTON,
         LABEL,
-        MAIN
+        MAIN_LAYOUT
     };
 
     enum fontSize : qint8
@@ -29,7 +29,7 @@ namespace colorUtil {
     constexpr int DEFAULT_HEART_WIDTH_HEIGHT = 22;
     const QString DEFAULT_HEART_IMAGE_PATH   = ":/assets/Heart.png";
 
-    QString getStyle(buttonType type);
+    QString getStyle(widgetType type);
 
     QString generateHeartSpan(int heartCount = DEFAULT_HEART_COUNT, QString imgPath = DEFAULT_HEART_IMAGE_PATH,
                               int width = DEFAULT_HEART_WIDTH_HEIGHT, int height = DEFAULT_HEART_WIDTH_HEIGHT);

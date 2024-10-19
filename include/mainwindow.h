@@ -52,16 +52,19 @@ private:
     void changeHeartLabel();
     void resetGame();
 
+    void setUi();
+    void setConnections();
+
 private:
     static constexpr int WINDOW_WIDTH       = 700;
     static constexpr int WINDOW_HEIGHT      = 850;
     static constexpr int GRID_SIZE          = 9;
     static constexpr int SUDOKU_BUTTON_SIZE = 60;
     static constexpr int BUTTON_HEIGHT      = 50;
+    static constexpr int BUTTON_WIDTH       = 300;
 
 private:
     Game*                 m_game;
-    QGridLayout*          m_grid_layout;
     QVector<QPushButton*> m_difficulty_buttons;
     QPushButton*          m_start_button;
     QVector<QPushButton*> m_continue_old_game;
@@ -73,7 +76,7 @@ private:
     bool                  m_is_left_click;
     QPushButton*          m_color_picker_button;
     QWidget*              m_central_widget;
-    QPushButton*          m_start;
+    QGridLayout*          m_grid_layout;
 };
 
 #endif // SUDOKU_QT_INCLUDE_MAIN_WINDOW_H

@@ -5,7 +5,7 @@
 
 namespace colorUtil {
 
-    QString getStyle(buttonType type)
+    QString getStyle(widgetType type)
     {
         QString background_color       = "";
         QString hover_background_color = "";
@@ -13,27 +13,27 @@ namespace colorUtil {
 
         switch (type)
         {
-            case buttonType::EASY:
+            case widgetType::EASY_BUTTON:
                 background_color       = "#005700";
                 hover_background_color = "#007500";
                 text_color             = "white";
                 break;
-            case buttonType::MEDIUM:
+            case widgetType::MEDIUM_BUTTON:
                 background_color       = "#7f7f00";
                 hover_background_color = "#9f9f00";
                 text_color             = "black";
                 break;
-            case buttonType::HARD:
+            case widgetType::HARD_BUTTON:
                 background_color       = "#7f0000";
                 hover_background_color = "#a70000";
                 text_color             = "white";
                 break;
-            case buttonType::CUSTOM:
+            case widgetType::CUSTOM_BUTTON:
                 background_color       = "#4f4f4f";
                 hover_background_color = "#7f7f7f";
                 text_color             = "white";
                 break;
-            case buttonType::LABEL:
+            case widgetType::LABEL:
                 return "background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
                        "stop:0 #3e3e3e, stop:1 #2c2c2c);"
                        "border-radius: 10px;"
@@ -45,7 +45,7 @@ namespace colorUtil {
                        "border: 2px solid #555;"
                        "text-align: center;";
                 break; // Add break here
-            case buttonType::MAIN:
+            case widgetType::MAIN_LAYOUT:
                 return "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
                        "stop:0 #484848, "
                        "stop:0.33 #383838, "
