@@ -77,6 +77,7 @@ private:
     QPushButton*          m_color_picker_button;
     QWidget*              m_central_widget;
     QGridLayout*          m_grid_layout;
+    savefile              m_fileIND;
 };
 
 #endif // SUDOKU_QT_INCLUDE_MAIN_WINDOW_H

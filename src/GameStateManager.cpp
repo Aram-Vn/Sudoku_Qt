@@ -1,9 +1,11 @@
 #include "../include/GameStateManager.h"
 #include <qobject.h>
 
-void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLayout, quint32 seconds)
+void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLayout, quint32 seconds, savefile fileNum)
 {
-    QString filePath = getFilePath();
+    QString filePath = getFilePath(fileNum);
+    qDebug() << "saveGameState ind: " << static_cast<int>(fileNum);
+    qDebug() << "saveGameState: " << filePath;
 
     QPushButton* darkStyleButton = dynamic_cast<QPushButton*>(gridLayout->itemAtPosition(0, 0)->widget());
     QString      darkStyle       = darkStyleButton->styleSheet();
@@ -31,9 +33,9 @@ void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLa
                             seconds, darkStyle, lightStyle, topRightButtonNumbers);
 }
 
-bool GameStateManager::loadGameState(Game* game, QGridLayout* gridLayout, quint32& seconds)
+bool GameStateManager::loadGameState(Game* game, QGridLayout* gridLayout, quint32& seconds, savefile fileNum)
 {
-    QString filePath = getFilePath();
+    QString filePath = getFilePath(fileNum);
 
     QVector<QVector<int>>     board;
     QVector<QVector<int>>     fullBoard;
@@ -81,7 +83,7 @@ QString GameStateManager::getFilePath(savefile file)
 
     switch (file)
     {
-        case savefile::SUDOKU_SAVE_0: fileName = "/sudoku_save_1.bin"; break;
+        case savefile::SUDOKU_SAVE_0: fileName = "/sudoku_save_0.bin"; break;
         case savefile::SUDOKU_SAVE_1: fileName = "/sudoku_save_1.bin"; break;
         case savefile::SUDOKU_SAVE_2: fileName = "/sudoku_save_2.bin"; break;
         default: fileName = "NONAME";

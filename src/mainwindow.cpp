@@ -1,4 +1,5 @@
 #include "../include/mainwindow.h"
+#include "GameStateManager.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -14,7 +15,8 @@ MainWindow::MainWindow(QWidget* parent)
       m_is_left_click{ true },
       m_color_picker_button(new QPushButton(this)),
       m_central_widget(new QWidget(this)),
-      m_grid_layout(new QGridLayout(m_central_widget))
+      m_grid_layout(new QGridLayout(m_central_widget)),
+      m_fileIND(savefile::NO_NAME)
 {
     this->setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     m_central_widget->setGeometry(0, 150, 700, 700);
@@ -392,13 +394,14 @@ void MainWindow::openColorPicker()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-    GameStateManager::saveGameState(m_game, m_grid_layout, m_seconds);
+    GameStateManager::saveGameState(m_game, m_grid_layout, m_seconds, m_fileIND);
     event->accept();
 }
 
 void MainWindow::promptContinueOldGame(int index)
 {
     qDebug() << index;
+    m_fileIND = static_cast<savefile>(index);
     QMessageBox msgBox;
     msgBox.setWindowTitle("Continue Game");
     msgBox.setText("Do you want to continue your old game?");
@@ -411,7 +414,7 @@ void MainWindow::promptContinueOldGame(int index)
 
     if (reply == QMessageBox::Yes)
     {
-        bool isSuccess = GameStateManager::loadGameState(m_game, m_grid_layout, m_seconds);
+        bool isSuccess = GameStateManager::loadGameState(m_game, m_grid_layout, m_seconds, m_fileIND);
         if (!isSuccess)
         {
             QMessageBox AttentionMsgBox;
