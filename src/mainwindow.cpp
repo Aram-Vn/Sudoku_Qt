@@ -1,5 +1,7 @@
 #include "../include/mainwindow.h"
 #include "GameStateManager.h"
+#include "constants.h"
+#include "utils/file_utils.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -73,14 +75,29 @@ void MainWindow::setUi()
     int y = (this->height() - BUTTON_HEIGHT) / 2 - 100;
 
     QStringList continue_txt = { "continue save 1", "continue save 2", "continue save 3" };
+    QIcon       saveIcon(constants::DEFAULT_SAVE_ICON_IMAGE_PATH);
 
     for (int i = 0; i < m_continue_old_game.size(); ++i)
     {
-        m_continue_old_game[i] = new QPushButton(continue_txt[i], this);
+        m_continue_old_game[i] = new QPushButton(this);
+        bool ok                = fileUtil::checkFile(i);
+        if (ok)
+        {
+            m_continue_old_game[i]->setText(continue_txt[i]);
+            connect(m_continue_old_game[i], &QPushButton::clicked, this, [this, i]() { promptContinueOldGame(i); });
+        }
+        else
+        {
+            m_continue_old_game[i]->setText("start new game");
+            m_continue_old_game[i]->setIcon(saveIcon);
+            m_continue_old_game[i]->setIconSize(
+                QSize(constants::DEFAULT_HEART_WIDTH_HEIGHT, constants::DEFAULT_HEART_WIDTH_HEIGHT));
+            connect(m_continue_old_game[i], &QPushButton::clicked, this, [this]() { startNewGame(); });
+        }
+
         m_continue_old_game[i]->setGeometry(x, y + 70 * i, BUTTON_WIDTH, BUTTON_HEIGHT);
         m_continue_old_game[i]->setStyleSheet(colorUtil::getStyle(colorUtil::widgetType::CUSTOM_BUTTON));
     }
-
     QStringList difficulties = { "Easy", "Medium", "Hard" };
 
     for (int i = 0; i < m_difficulty_buttons.size(); ++i)
@@ -150,10 +167,9 @@ void MainWindow::setConnections()
         }
     }
 
-    for (int i = 0; i < m_continue_old_game.size(); ++i)
-    {
-        connect(m_continue_old_game[i], &QPushButton::clicked, this, [this, i]() { promptContinueOldGame(i); });
-    }
+    // for (int i = 0; i < m_continue_old_game.size(); ++i)
+    // {
+    // }
 
     for (int i = 0; i < m_difficulty_buttons.size(); ++i)
     {
@@ -441,4 +457,10 @@ void MainWindow::promptContinueOldGame(int index)
         this->showHidden();
         this->resetGame();
     }
+}
+
+void MainWindow::startNewGame()
+{
+    this->showHidden();
+    this->resetGame();
 }

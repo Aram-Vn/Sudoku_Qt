@@ -1,6 +1,7 @@
 #ifndef SUDOKU_QT_INCLUDE_UTILS_FILE_UTILS_H
 #define SUDOKU_QT_INCLUDE_UTILS_FILE_UTILS_H
 
+#include "../include/GameStateManager.h"
 #include "color_utils.h"
 
 #include <QColor>
@@ -22,6 +23,8 @@ namespace fileUtil {
     bool readFromBinary(const QString& filePath, QVector<QVector<int>>& board, QVector<QVector<int>>& fullBoard,
                         int& difficulty, int& emptyCount, int& heartCount, quint32& seconds, QString& darkStyle,
                         QString& lightStyle, QVector<QVector<QString>>& TopRightButtonNumbers);
+
+    bool checkFile(const int i);
 
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,

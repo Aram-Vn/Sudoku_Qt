@@ -45,6 +45,7 @@ private slots:
     void openColorPicker();
     void promptContinueOldGame(int index);
     void showHidden();
+    void startNewGame();
 
 private:
     void handleStart();

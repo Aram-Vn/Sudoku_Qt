@@ -1,4 +1,5 @@
 #include "../../include/utils/file_utils.h"
+#include <qobject.h>
 
 namespace fileUtil {
 
@@ -194,6 +195,44 @@ namespace fileUtil {
         if (!in.atEnd())
         {
             qWarning() << "File contains more data than expected.";
+            file.close();
+            return false;
+        }
+
+        file.close();
+        return true;
+    }
+
+    bool checkFile(const int i)
+    {
+        QString fileName;
+
+        switch (i)
+        {
+            case 0: fileName = "/sudoku_save_0.bin"; break;
+            case 1: fileName = "/sudoku_save_1.bin"; break;
+            case 2: fileName = "/sudoku_save_2.bin"; break;
+            default: fileName = "NONAME";
+        }
+
+        QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QDir().mkpath(filePath);
+        filePath += fileName;
+
+        QFile file(filePath);
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            qWarning() << "Unable to open file for reading.";
+            return false;
+        }
+
+
+        QDataStream in(&file);
+        in.setVersion(QDataStream::Qt_5_15);
+
+        if (file.size() < 9 * 9 * 2 + 4 + 2) // Minimum size for boards, settings, and styles
+        {
+            qWarning() << "File is too small to contain all required data.";
             file.close();
             return false;
         }

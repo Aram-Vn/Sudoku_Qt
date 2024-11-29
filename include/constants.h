@@ -9,9 +9,10 @@ namespace constants {
     constexpr int SUDOKU_BUTTON_FONT_SIZE      = 24;
 
     // Game Configuration
-    constexpr int DEFAULT_HEART_COUNT        = 3;
-    constexpr int DEFAULT_HEART_WIDTH_HEIGHT = 22;
-    const QString DEFAULT_HEART_IMAGE_PATH   = ":/assets/Heart.png";
+    constexpr int DEFAULT_HEART_COUNT          = 3;
+    constexpr int DEFAULT_HEART_WIDTH_HEIGHT   = 22;
+    const QString DEFAULT_HEART_IMAGE_PATH     = ":/assets/Heart.png";
+    const QString DEFAULT_SAVE_ICON_IMAGE_PATH = ":/assets/save-icon.png";
 
     // Window Size
     constexpr int WINDOW_WIDTH  = 700;
