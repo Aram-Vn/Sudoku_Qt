@@ -1,11 +1,13 @@
 #include "../include/GameStateManager.h"
+#include <qdebug.h>
+#include <qlogging.h>
 #include <qobject.h>
 
 void GameStateManager::saveGameState(const Game* game, const QGridLayout* gridLayout, quint32 seconds, savefile fileNum)
 {
     QString filePath = getFilePath(fileNum);
-    qDebug() << "saveGameState ind: " << static_cast<int>(fileNum);
-    qDebug() << "saveGameState: " << filePath;
+    // qDebug() << "saveGameState ind: " << static_cast<int>(fileNum);
+    // qDebug() << "saveGameState: " << filePath;
 
     QPushButton* darkStyleButton = dynamic_cast<QPushButton*>(gridLayout->itemAtPosition(0, 0)->widget());
     QString      darkStyle       = darkStyleButton->styleSheet();
@@ -80,7 +82,7 @@ bool GameStateManager::loadGameState(Game* game, QGridLayout* gridLayout, quint3
 QString GameStateManager::getFilePath(savefile file)
 {
     QString fileName;
-
+    // qDebug() << "saveGameState: " << static_cast<int>(file);
     switch (file)
     {
         case savefile::SUDOKU_SAVE_0: fileName = "/sudoku_save_0.bin"; break;
@@ -88,6 +90,7 @@ QString GameStateManager::getFilePath(savefile file)
         case savefile::SUDOKU_SAVE_2: fileName = "/sudoku_save_2.bin"; break;
         default: fileName = "NONAME";
     }
+    // qDebug() << "fname " << fileName;
 
     QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir().mkpath(filePath);

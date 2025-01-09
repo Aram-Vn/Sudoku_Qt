@@ -15,9 +15,9 @@
 
 class Game;
 
-enum class savefile : qint8
+enum class savefile : qint16
 {
-    SUDOKU_SAVE_0,
+    SUDOKU_SAVE_0 = 0,
     SUDOKU_SAVE_1,
     SUDOKU_SAVE_2,
     NO_NAME

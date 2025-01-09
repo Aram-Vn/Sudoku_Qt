@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/Sudoku_autogen/mocs_compilation.cpp.o -c /home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/mocs_compilation.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/mocs_compilation.cpp",
+  "output": "CMakeFiles/Sudoku.dir/Sudoku_autogen/mocs_compilation.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/Network/src/SudokuClient.cpp.o -c /home/aram/dev/Sudoku_Qt/Network/src/SudokuClient.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/Network/src/SudokuClient.cpp",
+  "output": "CMakeFiles/Sudoku.dir/Network/src/SudokuClient.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/Network/src/SudokuServer.cpp.o -c /home/aram/dev/Sudoku_Qt/Network/src/SudokuServer.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/Network/src/SudokuServer.cpp",
+  "output": "CMakeFiles/Sudoku.dir/Network/src/SudokuServer.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/GameStateManager.cpp.o -c /home/aram/dev/Sudoku_Qt/src/GameStateManager.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/GameStateManager.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/GameStateManager.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/SudokuButton/SudokuButton.cpp.o -c /home/aram/dev/Sudoku_Qt/src/SudokuButton/SudokuButton.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/SudokuButton/SudokuButton.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/SudokuButton/SudokuButton.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/game.cpp.o -c /home/aram/dev/Sudoku_Qt/src/game.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/game.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/game.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/main.cpp.o -c /home/aram/dev/Sudoku_Qt/src/main.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/main.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/mainwindow.cpp.o -c /home/aram/dev/Sudoku_Qt/src/mainwindow.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/mainwindow.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/mainwindow.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/sudokugenerator.cpp.o -c /home/aram/dev/Sudoku_Qt/src/sudokugenerator.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/sudokugenerator.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/sudokugenerator.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/utils/color_utils.cpp.o -c /home/aram/dev/Sudoku_Qt/src/utils/color_utils.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/utils/color_utils.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/utils/color_utils.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/src/utils/file_utils.cpp.o -c /home/aram/dev/Sudoku_Qt/src/utils/file_utils.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/src/utils/file_utils.cpp",
+  "output": "CMakeFiles/Sudoku.dir/src/utils/file_utils.cpp.o"
+},
+{
+  "directory": "/home/aram/dev/Sudoku_Qt/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -I/home/aram/dev/Sudoku_Qt/build/Sudoku_autogen/include -I/home/aram/dev/Sudoku_Qt/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/qt6/QtNetwork -g -std=gnu++17 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion -Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough -Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result -Werror=strict-overflow -fno-direct-access-external-data -o CMakeFiles/Sudoku.dir/qrc_resources.cpp.o -c /home/aram/dev/Sudoku_Qt/build/qrc_resources.cpp",
+  "file": "/home/aram/dev/Sudoku_Qt/build/qrc_resources.cpp",
+  "output": "CMakeFiles/Sudoku.dir/qrc_resources.cpp.o"
+}
+]

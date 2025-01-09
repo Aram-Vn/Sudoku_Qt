@@ -2,6 +2,7 @@
 #include "GameStateManager.h"
 #include "constants.h"
 #include "utils/file_utils.h"
+#include <qlogging.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -92,7 +93,13 @@ void MainWindow::setUi()
             m_continue_old_game[i]->setIcon(saveIcon);
             m_continue_old_game[i]->setIconSize(
                 QSize(constants::DEFAULT_HEART_WIDTH_HEIGHT, constants::DEFAULT_HEART_WIDTH_HEIGHT));
-            connect(m_continue_old_game[i], &QPushButton::clicked, this, [this]() { startNewGame(); });
+
+            connect(m_continue_old_game[i], &QPushButton::clicked, this,
+                    [this, i]()
+                    {
+                        m_fileIND = static_cast<savefile>(i);
+                        startNewGame();
+                    });
         }
 
         m_continue_old_game[i]->setGeometry(x, y + 70 * i, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -410,13 +417,14 @@ void MainWindow::openColorPicker()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
+    // qDebug() << static_cast<int>(m_fileIND);
     GameStateManager::saveGameState(m_game, m_grid_layout, m_seconds, m_fileIND);
     event->accept();
 }
 
 void MainWindow::promptContinueOldGame(int index)
 {
-    qDebug() << index;
+    // qDebug() << "ind" << index;
     m_fileIND = static_cast<savefile>(index);
     QMessageBox msgBox;
     msgBox.setWindowTitle("Continue Game");
