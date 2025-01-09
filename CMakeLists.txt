@@ -8,6 +8,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -42,8 +43,8 @@ set(PROJECT_SOURCES
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${PROJECT_NAME}
         MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-        ${RESOURCES}
+            ${PROJECT_SOURCES}
+            ${RESOURCES}
     )
 else()
     if(ANDROID)
@@ -60,12 +61,18 @@ else()
 endif()
 
 # Add include directories AFTER creating the target
-target_include_directories(${PROJECT_NAME} PRIVATE include Network/include)
+target_include_directories(${PROJECT_NAME} 
+    PRIVATE 
+        include Network/include
+)
 
 # Link libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::Widgets
-    Qt${QT_VERSION_MAJOR}::Network)
+target_link_libraries(${PROJECT_NAME} 
+    PRIVATE 
+        Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::Network
+)
 
 # Add compile options (unchanged)
 target_compile_options(${PROJECT_NAME} PRIVATE
