@@ -463,6 +463,7 @@ void MainWindow::promptContinueOldGame(int index)
     else
     {
         this->showHidden();
+        fileUtil::removeFile(index);
         this->resetGame();
     }
 }

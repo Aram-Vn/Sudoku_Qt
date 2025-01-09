@@ -26,6 +26,8 @@ namespace fileUtil {
 
     bool checkFile(const int i);
 
+    void removeFile(const int i);
+
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,
                      const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle,

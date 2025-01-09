@@ -226,7 +226,6 @@ namespace fileUtil {
             return false;
         }
 
-
         QDataStream in(&file);
         in.setVersion(QDataStream::Qt_5_15);
 
@@ -237,10 +236,92 @@ namespace fileUtil {
             return false;
         }
 
+        for (int row = 0; row < 9; ++row)
+        {
+            for (int col = 0; col < 9; ++col)
+            {
+                quint8 value;
+                if (in.atEnd())
+                {
+                    qWarning() << "Unexpected end of file while reading current board.";
+                    file.close();
+                    return false;
+                }
+                in >> value;
+                if (value > 9)
+                {
+                    qWarning() << "Invalid value in current board:" << value;
+                    file.close();
+                    return false;
+                }
+            }
+        }
+
+        for (int row = 0; row < 9; ++row)
+        {
+            for (int col = 0; col < 9; ++col)
+            {
+                quint8 value;
+                if (in.atEnd())
+                {
+                    qWarning() << "Unexpected end of file while reading full board.";
+                    file.close();
+                    return false;
+                }
+                in >> value;
+                if (value < 1 || value > 9)
+                {
+                    qWarning() << "Invalid value in full board:" << value;
+                    file.close();
+                    return false;
+                }
+            }
+        }
+
+        if (in.atEnd())
+        {
+            qWarning() << "Unexpected end of file while reading game settings.";
+            file.close();
+            return false;
+        }
+
         file.close();
         return true;
     }
 
+    void removeFile(const int i)
+    {
+        QString fileName;
+
+        switch (i)
+        {
+            case 0: fileName = "/sudoku_save_0.bin"; break;
+            case 1: fileName = "/sudoku_save_1.bin"; break;
+            case 2: fileName = "/sudoku_save_2.bin"; break;
+            default: fileName = "NONAME"; break;
+        }
+
+        QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QDir().mkpath(filePath); // Ensures the directory exists
+        filePath += fileName;
+
+        // Delete the file
+        if (QFile::exists(filePath)) // Check if the file exists
+        {
+            if (QFile::remove(filePath)) // Attempt to delete the file
+            {
+                qDebug() << "File deleted successfully:" << filePath;
+            }
+            else
+            {
+                qWarning() << "Failed to delete file:" << filePath;
+            }
+        }
+        else
+        {
+            qWarning() << "File does not exist:" << filePath;
+        }
+    }
     void writeInJSON(const QString& filePath, const QVector<QVector<int>>& board,
                      const QVector<QVector<int>>& fullBoard, const int difficulty, const int emptyCount,
                      const int heartCount, const int seconds, const QString& darkStyle, const QString& lightStyle,
